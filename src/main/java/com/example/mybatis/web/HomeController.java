@@ -7,6 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequiredArgsConstructor
@@ -15,13 +19,7 @@ public class HomeController {
     private final MemberMapper memberMapper;
 
     @RequestMapping("/")
-    public String home(@CookieValue(name = "memberId", required = false) Long memberId, Model model){
-
-        if (memberId == null) {
-            return "home";
-        }
-
-        Member loginUser = memberMapper.findById(memberId);
+    public String home(@SessionAttribute(name = SessionConst.LOGIN_USER, required = false) Member loginUser,  Model model){
 
         if (loginUser == null) {
             return "home";
