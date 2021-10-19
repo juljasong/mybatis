@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../../static/css/bootstrap.min.css" rel="stylesheet">
+    <title>Index</title>
+</head>
+<body>
+<ul>
+    <li><h4 th:text="|${loginUser.name}, Hi!|">User Name</h4>
+        <ul>
+            <li><a href="/urls">URLS</a></li>
+            <li><a href="/logout">로그아웃</a></li>
+        </ul>
+    </li>
+</ul>
+</body>
+</html>

@@ -1,18 +1,14 @@
-package com.example.mybatis.controller;
+package com.example.mybatis.web.member;
 
-import com.example.mybatis.domain.Member;
-import com.example.mybatis.domain.MemberDTO;
-import com.example.mybatis.mapper.MemberMapper;
-import lombok.RequiredArgsConstructor;
+import com.example.mybatis.domain.member.Member;
+import com.example.mybatis.domain.member.MemberMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.servlet.http.Cookie;
-import javax.websocket.Session;
 
 @Controller
 @RequestMapping("/member")
@@ -32,21 +28,9 @@ public class MemberController {
     }
 
     @PostMapping("/add")
-    public String addForm(Member member) {
+    public String save(@ModelAttribute Member member) {
         memberMapper.insert(member);
         return "redirect:/";
     }
 
-    @GetMapping("/login")
-    public String loginForm() {
-        return "member/login";
-    }
-
-    @PostMapping("/login")
-    public String login(MemberDTO member) throws Exception {
-        Member loginUser = memberMapper.login(member);
-        log.info("email={}, password={}", member.getEmail(), member.getPassword());
-        log.info(loginUser.getName());
-        return "redirect:/";
-    }
 }
