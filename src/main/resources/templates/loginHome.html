@@ -55,13 +55,16 @@
                         </div>
                         <div class="form-group">
                             <label for="expirationDate" class="col-form-label">Expiration Date:</label>
-                            <input type="date" class="form-control" id="expirationDate" name="expirationDate" value="null">
+                            <input type="date" class="form-control" id="expirationDate" name="expirationDate"
+                                value="null">
                         </div>
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="isPublic" name="isPublic" value="1" checked>
+                            <input class="form-check-input" type="checkbox" role="switch" id="isPublic" name="isPublic"
+                                value="1" checked>
                             <label class="form-check-label" for="isPublic">is Public?</label>
                         </div>
-                        <input type="hidden" class="form-control" id="memberId" name="memberId" value="user" th:value=${loginUser.id}>
+                        <input type="hidden" class="form-control" id="memberId" name="memberId" value="user"
+                            th:value=${loginUser.id}>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -73,13 +76,20 @@
         </div>
     </div>
 
+    <!--Start URL-->
     <div class="list-group container">
-        <a href="#" class="list-group-item list-group-item-action active" aria-current="true">The current link item</a>
-        <a href="#" class="list-group-item list-group-item-action">A second link item</a>
-        <a href="#" class="list-group-item list-group-item-action">A third link item</a>
-        <a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
-        <a href="#" class="list-group-item list-group-item-action disabled" tabindex="-1" aria-disabled="true">A
-            disabled link item</a>
+        <a th:each="url : ${urls}" href="#" th:href="|${url.url}|" class="list-group-item list-group-item-action"
+            th:text="${url.name}">URL</a>
+    </div>
+
+    <!--Start Expired URL-->
+    <div class="container">
+        <h5>Expired</h5>
+    </div>
+    <div class="list-group container">
+        <a th:each="disabledUrl : ${disabledUrls}" href="#" th:href="|${disabledUrl.url}|"
+            class="list-group-item list-group-item-action list-group-item-secondary"
+            th:text="${disabledUrl.name}">Expired URL</a>
     </div>
 
 </body>

@@ -17,12 +17,11 @@ public class UrlController {
         this.urlService = urlService;
     }
 
-
     @PostMapping("/add")
     public String add(@ModelAttribute Url url) throws Exception {
 
         log.info("name={}, url={}, description={}, expirationDate={}, isPublic={}", url.getName(), url.getUrl(), url.getDescription(), url.getExpirationDate(), url.getIsPublic());
-        
+
         int result = urlService.add(url);
         if (result == 0) {
             throw new Exception("Error");
