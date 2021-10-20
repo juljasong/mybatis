@@ -4,7 +4,6 @@ import com.example.mybatis.domain.member.Member;
 import com.example.mybatis.domain.member.MemberMapper;
 import com.example.mybatis.domain.url.Url;
 import com.example.mybatis.domain.url.UrlMapper;
-import com.example.mybatis.domain.url.UrlService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

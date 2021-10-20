@@ -15,6 +15,9 @@ public interface MemberMapper {
     @Select("SELECT * FROM members WHERE id=#{id}")
     Member findById(Long id);
 
+    @Select("SELECT id FROM members WHERE name=#{memberName}")
+    Long findMemberIdByMemberName(String memberName);
+
     @Select("SELECT * FROM members")
     List<Member> findAll();
 
