@@ -14,7 +14,7 @@ public class Url {
     private String name;
     private String url;
     private String description;
-    private Date expirationDate;
+    private String expirationDate;
     private int isPublic;
 
 }

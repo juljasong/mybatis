@@ -1,11 +1,7 @@
 package com.example.mybatis.domain.member;
 
-import com.example.mybatis.web.SessionConst;
 import org.apache.ibatis.annotations.*;
-import org.springframework.web.bind.annotation.SessionAttribute;
-
 import java.util.List;
-import java.util.Optional;
 
 @Mapper
 public interface MemberMapper {

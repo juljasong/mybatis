@@ -33,7 +33,7 @@ DROP TABLE IF EXISTS members RESTRICT;
 
 -- 회원
 CREATE TABLE members (
-  id             INTEGER  NOT NULL COMMENT '회원번호', -- 회원번호
+  id             INTEGER      NOT NULL COMMENT '회원번호', -- 회원번호
   email          VARCHAR(50)  NOT NULL COMMENT '이메일', -- 이메일
   pwd            VARCHAR(255) NOT NULL COMMENT '비밀번호', -- 비밀번호
   name           VARCHAR(30)  NOT NULL COMMENT '이름', -- 이름
@@ -52,3 +52,25 @@ ALTER TABLE members
 
 ALTER TABLE members
   MODIFY COLUMN id INTEGER NOT NULL AUTO_INCREMENT COMMENT '회원번호';
+
+-- url
+CREATE TABLE urls (
+  id            INTEGER      NOT NULL COMMENT '등록번호',
+  member_id     INTEGER      NOT NULL COMMENT '회원번호',
+  name          VARCHAR(100) NOT NULL COMMENT '이름',
+  url           TEXT         NOT NULL COMMENT 'url',
+  description   TEXT         NULL     COMMENT '설명',
+  expirationDate DATETIME    NULL     COMMENT '만료일',
+  isPublic      INTEGER      NOT NULL DEFAULT 1 COMMENT '공개설정'
+)
+COMMENT 'URL';
+
+-- url
+ALTER TABLE urls
+  ADD CONSTRAINT PK_urls -- URL 기본키
+    PRIMARY KEY (
+      id -- 등록번호
+    );
+
+ALTER TABLE urls
+  MODIFY COLUMN id INTEGER NOT NULL AUTO_INCREMENT COMMENT '등록번호';

@@ -55,12 +55,13 @@
                         </div>
                         <div class="form-group">
                             <label for="expirationDate" class="col-form-label">Expiration Date:</label>
-                            <input type="date" class="form-control" id="expirationDate" name="expirationDate">
+                            <input type="date" class="form-control" id="expirationDate" name="expirationDate" value="null">
                         </div>
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" role="switch" id="isPublic" name="isPublic" value="1" checked>
                             <label class="form-check-label" for="isPublic">is Public?</label>
                         </div>
+                        <input type="hidden" class="form-control" id="memberId" name="memberId" value="user" th:value=${loginUser.id}>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
