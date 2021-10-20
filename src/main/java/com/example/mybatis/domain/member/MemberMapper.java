@@ -1,9 +1,8 @@
 package com.example.mybatis.domain.member;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import com.example.mybatis.web.SessionConst;
+import org.apache.ibatis.annotations.*;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,5 +21,17 @@ public interface MemberMapper {
 
     @Select("SELECT * FROM members")
     List<Member> findAll();
+
+    @Update({"<script>",
+            "UPDATE members",
+            "  <set>",
+            "    <if test='password != null'>pwd=PASSWORD(#{password}),</if>",
+            "    <if test='name != null'>name=#{name}</if>",
+            "  </set>",
+            "WHERE id=#{loginUser.id}",
+            "</script>"})
+    int Update(@Param("password") String password,
+               @Param("name") String name,
+               @Param("loginUser") Member loginUser);
 
 }

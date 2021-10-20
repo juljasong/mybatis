@@ -3,17 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/bootstrap.min.css}"
-          href="../../static/css/bootstrap.min.css" rel="stylesheet">
-    <title>Index</title>
+          href="../static/css/bootstrap.min.css" rel="stylesheet">
+    <title>Home</title>
 </head>
+<style>
+    .container {
+        max-width: 560px;
+    }
+</style>
 <body>
-<ul>
-    <li>회원
-        <ul>
-            <li><a href="/member/add">회원가입</a></li>
-            <li><a href="/login">로그인</a></li>
-        </ul>
-    </li>
-</ul>
+    <div class="container">
+        <form action="/auth/login" method="post">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" class="form-control" placeholder="Write your Email.">
+
+            <label for="email">password</label>
+            <input type="password" id="password" name="password" class="form-control"placeholder="Write your password.">
+
+            <button class="w-100 btn btn-primary btn-lg" type="submit">Log in</button>
+            <a href="/member/add">Sign in</a>
+        </form>
+    </div>
 </body>
 </html>

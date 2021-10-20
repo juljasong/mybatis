@@ -15,7 +15,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,11 +22,6 @@ import javax.websocket.Session;
 public class AuthController {
 
     private final LoginService loginService;
-
-    @GetMapping("/login")
-    public String loginForm() {
-        return "member/login";
-    }
 
     //@PostMapping("/login")
     public String loginByCookie(@RequestParam String email, @RequestParam String password, HttpServletResponse response) throws Exception {
@@ -46,7 +40,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public String loginByHttpSession(@RequestParam String email, @RequestParam String password, HttpServletRequest request) throws Exception {
 
         Member loginUser = loginService.login(email, password);
@@ -57,7 +51,7 @@ public class AuthController {
             HttpSession session = request.getSession();
             session.setAttribute(SessionConst.LOGIN_USER, loginUser);
 
-            log.info("Login email = {}", email);
+            log.info("Login email={}", email);
             log.info("getMaxInactiveInterval={}", session.getMaxInactiveInterval());
 
             return "redirect:/";
