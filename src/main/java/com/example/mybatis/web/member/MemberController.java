@@ -42,7 +42,7 @@ public class MemberController {
         return "redirect:/";
     }
 
-    @GetMapping("/update")
+    @GetMapping("/updateForm")
     public String updateForm(@SessionAttribute(name = SessionConst.LOGIN_USER) Member loginUser, Model model) {
         model.addAttribute("loginUser", loginUser);
         return "member/updateForm";
@@ -71,7 +71,7 @@ public class MemberController {
 
             HttpSession session = request.getSession();
             session.setAttribute(SessionConst.LOGIN_USER, currentUser);
-            return "redirect:/member/update";
+            return "redirect:/member/updateForm";
         }
     }
 
