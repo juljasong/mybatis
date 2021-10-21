@@ -3,51 +3,57 @@
 
 <head>
     <meta charset="UTF-8">
+    
     <script th:src="@{js/jquery-3.6.0.min.js}" src="../static/js/jquery-3.6.0.min.js"></script>
-    <script th:src="@{js/modal.js}" src="../static/js/modal.js"></script>
+    <script th:src="@{js/home.js}" src="../static/js/home.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <link th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <title>Home</title>
 </head>
+
 <style>
-    .container {
-        max-width: 560px;
+    body {
+        margin: 0 auto;
+        width: 40%;
     }
 </style>
 
-<body>
+<div>
 
-    <div class="container">
-        <a href="/member/updateForm" style="text-decoration: none; color: black;">
-            <h4 th:text="|Welcome, ${loginUser.name}!|">Welcome, user!</h4>
+    <div class="d-flex flex-row-reverse bd-highlight">
+        <a href="/logout" class="m-3">Logout</a>
+        <a href="/member/updateForm" style="text-decoration: none; color: black;" class="my-3">
+            <p th:text="|Welcome, ${loginUser.name}!|">Welcome, user!</p>
         </a>
-        <a href="/logout">Logout</a></li>
     </div>
 
     <!-- Button trigger modal -->
+
     <div class="container">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal">Add</button>
+        <button type="button" class="w-100 btn btn-primary btn-lg btn-block my-3" data-toggle="modal"
+            data-target="#addModal">Add</button>
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalLabel">Add URL</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"></span>
                     </button>
                 </div>
                 <form action="/url/add" method="post">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="name" class="col-form-label">Name:</label>
-                            <input type="text" class="form-control" id="name" name="name">
+                            <input type="text" class="form-control" id="name" name="name" minlength="1">
                         </div>
                         <div class="form-group">
                             <label for="url" class="col-form-label">URL:</label>
-                            <input type="text" class="form-control" id="url" name="url">
+                            <input type="text" class="form-control" id="url" name="url" minlength="1">
                         </div>
                         <div class="form-group">
                             <label for="description" class="col-form-label">Description:</label>
@@ -55,10 +61,9 @@
                         </div>
                         <div class="form-group">
                             <label for="expirationDate" class="col-form-label">Expiration Date:</label>
-                            <input type="date" class="form-control" id="expirationDate" name="expirationDate"
-                                value="null">
+                            <input type="date" class="form-control" id="date" name="date">
                         </div>
-                        <div class="form-check form-switch">
+                        <div class="form-check form-switch my-3">
                             <input class="form-check-input" type="checkbox" role="switch" id="isPublic" name="isPublic"
                                 value="1" checked>
                             <label class="form-check-label" for="isPublic">is Public?</label>
@@ -77,21 +82,123 @@
     </div>
 
     <!--Start URL-->
-    <div class="list-group container">
-        <a th:each="url : ${urls}" href="#" th:href="|${url.url}|" class="list-group-item list-group-item-action"
-            th:text="${url.name}">URL</a>
-    </div>
 
+    <div th:each="url : ${urls}">
+    <ul class="list-group list-group-flush">
+        <li type="button" class="w-100 list-group-item" data-bs-toggle="modal" th:data-bs-target="|#updateModal${url.id}|"  data-bs-target="#updateModal" data-bs-whatever="${url.id}" th:text="${url.name}" >An item</li>
+    </ul>
+
+    <div class="modal fade" id="updateModal" th:id="|updateModal${url.id}|" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="updateModalLabel">Update URL</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="|/url/update/${url.id}|" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="name" class="col-form-label">Name:</label>
+                            <input type="text" class="form-control" id="name" name="name" minlength="1" th:value="${url.name}">
+                        </div>
+                        <div class="form-group">
+                            <label for="url" class="col-form-label">URL:</label>
+                            <input type="text" class="form-control" id="url" name="url" minlength="1" th:value="${url.url}">
+                        </div>
+                        <div class="form-group">
+                            <label for="description" class="col-form-label">Description:</label>
+                            <textarea class="form-control" id="description" name="description" th:text="${url.description}"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="expirationDate" class="col-form-label">Expiration Date:</label>
+                            <input type="date" class="form-control" id="date" name="date"
+                            th:value="${url.expirationDate}">
+                        </div>
+                        <div class="form-check form-switch my-3">
+                            <input class="form-check-input" type="checkbox" role="switch" id="isPublic" name="isPublic"
+                            th:checked="${url.isPublic}">
+                            <label class="form-check-label" for="isPublic">is Public?</label>
+                        </div>
+                        <input type="hidden" class="form-control" id="memberId" name="memberId" value="user"
+                             th:value="${loginUser.id}">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">OK!</button>
+                    </div>
+
+                </form>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+      <hr>
     <!--Start Expired URL-->
-    <div class="container">
-        <h5>Expired</h5>
-    </div>
-    <div class="list-group container">
-        <a th:each="disabledUrl : ${disabledUrls}" href="#" th:href="|${disabledUrl.url}|"
-            class="list-group-item list-group-item-action list-group-item-secondary"
-            th:text="${disabledUrl.name}">Expired URL</a>
-    </div>
+    <p style="margin-top: 10px;">
+        <button class="w-100 btn btn-secondary btn-lg btn-block my-1" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Expired
+        </button>
+    </p>
+    <div class="collapse" id="collapseExample">
 
+        <div th:each="disabledUrl : ${disabledUrls}">
+            <ul class="list-group list-group-flush">
+                <li type="button" class="w-100 list-group-item" data-bs-toggle="modal" th:data-bs-target="|#updateModal${disabledUrl.id}|"  data-bs-target="#updateModal" data-bs-whatever="${disabledUrl.id}" th:text="${disabledUrl.name}" >An item</li>
+            </ul>
+      
+            <div class="modal fade" id="updateModal" th:id="|updateModal${disabledUrl.id}|" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="updateModalLabel">Update URL</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="|/url/update/${disabledUrl.id}|" method="post">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="name" class="col-form-label">Name:</label>
+                                    <input type="text" class="form-control" id="name" name="name" minlength="1" th:value="${disabledUrl.name}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="url" class="col-form-label">URL:</label>
+                                    <input type="text" class="form-control" id="url" name="url" minlength="1" th:value="${disabledUrl.url}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="description" class="col-form-label">Description:</label>
+                                    <textarea class="form-control" id="description" name="description" th:text="${disabledUrl.description}"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="expirationDate" class="col-form-label">Expiration Date:</label>
+                                    <input type="date" class="form-control" id="date" name="date"
+                                        th:value="${disabledUrl.expirationDate}">
+                                </div>
+                                <div class="form-check form-switch my-3">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="isPublic" name="isPublic"
+                                        value="${disabledUrl.isPublic}" th:checked="${disabledUrl.isPublic}">
+                                    <label class="form-check-label" for="isPublic">is Public?</label>
+                                </div>
+                                <input type="hidden" class="form-control" id="memberId" name="memberId" value="user"
+                                    th:value=${loginUser.id}>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">OK!</button>
+                            </div>
+        
+                        </form>
+                  </div>
+                  </div>
+                </div>
+              </div>
+
+
+        </div>
+
+</div>
 </body>
 
 </html>

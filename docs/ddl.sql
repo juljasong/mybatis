@@ -30,6 +30,7 @@ use demodb;
 
 -- 회원
 DROP TABLE IF EXISTS members RESTRICT;
+DROP TABLE IF EXISTS urls RESTRICT;
 
 -- 회원
 CREATE TABLE members (

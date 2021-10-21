@@ -8,20 +8,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping("/url")
 @Slf4j
 @RequiredArgsConstructor
 public class UrlController {
 
     private final UrlService urlService;
 
-    @PostMapping("/add")
-    public String add(@ModelAttribute Url url) throws Exception {
+    @PostMapping("/url/add")
+    public String add(@ModelAttribute Url url,
+                      @RequestParam String date) throws Exception {
 
-        log.info("name={}, url={}, description={}, expirationDate={}, isPublic={}", url.getName(), url.getUrl(), url.getDescription(), url.getExpirationDate(), url.getIsPublic());
+        stringToDate(url, date);
 
         int result = urlService.add(url);
         if (result == 0) {
@@ -30,12 +31,18 @@ public class UrlController {
         return "redirect:/";
     }
 
+
     @GetMapping("/{userName}")
     public String deleteUser(@PathVariable String userName, Model model) {
-        System.out.println("userName = " + userName);
         List<Url> urls = urlService.listByMemberName(userName);
         model.addAttribute("urls", urls);
         return  "individual";
     }
 
+
+    private void stringToDate(Url url, String date) {
+        if (date.length() > 0) {
+            url.setExpirationDate(Date.valueOf(date));
+        }
+    }
 }

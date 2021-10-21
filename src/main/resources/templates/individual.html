@@ -9,9 +9,11 @@
     <link th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css" rel="stylesheet">
     <title>Home</title>
 </head>
+
 <style>
-    .container {
-        max-width: 560px;
+    body {
+        margin: 10% auto;
+        width: 40%;
     }
 </style>
 
@@ -26,7 +28,7 @@
 -->
     <!--Start URL-->
     <div class="list-group container">
-        <a th:each="url : ${urls}" href="#" th:href="|${url.url}|" class="list-group-item list-group-item-action"
+        <a th:each="url : ${urls}" href="#" th:href="|${url.url}|" class="list-group-item list-group-item-action m-2"
             th:text="${url.name}">URL</a>
     </div>
 

@@ -18,9 +18,9 @@ public class UrlService {
 
     public int add(Url url) {
 
-        if (url.getExpirationDate().length() == 0) {
-            url.setExpirationDate(null);
-        }
+//        if (url.getExpirationDate().length() == 0) {
+//            url.setExpirationDate(null);
+//        }
 
         String inputUrl = url.getUrl();
 
