@@ -22,20 +22,34 @@ public class UrlService {
 //            url.setExpirationDate(null);
 //        }
 
+        toAbsolutePath(url);
+
+        return urlMapper.insert(url);
+    }
+
+
+    public List<Url> listByMemberName(String name) {
+        Long memberId = memberMapper.findMemberIdByMemberName(name);
+        List<Url> urls = urlMapper.findByMemberId(memberId);
+        return urls;
+    }
+
+    public int deleteUrl(Long id) {
+        return urlMapper.deleteById(id);
+    }
+
+    public int updateUrl(Long memberId, Url url) {
+        toAbsolutePath(url);
+        return urlMapper.updateById(memberId, url);
+    }
+
+
+    private void toAbsolutePath(Url url) {
         String inputUrl = url.getUrl();
 
         if (!inputUrl.matches("(http|https)://.*")) {
             log.info("not include");
             url.setUrl("https://" + inputUrl);
         }
-
-        return urlMapper.insert(url);
     }
-    
-    public List<Url> listByMemberName(String name) {
-        Long memberId = memberMapper.findMemberIdByMemberName(name);
-        List<Url> urls = urlMapper.findByMemberId(memberId);
-        return urls;
-    } 
-
 }

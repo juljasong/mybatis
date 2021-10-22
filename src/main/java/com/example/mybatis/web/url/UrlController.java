@@ -33,12 +33,32 @@ public class UrlController {
 
 
     @GetMapping("/{userName}")
-    public String deleteUser(@PathVariable String userName, Model model) {
+    public String individual(@PathVariable String userName, Model model) {
         List<Url> urls = urlService.listByMemberName(userName);
         model.addAttribute("urls", urls);
-        return  "individual";
+        return "individual";
     }
 
+    @GetMapping("/url/delete/{id}")
+    public String deleteUrl(@PathVariable Long id) throws Exception {
+        int result = urlService.deleteUrl(id);
+        if(result < 0) {
+            throw new Exception("Not exist url id");
+        }
+        return "redirect:/";
+    }
+
+    @PostMapping("/url/update")
+    public String updateUrl(@RequestParam Long memberId,
+                            @ModelAttribute Url url,
+                            @RequestParam String date) throws Exception {
+        stringToDate(url, date);
+        int result = urlService.updateUrl(memberId, url);
+        if(result < 0) {
+            throw new Exception("Not exist url id");
+        }
+        return "redirect:/";
+    }
 
     private void stringToDate(Url url, String date) {
         if (date.length() > 0) {

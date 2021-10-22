@@ -1,9 +1,6 @@
 package com.example.mybatis.domain.url;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -20,4 +17,9 @@ public interface UrlMapper {
     @Select("SELECT * FROM urls WHERE member_id=#{memberId} AND expirationDate < NOW()")
     List<Url> findExpiredByMemberId(@Param("memberId") Long memberId);
 
+    @Delete("DELETE FROM urls WHERE id=#{id}")
+    int deleteById(Long id);
+
+    @Update({"UPDATE urls SET name=#{url.name}, url=#{url.url}, description=#{url.description}, expirationDate=#{url.expirationDate}, isPublic=#{url.isPublic} WHERE id=#{url.id} AND member_id=#{memberId}\t"})
+    int updateById(@Param("memberId") Long memberId, @Param("url") Url url);
 }
