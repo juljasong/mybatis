@@ -1,13 +1,12 @@
 package com.example.mybatis.web.member;
 
+import com.example.mybatis.domain.MailService;
 import com.example.mybatis.domain.member.Member;
 import com.example.mybatis.domain.member.MemberMapper;
 import com.example.mybatis.domain.member.MemberService;
 import com.example.mybatis.web.SessionConst;
 import com.example.mybatis.web.login.AuthController;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,20 +14,21 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+@Slf4j
 @Controller
 @RequestMapping("/member")
-@Slf4j
 public class MemberController {
 
     private MemberMapper memberMapper;
     private MemberService memberService;
     private AuthController authController;
+    private MailService mailService;
 
-    @Autowired
-    public MemberController(MemberMapper memberMapper, MemberService memberService, AuthController authController) {
+    public MemberController(MemberMapper memberMapper, MemberService memberService, AuthController authController, MailService mailService) {
         this.memberMapper = memberMapper;
         this.memberService = memberService;
         this.authController = authController;
+        this.mailService = mailService;
     }
 
     @GetMapping("/add")
@@ -38,8 +38,15 @@ public class MemberController {
 
     @PostMapping("/add")
     public String save(@ModelAttribute Member member) {
-        memberMapper.insert(member);
-        return "redirect:/";
+        String authKey = mailService.authenticationMailSend(member);
+        memberService.save(member, authKey);
+        return "redirect:/message";
+    }
+
+    @GetMapping("/{authKey}")
+    public String mailChek(@PathVariable String authKey) {
+        memberMapper.mailCheck(authKey);
+        return "redirect:/message";
     }
 
     @GetMapping("/updateForm")
@@ -54,7 +61,6 @@ public class MemberController {
                          @RequestParam String password,
                          @RequestParam String name,
                          Model model) throws Exception {
-        log.info("id={}, email={}", loginUser.getId(), loginUser.getEmail());
         Long memberId = loginUser.getId();
 
         if(password.isBlank()) {

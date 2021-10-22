@@ -6,10 +6,10 @@ import java.util.List;
 @Mapper
 public interface MemberMapper {
 
-    @Insert("INSERT INTO members (email, pwd, name) VALUES(#{member.email}, PASSWORD(#{member.password}), #{member.name})")
+    @Insert("INSERT INTO members (email, pwd, name, authKey) VALUES(#{member.email}, PASSWORD(#{member.password}), #{member.name}, #{member.authKey})")
     int insert(@Param("member") Member member); // 입력된 경우 1, 실패한 경우 0
 
-    @Select("SELECT * FROM members WHERE email=#{email} AND pwd=PASSWORD(#{password})")
+    @Select("SELECT * FROM members WHERE email=#{email} AND pwd=PASSWORD(#{password}) AND authKey='Y'")
     Member findByLoginId(@Param("email") String email, @Param("password") String password); // 파라미터명 같아도 어노테이션 생략 불가
 
     @Select("SELECT * FROM members WHERE id=#{id}")
@@ -20,6 +20,9 @@ public interface MemberMapper {
 
     @Select("SELECT * FROM members")
     List<Member> findAll();
+
+    @Select("UPDATE members SET authKey='Y' WHERE authKey=#{authKey}")
+    Member mailCheck(@Param("authKey") String authKey);
 
     @Update({"<script>",
             "UPDATE members",
