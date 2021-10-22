@@ -1,6 +1,5 @@
 package com.example.mybatis.web.member;
 
-import com.example.mybatis.domain.MailService;
 import com.example.mybatis.domain.member.Member;
 import com.example.mybatis.domain.member.MemberMapper;
 import com.example.mybatis.domain.member.MemberService;
@@ -19,16 +18,14 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/member")
 public class MemberController {
 
-    private MemberMapper memberMapper;
-    private MemberService memberService;
-    private AuthController authController;
-    private MailService mailService;
+    private final MemberMapper memberMapper;
+    private final MemberService memberService;
+    private final AuthController authController;
 
-    public MemberController(MemberMapper memberMapper, MemberService memberService, AuthController authController, MailService mailService) {
+    public MemberController(MemberMapper memberMapper, MemberService memberService, AuthController authController) {
         this.memberMapper = memberMapper;
         this.memberService = memberService;
         this.authController = authController;
-        this.mailService = mailService;
     }
 
     @GetMapping("/add")
@@ -37,9 +34,8 @@ public class MemberController {
     }
 
     @PostMapping("/add")
-    public String save(@ModelAttribute Member member) {
-        String authKey = mailService.authenticationMailSend(member);
-        memberService.save(member, authKey);
+    public String save(@ModelAttribute Member member) throws Exception {
+        memberService.save(member);
         return "redirect:/message";
     }
 

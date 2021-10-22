@@ -36,4 +36,6 @@ public interface MemberMapper {
                @Param("name") String name,
                @Param("loginUser") Member loginUser);
 
+    @Select("SELECT COUNT(*) FROM members WHERE email=#{email}")
+    int findByEmail(@Param("email") String email);
 }
