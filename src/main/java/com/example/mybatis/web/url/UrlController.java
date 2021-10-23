@@ -52,6 +52,7 @@ public class UrlController {
     public String updateUrl(@RequestParam Long memberId,
                             @ModelAttribute Url url,
                             @RequestParam String date) throws Exception {
+        log.info("{}, {}", url, date);
         stringToDate(url, date);
         int result = urlService.updateUrl(memberId, url);
         if(result < 0) {

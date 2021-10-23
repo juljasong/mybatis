@@ -2,13 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    
+    <meta charset="UTF-8" />
+
     <script th:src="@{js/jquery-3.6.0.min.js}" src="../static/js/jquery-3.6.0.min.js"></script>
-    <script th:src="@{js/home.js}" src="../static/js/home.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <link th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <link th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
     <title>Home</title>
 </head>
 
@@ -19,191 +20,201 @@
     }
 </style>
 
-<div>
-
-    <div class="d-flex flex-row-reverse bd-highlight">
-        <a href="/logout" class="m-3">Logout</a>
-        <a href="/member/updateForm" style="text-decoration: none; color: black;" class="my-3">
-            <p th:text="|Welcome, ${loginUser.name}!|">Welcome, user!</p>
-        </a>
-    </div>
-
-    <!-- Button trigger modal -->
-
-    <div class="container">
-        <button type="button" class="w-100 btn btn-primary btn-lg btn-block my-3" data-toggle="modal"
-            data-target="#addModal">Add</button>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalLabel">Add URL</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true"></span>
-                    </button>
-                </div>
-                <form action="/url/add" method="post">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="name" class="col-form-label">Name:</label>
-                            <input type="text" class="form-control" id="name" name="name" minlength="1">
-                        </div>
-                        <div class="form-group">
-                            <label for="url" class="col-form-label">URL:</label>
-                            <input type="text" class="form-control" id="url" name="url" minlength="1">
-                        </div>
-                        <div class="form-group">
-                            <label for="description" class="col-form-label">Description:</label>
-                            <textarea class="form-control" id="description" name="description"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="expirationDate" class="col-form-label">Expiration Date:</label>
-                            <input type="date" class="form-control" id="date" name="date">
-                        </div>
-                        <div class="form-check form-switch my-3">
-                            <input class="form-check-input" type="checkbox" role="switch" id="isPublic" name="isPublic"
-                                value="1" checked>
-                            <label class="form-check-label" for="isPublic">is Public?</label>
-                        </div>
-                        <input type="hidden" class="form-control" id="memberId" name="memberId" value="user"
-                            th:value=${loginUser.id}>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">OK!</button>
-                    </div>
-
-                </form>
-            </div>
+<body>
+    <header>
+        <div class="d-flex flex-row-reverse bd-highlight">
+            <a href="/logout" style="margin-top: 30px">Logout</a>
+            <a href="/member/updateForm" style="text-decoration: none; color: black; margin: 30px 10px 0px 0px">
+                <p th:text="|Welcome, ${loginUser.name}!|">Welcome, user!</p>
+            </a>
         </div>
-    </div>
-
-    <!--Start URL-->
-
-    <div th:each="url : ${urls}">
-    <ul class="list-group list-group-flush">
-        <li type="button" class="w-100 list-group-item" data-bs-toggle="modal" th:data-bs-target="|#updateModal${url.id}|"  data-bs-target="#updateModal" data-bs-whatever="${url.id}" th:text="${url.name}" >An item</li>
-    </ul>
-
-    <div class="modal fade" id="updateModal" th:id="|updateModal${url.id}|" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="updateModalLabel">Update URL</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="/url/update" method="post">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="name" class="col-form-label">Name:</label>
-                            <input type="text" class="form-control" id="name" name="name" minlength="1" th:value="${url.name}">
-                        </div>
-                        <div class="form-group">
-                            <label for="url" class="col-form-label">URL:</label>
-                            <input type="text" class="form-control" id="url" name="url" minlength="1" th:value="${url.url}">
-                        </div>
-                        <div class="form-group">
-                            <label for="description" class="col-form-label">Description:</label>
-                            <textarea class="form-control" id="description" name="description" th:text="${url.description}"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="expirationDate" class="col-form-label">Expiration Date:</label>
-                            <input type="date" class="form-control" id="date" name="date"
-                            th:value="${url.expirationDate}">
-                        </div>
-                        <div class="form-check form-switch my-3">
-                            <input class="form-check-input" type="checkbox" role="switch" id="isPublic" name="isPublic"
-                            value="1" th:checked="${url.isPublic}">
-                            <label class="form-check-label" for="isPublic">is Public?</label>
-                        </div>
-                        <input type="hidden" class="form-control" id="memberId" name="memberId" value="user"
-                             th:value="${loginUser.id}">
-                             <input type="hidden" class="form-control" id="id" name="id" value="user"
-                             th:value="${url.id}">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" onclick="location.href='/';" th:onclick="|location.href='/url/delete/${url.id}';|">Delete</button>
-                        <button type="submit" class="btn btn-primary">OK!</button>
-                    </div>
-
-                </form>
-          </div>
-          </div>
+        <div class="d-flex flex-row-reverse">
+            <button type="button" class="btn btn-outline-dark btn-sm p-0" style="height: 25px">
+                copy!
+            </button>
+            <a href="#" th:href="|http://localhost:8080/${loginUser.name}|" style="color: black; margin-right: 10px">
+                <p th:text="|http://localhost:8080/${loginUser.name}|">
+                    https://domain.com/user_name
+                </p>
+            </a>
         </div>
-      </div>
-    </div>
-</div>
-      <hr>
-    <!--Start Expired URL-->
-    <p style="margin-top: 10px;">
-        <button class="w-100 btn btn-secondary btn-lg btn-block my-1" type="button" data-bs-toggle="collapse"
-            data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-            Expired
-        </button>
-    </p>
-    <div class="collapse" id="collapseExample">
+    </header>
 
-        <div th:each="disabledUrl : ${disabledUrls}">
-            <ul class="list-group list-group-flush">
-                <li type="button" class="w-100 list-group-item" data-bs-toggle="modal" th:data-bs-target="|#updateModal${disabledUrl.id}|"  data-bs-target="#updateModal" data-bs-whatever="${disabledUrl.id}" th:text="${disabledUrl.name}" >An item</li>
-            </ul>
-      
-            <div class="modal fade" id="updateModal" th:id="|updateModal${disabledUrl.id}|" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <main>
+        <!-- ADD Section -->
+        <section class="add-section">
+            <div class="container">
+                <button type="button" class="w-100 btn btn-primary btn-lg btn-block my-3" data-toggle="modal"
+                    data-target="#addModal">
+                    Add
+                </button>
+            </div>
+            <!-- add Modal -->
+            <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
                 <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="updateModalLabel">Update URL</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="/url/update" method="post">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalLabel">Add URL</h5>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <form action="/url/add" method="post">
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="name" class="col-form-label">Name:</label>
-                                    <input type="text" class="form-control" id="name" name="name" minlength="1" th:value="${disabledUrl.name}">
+                                    <input type="text" class="form-control" id="add_name" name="name" minlength="1" />
                                 </div>
                                 <div class="form-group">
                                     <label for="url" class="col-form-label">URL:</label>
-                                    <input type="text" class="form-control" id="url" name="url" minlength="1" th:value="${disabledUrl.url}">
+                                    <input type="text" class="form-control" id="add_url" name="url" minlength="1" />
                                 </div>
                                 <div class="form-group">
                                     <label for="description" class="col-form-label">Description:</label>
-                                    <textarea class="form-control" id="description" name="description" th:text="${disabledUrl.description}"></textarea>
+                                    <textarea class="form-control" id="add_description" name="description"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label for="expirationDate" class="col-form-label">Expiration Date:</label>
-                                    <input type="date" class="form-control" id="date" name="date"
-                                        th:value="${disabledUrl.expirationDate}">
+                                    <input type="date" class="form-control" id="add_date" name="date" />
                                 </div>
                                 <div class="form-check form-switch my-3">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="isPublic" name="isPublic"
-                                        value="1" th:checked="${disabledUrl.isPublic}">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="add_isPublic"
+                                        name="isPublic" value="1" checked />
                                     <label class="form-check-label" for="isPublic">is Public?</label>
                                 </div>
-                                <input type="hidden" class="form-control" id="memberId" name="memberId" value="user"
-                                    th:value=${loginUser.id}>
-                                    <input type="hidden" class="form-control" id="id" name="id" value="user"
-                             th:value="${disabledUrl.id}">
+                                <input type="hidden" class="form-control" id="add_memberId" name="memberId" value="user"
+                                    th:value="${loginUser.id}" />
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" onclick="location.href='/';" th:onclick="|location.href='/url/delete/${disabledUrl.id}';|">Delete</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                    Close
+                                </button>
                                 <button type="submit" class="btn btn-primary">OK!</button>
                             </div>
-        
                         </form>
-                  </div>
-                  </div>
+                    </div>
                 </div>
-              </div>
+            </div>
+        </section>
 
+        <!--Start URL-->
+        <section class="url-section">
+            <ul class="url-list list-group list-group-flush">
+                <li th:each="url : ${urls}" id="1" th:id="${url.id}" type="button"
+                    class="url-list-item w-100 list-group-item" data-bs-toggle="modal" data-bs-target="#updateModal">
+                    <form id="form_1" th:id="|form_${url.id}|">
+                        <input type="hidden" name="name" th:value="${url.name}" value="name" />
+                        <input type="hidden" name="url" th:value="${url.url}" value="url" />
+                        <input type="hidden" name="description" th:value="${url.description}" value="description" />
+                        <input type="hidden" name="expirationDate" th:value="${url.expirationDate}"
+                            value="1999-12-31" />
+                        <input type="hidden" name="isPublic" th:value="${url.isPublic}" value="1" />
+                        <input type="hidden" name="id" th:value="${url.id}" value="1" />
+                    </form>
+                    <span th:text="${url.name}">an item</span>
+                </li>
+                <li id="6" type="button" class="url-list-item w-100 list-group-item" data-bs-toggle="modal"
+                    data-bs-target="#updateModal">
+                    <form id="form_6">
+                        <input type="hidden" name="name" value="Blackish House ←sideZ" />
+                        <input type="hidden" name="url"
+                            value="https://www.honeybee-cd.com/BlackishHouse/sideZ/index.html" />
+                        <input type="hidden" name="description" value="" />
+                        <input type="hidden" name="expirationDate" value="" />
+                        <input type="hidden" name="isPublic" value="1" />
+                        <input type="hidden" name="id" value="6" />
+                    </form>
+                    <span>Blackish House ←sideZ</span>
+                </li>
+            </ul>
+            <hr />
 
-        </div>
+            <!-- Modal -->
+            <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="updateModalLabel">Update URL</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/url/update" method="post">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="name" class="col-form-label">Name:</label>
+                                        <input type="text" class="form-control" id="update_name" name="name"
+                                            minlength="1" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="url" class="col-form-label">URL:</label>
+                                        <input type="text" class="form-control" id="update_url" name="url"
+                                            minlength="1" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description" class="col-form-label">Description:</label>
+                                        <textarea class="form-control" id="update_description"
+                                            name="description"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="expirationDate" class="col-form-label">Expiration Date:</label>
+                                        <input type="date" class="form-control" id="update_expirationDate"
+                                            name="date" />
+                                    </div>
+                                    <div class="form-check form-switch my-3">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                            id="update_isPublic" name="isPublic" value="1" />
+                                        <label class="form-check-label" for="isPublic">is Public?</label>
+                                    </div>
+                                    <input type="hidden" class="form-control" id="update_memberId" name="memberId"
+                                        value="user" th:value="${loginUser.id}" />
+                                    <input type="hidden" class="form-control" id="update_id" name="id" value="1" />
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" onclick="location.href='/';">
+                                        Delete
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">OK!</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-</div>
+        <!--Start Expired URL-->
+        <section class="expired-section">
+            <p style="margin-top: 10px">
+                <button class="w-100 btn btn-secondary btn-lg btn-block my-1" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    Expired
+                </button>
+            </p>
+            <div class="collapse" id="collapseExample">
+                <ul class="url-list list-group list-group-flush">
+                    <li th:each="disabledUrl : ${disabledUrls}" id="1" th:id="${disabledUrl.id}" type="button"
+                        class="url-list-item w-100 list-group-item" data-bs-toggle="modal"
+                        data-bs-target="#updateModal">
+                        <span th:text="${disabledUrl.name}">an item</span>
+                        <form id="form_1" th:id="|form_${disabledUrl.id}|">
+                            <input type="hidden" name="name" th:value="${disabledUrl.name}" value="name" />
+                            <input type="hidden" name="url" th:value="${disabledUrl.url}" value="url" />
+                            <input type="hidden" name="description" th:value="${disabledUrl.description}"
+                                value="description" />
+                            <input type="hidden" name="expirationDate" th:value="${disabledUrl.expirationDate}"
+                                value="1999-12-31" />
+                            <input type="hidden" name="isPublic" th:value="${disabledUrl.isPublic}" value="1" />
+                            <input type="hidden" name="id" th:value="${disabledUrl.id}" value="1" />
+                        </form>
+                    </li>
+                </ul>
+
+            </div>
+            </div>
+        </section>
+    </main>
+    <script th:src="@{js/home.js}" src="../static/js/home.js"></script>
 </body>
 
 </html>
