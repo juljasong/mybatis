@@ -17,3 +17,14 @@ $('.url-list').on('click', (e) => {
     `location.href="/url/delete/${form[5].value}"`
   );
 });
+
+function copy() {
+  const t = document.createElement('textarea');
+  document.body.appendChild(t);
+  t.value = document.getElementById('copy_url').innerText;
+  t.select();
+  document.execCommand('copy');
+  document.body.removeChild(t);
+
+  alert('Copied!');
+}

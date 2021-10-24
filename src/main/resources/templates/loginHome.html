@@ -29,10 +29,11 @@
             </a>
         </div>
         <div class="d-flex flex-row-reverse">
-            <button type="button" class="btn btn-outline-dark btn-sm p-0" style="height: 25px">
-                copy!
+            <button type="button" class="btn btn-outline-dark btn-sm p-0" style="height: 25px" onclick="copy()">
+                COPY
             </button>
-            <a href="#" th:href="|http://localhost:8080/${loginUser.name}|" style="color: black; margin-right: 10px">
+            <a id="copy_url" href="#" th:href="|http://localhost:8080/${loginUser.name}|"
+                style="color: black; margin-right: 10px">
                 <p th:text="|http://localhost:8080/${loginUser.name}|">
                     https://domain.com/user_name
                 </p>
