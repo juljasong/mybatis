@@ -12,4 +12,8 @@ $('.url-list').on('click', (e) => {
     $('#update_isPublic').attr('checked', true);
   }
   $('#update_id').val(`${form[5].value}`);
+  $('#btnDelete').attr(
+    'onclick',
+    `location.href="/url/delete/${form[5].value}"`
+  );
 });
