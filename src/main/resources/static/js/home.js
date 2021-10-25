@@ -19,12 +19,12 @@ $('.url-list').on('click', (e) => {
 });
 
 function copy() {
-  const t = document.createElement('textarea');
-  document.body.appendChild(t);
-  t.value = document.getElementById('copy_url').innerText;
-  t.select();
+  const text = document.createElement('textarea');
+  document.body.appendChild(text);
+  text.value = document.getElementById('copy_url').innerText;
+  text.select();
   document.execCommand('copy');
-  document.body.removeChild(t);
+  document.body.removeChild(text);
 
   alert('Copied!');
 }
