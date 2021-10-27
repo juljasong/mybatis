@@ -1,30 +1,24 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html th:replace="~{layout :: layout(~{::title}, ~{::main})}" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <link th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css" rel="stylesheet">
     <title>Home</title>
 </head>
-<style>
-    body {
-        margin: 10% auto;
-        width: 40%;
-    }
-</style>
 
 <body>
-    <form action="/auth/login" method="post">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" class="form-control my-2" placeholder="Write your Email.">
+    <main>
+        <form action="/auth/login" method="post">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" class="form-control my-2" placeholder="Write your Email.">
 
-        <label for="email">password</label>
-        <input type="password" id="password" name="password" class="form-control my-2"
-            placeholder="Write your password.">
+            <label for="email">password</label>
+            <input type="password" id="password" name="password" class="form-control my-2"
+                placeholder="Write your password.">
 
-        <button class="w-100 btn btn-primary btn-lg btn-block my-3" type="submit">Log in</button>
-        <a href="/member/add" class="w-100 btn btn-link">Sign in</a>
-    </form>
+            <button class="w-100 btn btn-primary btn-lg btn-block my-3" type="submit">Log in</button>
+            <a href="/member/add" class="w-100 btn btn-link">Sign in</a>
+        </form>
+    </main>
 </body>
 
 </html>
