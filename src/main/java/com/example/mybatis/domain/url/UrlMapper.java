@@ -20,6 +20,6 @@ public interface UrlMapper {
     @Delete("DELETE FROM urls WHERE id=#{id}")
     int deleteById(Long id);
 
-    @Update({"UPDATE urls SET name=#{url.name}, url=#{url.url}, description=#{url.description}, expirationDate=#{url.expirationDate}, isPublic=#{url.isPublic} WHERE id=#{url.id} AND member_id=#{memberId}\t"})
+    @Update("UPDATE urls SET name=#{url.name}, url=#{url.url}, description=#{url.description}, expirationDate=#{url.expirationDate}, isPublic=#{url.isPublic} WHERE id=#{url.id} AND member_id=#{memberId}")
     int updateById(@Param("memberId") Long memberId, @Param("url") Url url);
 }

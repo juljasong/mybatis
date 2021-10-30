@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -19,8 +22,19 @@ public class UrlController {
     private final UrlService urlService;
 
     @PostMapping("/url/add")
-    public String add(@ModelAttribute Url url,
+    public String add(@ModelAttribute Url url, BindingResult bindingResult,
                       @RequestParam String date) throws Exception {
+
+        if(!StringUtils.hasText(url.getName())) {
+            bindingResult.addError(new FieldError("url", "name", "Name required."));
+        }
+        if(!StringUtils.hasText(url.getUrl())) {
+            bindingResult.addError(new FieldError("url", "url", "URL required."));
+        }
+        if(bindingResult.hasErrors()) {
+            log.info("error={}", bindingResult);
+            // *에러 처리 필요*
+        }
 
         stringToDate(url, date);
 
@@ -61,9 +75,9 @@ public class UrlController {
         return "redirect:/";
     }
 
-    private void stringToDate(Url url, String date) {
-        if (date.length() > 0) {
-            url.setExpirationDate(Date.valueOf(date));
+    private void stringToDate(Url url, String expirationDate) {
+        if (expirationDate.length() > 0) {
+            url.setExpirationDate(Date.valueOf(expirationDate));
         }
     }
 }

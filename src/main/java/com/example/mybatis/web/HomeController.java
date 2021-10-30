@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import java.net.URL;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,7 @@ public class HomeController {
             List<Url> urls = urlMapper.findByMemberId(loginUser.getId());
             List<Url> disabledUrls = urlMapper.findExpiredByMemberId(loginUser.getId());
 
+            model.addAttribute("url", new Url());
             model.addAttribute("urls", urls);
             model.addAttribute("disabledUrls", disabledUrls);
             model.addAttribute("loginUser", loginUser);

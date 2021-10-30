@@ -65,7 +65,7 @@ public class MemberController {
             log.info("error={}", bindingResult);
             return "member/addForm";
         }
-
+        memberService.save(member);
         return "redirect:/message";
     }
 

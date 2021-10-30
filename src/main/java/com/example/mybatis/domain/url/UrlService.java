@@ -17,13 +17,7 @@ public class UrlService {
     private final MemberMapper memberMapper;
 
     public int add(Url url) {
-
-//        if (url.getExpirationDate().length() == 0) {
-//            url.setExpirationDate(null);
-//        }
-
         toAbsolutePath(url);
-
         return urlMapper.insert(url);
     }
 

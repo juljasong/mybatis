@@ -15,6 +15,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Controller
 @RequiredArgsConstructor
@@ -49,14 +52,13 @@ public class AuthController {
 
         if (loginUser == null) {
             bindingResult.addError(new ObjectError("loginDTO", "Incorrect email or password."));
-            log.info("error={}", bindingResult);
 
             return "home";
         } else {
             HttpSession session = request.getSession();
             session.setAttribute(SessionConst.LOGIN_USER, loginUser);
-            log.info("Login email={}", loginDTO.getEmail());
-            log.info("getMaxInactiveInterval={}", session.getMaxInactiveInterval());
+            log.info("Login email={}, loginTime={}", loginDTO.getEmail(), LocalDateTime.now());
+
             return "redirect:/";
         }
     }
