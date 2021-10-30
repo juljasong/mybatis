@@ -1,9 +1,12 @@
 package com.example.mybatis.domain.member;
 
 import com.example.mybatis.domain.MailService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 
-
+@Slf4j
 @Service
 public class MemberService {
     
@@ -20,18 +23,14 @@ public class MemberService {
     }
 
     public void save(Member member) throws Exception {
-
-        int result = memberMapper.findByEmail(member.getEmail());
-
-        if (result < 1) {
+        try {
             String authKey = mailService.authenticationMailSend(member);
             member.setAuthKey(authKey);
             System.out.println("authKey = " + authKey);
             memberMapper.insert(member);
-        } else {
-            throw new Exception("Exist same email");
+        }catch (Exception e) {
+            e.printStackTrace();
         }
-
     }
 
 }

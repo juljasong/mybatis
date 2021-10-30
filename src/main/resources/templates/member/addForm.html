@@ -7,29 +7,33 @@
 
 <body>
     <main>
-        <form action="/member/addForm" th:action method="post">
+
+
+        <form action="/member/addForm" th:action th:object="${member}" method="post">
+
+            <div th:if="${#fields.hasGlobalErrors()}">
+                <p class="global-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">Global Error</p>
+            </div>
 
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" class="form-control my-2" placeholder="Write your Email."
-                minlength="5" maxlength="50">
+            <input type="email" id="email" th:field="*{email}" th:errorclass="field-error" class="form-control my-2" placeholder="Write your Email." minlength="5" maxlength="50">
+            <div class="field-error" th:errors="*{email}">Error</div>
 
             <label for="password">password</label>
-            <input type="password" id="password" name="password" class="form-control my-2"
-                placeholder="Write your password." required minlength="10" maxlength="20">
+            <input type="password" id="password" th:field="*{password}" th:errorclass="field-error" class="form-control my-2" placeholder="Write your password." required minlength="10" maxlength="20">
             <small id="passwordHelpInline" class="text-muted d-block">Must be 10-20 characters long.</small>
+            <div class="field-error" th:errors="*{password}">Error</div>
 
-            <label for="password_check">password</label>
-            <input type="password" id="password2" name="password2" class="form-control my-2"
-                placeholder="Write your password.">
+            <label for="password2">password</label>
+            <input type="password" id="password2" name="password2" class="form-control my-2" placeholder="Write your password.">
 
             <label for="email">name</label>
-            <input type="text" id="name" name="name" class="form-control my-2" placeholder="Write your name."
-                minlength="5" maxlength="30">
+            <input type="text" id="name" th:field="*{name}" th:errorclass="field-error" class="form-control my-2" placeholder="Write your name." minlength="3" maxlength="30">
+            <div class="field-error" th:errors="*{name}">Error</div>
 
             <button class="w-100 btn btn-primary btn-lg my-3" type="submit">Sign in</button>
 
-            <button class="w-100 btn btn-secondary btn-lg" onclick="location.href='/'"
-                th:onclick="|location.href='@{/}'|" type="button">취소</button>
+            <button class="w-100 btn btn-secondary btn-lg" onclick="location.href='/'" th:onclick="|location.href='@{/}'|" type="button">취소</button>
         </form>
     </main>
 </body>
