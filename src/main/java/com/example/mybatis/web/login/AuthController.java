@@ -1,15 +1,15 @@
 package com.example.mybatis.web.login;
 
+import com.example.mybatis.domain.login.LoginDTO;
 import com.example.mybatis.domain.login.LoginService;
 import com.example.mybatis.domain.member.Member;
 import com.example.mybatis.web.SessionConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +23,8 @@ public class AuthController {
 
     private final LoginService loginService;
 
-    //@PostMapping("/login")
+    /*
+    @PostMapping("/login")
     public String loginByCookie(@RequestParam String email, @RequestParam String password, HttpServletResponse response) throws Exception {
 
         Member loginUser = loginService.login(email, password);
@@ -39,24 +40,27 @@ public class AuthController {
             return "redirect:/";
         }
     }
+    */
 
     @PostMapping("/auth/login")
-    public String loginByHttpSession(@RequestParam String email, @RequestParam String password, HttpServletRequest request) throws Exception {
+    public String loginByHttpSession(@ModelAttribute LoginDTO loginDTO, BindingResult bindingResult, HttpServletRequest request) {
 
-        Member loginUser = loginService.login(email, password);
+        Member loginUser = loginService.login(loginDTO);
 
         if (loginUser == null) {
-            throw new Exception("Incorrect Email or Password.");
+            bindingResult.addError(new ObjectError("loginDTO", "Incorrect email or password."));
+            log.info("error={}", bindingResult);
+
+            return "home";
         } else {
             HttpSession session = request.getSession();
             session.setAttribute(SessionConst.LOGIN_USER, loginUser);
-
-            log.info("Login email={}", email);
+            log.info("Login email={}", loginDTO.getEmail());
             log.info("getMaxInactiveInterval={}", session.getMaxInactiveInterval());
-
             return "redirect:/";
         }
     }
+
 
     //@RequestMapping("/logout")
     public String logoutByCookie(HttpServletResponse response) {

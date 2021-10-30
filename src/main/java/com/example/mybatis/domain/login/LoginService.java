@@ -11,9 +11,9 @@ public class LoginService {
 
     private final MemberMapper memberMapper;
 
-    public Member login(String email, String password) {
+    public Member login(LoginDTO loginDTO) {
 
-        Member loginUser = memberMapper.findByLoginId(email, password);
+        Member loginUser = memberMapper.findByLoginId(loginDTO.getEmail(), loginDTO.getPassword());
 
         if (loginUser != null) {
             return loginUser;

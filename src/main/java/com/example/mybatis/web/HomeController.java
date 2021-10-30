@@ -1,5 +1,6 @@
 package com.example.mybatis.web;
 
+import com.example.mybatis.domain.login.LoginDTO;
 import com.example.mybatis.domain.member.Member;
 import com.example.mybatis.domain.member.MemberMapper;
 import com.example.mybatis.domain.url.Url;
@@ -27,15 +28,15 @@ public class HomeController {
     public String home(@SessionAttribute(name = SessionConst.LOGIN_USER, required = false) Member loginUser,  Model model) {
 
         if (loginUser == null) {
+            model.addAttribute("loginDTO", new LoginDTO());
             return "home";
         }
+            List<Url> urls = urlMapper.findByMemberId(loginUser.getId());
+            List<Url> disabledUrls = urlMapper.findExpiredByMemberId(loginUser.getId());
 
-        List<Url> urls = urlMapper.findByMemberId(loginUser.getId());
-        List<Url> disabledUrls = urlMapper.findExpiredByMemberId(loginUser.getId());
-
-        model.addAttribute("urls", urls);
-        model.addAttribute("disabledUrls", disabledUrls);
-        model.addAttribute("loginUser", loginUser);
-        return "loginHome";
+            model.addAttribute("urls", urls);
+            model.addAttribute("disabledUrls", disabledUrls);
+            model.addAttribute("loginUser", loginUser);
+            return "loginHome";
     }
 }
