@@ -38,4 +38,10 @@ public interface MemberMapper {
 
     @Select("SELECT COUNT(*) FROM members WHERE email=#{email}")
     int findByEmail(@Param("email") String email);
+
+    @Select("SELECT COUNT(*) FROM members WHERE name=#{name}")
+    int findByName(@Param("name") String name);
+
+    @Select("SELECT COUNT(*) FROM members WHERE id=#{id} AND pwd=PASSWORD(#{currentPassword})")
+    int findByCurrentPassword(@Param("id") Long id, @Param("currentPassword") String currentPassword);
 }

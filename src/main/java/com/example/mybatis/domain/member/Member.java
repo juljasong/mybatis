@@ -19,10 +19,4 @@ public class Member {
 
     public Member() {}
 
-    public Member(String email, String password, String name) {
-        this.email = email;
-        this.password = password;
-        this.name = name;
-    }
-
 }

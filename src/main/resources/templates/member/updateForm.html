@@ -7,24 +7,29 @@
 
 <body>
     <main class="container">
-        <form action="/member/update" method="post">
+        <form action="/member/update" th:object="${updateDto}" method="post">
 
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" class="form-control my-2" value="email"
-                th:value="${loginUser.email}" readonly>
+            <input type="email" id="email" th:field="*{email}" class="form-control my-2" value="email" readonly>
+            <hr>
 
-            <label for="password">password</label>
-            <input type="password" id="password" name="password" class="form-control my-2"
-                placeholder="Write your password." required minlength="10" maxlength="20">
+            <label for="currentPassword">Current password(Required)</label>
+            <input type="password" id="currentPassword" th:field="*{currentPassword}" th:errorclass="field-error" class="form-control my-2" placeholder="Write your current password.">
+            <div class="field-error" th:errors="*{currentPassword}">Error</div>
+
+            <label for="password">New password(Optional)</label>
+            <input type="password" id="password" th:field="*{password}" th:errorclass="field-error" class="form-control my-2" placeholder="Write your new password." minlength="10" maxlength="20">
             <small id="passwordHelpInline" class="text-muted d-block">Must be 10-20 characters long.</small>
+            <div class="field-error" th:errors="*{password}">Error</div>
 
-            <label for="password_check">password</label>
-            <input type="password" id="password2" name="password2" class="form-control my-2"
-                placeholder="Write your password.">
+            <label for="password2">Check password</label>
+            <input type="password" id="password2" th:field="*{password2}" th:errorclass="field-error" class="form-control my-2" placeholder="Write your password.">
+            <div class="field-error" th:errors="*{password2}">Error</div>
 
+            <hr>
             <label for="email">name</label>
-            <input type="text" id="name" name="name" class="form-control my-2" value="name" th:value="${loginUser.name}"
-                minlength="5" maxlength="30" required>
+            <input type="text" id="name" th:field="*{name}" th:errorclass="field-error" class="form-control my-2" minlength="3" maxlength="30" required>
+            <div class="field-error" th:errors="*{name}">Error</div>
 
             <button class="w-100 btn btn-primary btn-lg my-3" type="submit">OK</button>
 

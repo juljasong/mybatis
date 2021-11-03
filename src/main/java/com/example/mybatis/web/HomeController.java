@@ -1,6 +1,6 @@
 package com.example.mybatis.web;
 
-import com.example.mybatis.domain.login.LoginDTO;
+import com.example.mybatis.web.login.LoginDto;
 import com.example.mybatis.domain.member.Member;
 import com.example.mybatis.domain.member.MemberMapper;
 import com.example.mybatis.domain.url.Url;
@@ -12,10 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
-import java.net.URL;
-import java.text.ParseException;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -29,7 +26,7 @@ public class HomeController {
     public String home(@SessionAttribute(name = SessionConst.LOGIN_USER, required = false) Member loginUser,  Model model) {
 
         if (loginUser == null) {
-            model.addAttribute("loginDTO", new LoginDTO());
+            model.addAttribute("loginDto", new LoginDto());
             return "home";
         }
             List<Url> urls = urlMapper.findByMemberId(loginUser.getId());

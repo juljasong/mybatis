@@ -1,6 +1,5 @@
 package com.example.mybatis.web.login;
 
-import com.example.mybatis.domain.login.LoginDTO;
 import com.example.mybatis.domain.login.LoginService;
 import com.example.mybatis.domain.member.Member;
 import com.example.mybatis.web.SessionConst;
@@ -9,15 +8,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Controller
 @RequiredArgsConstructor
@@ -46,18 +44,21 @@ public class AuthController {
     */
 
     @PostMapping("/auth/login")
-    public String loginByHttpSession(@ModelAttribute LoginDTO loginDTO, BindingResult bindingResult, HttpServletRequest request) {
+    public String loginByHttpSession(@Validated @ModelAttribute LoginDto loginDto, BindingResult bindingResult, HttpServletRequest request) {
 
-        Member loginUser = loginService.login(loginDTO);
+        Member loginUser = loginService.login(loginDto);
 
         if (loginUser == null) {
-            bindingResult.addError(new ObjectError("loginDTO", "Incorrect email or password."));
+            log.info("error={}", bindingResult.getAllErrors());
+            if (!loginDto.getEmail().isBlank() && !loginDto.getPassword().isBlank()) {
+                bindingResult.addError(new ObjectError("loginDto", "Incorrect email or password."));
+            }
 
             return "home";
         } else {
             HttpSession session = request.getSession();
             session.setAttribute(SessionConst.LOGIN_USER, loginUser);
-            log.info("Login email={}, loginTime={}", loginDTO.getEmail(), LocalDateTime.now());
+            log.info("Login email={}, loginTime={}", loginDto.getEmail(), LocalDateTime.now());
 
             return "redirect:/";
         }

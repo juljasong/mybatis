@@ -33,4 +33,7 @@ public class MemberService {
         }
     }
 
+    public int verifyCurrentPassword(Long id, String currentPassword) {
+        return memberMapper.findByCurrentPassword(id, currentPassword);
+    }
 }

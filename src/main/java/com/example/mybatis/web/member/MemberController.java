@@ -12,7 +12,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -35,36 +37,35 @@ public class MemberController {
 
     @GetMapping("/add")
     public String addForm(Model model) {
-        model.addAttribute(new Member());
+        model.addAttribute(new SignInDto());
         return "member/addForm";
     }
 
     @PostMapping("/add")
-    public String save(@ModelAttribute Member member, BindingResult bindingResult, @RequestParam String password2) throws Exception {
+    public String save(@Validated @ModelAttribute SignInDto signInDto, BindingResult bindingResult, @RequestParam String password2) throws Exception {
 
-        log.info("password length={}", member.getPassword().length());
-
-        if(!Pattern.matches("^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$", member.getEmail())) {
-            bindingResult.addError(new FieldError("member", "email", "Please enter the correct email format."));
-        }
-        if(!StringUtils.hasText(member.getPassword()) || member.getPassword().length() < 10 || member.getPassword().length() > 20) {
-            bindingResult.addError(new FieldError("member", "password", "Password must be at least 10 characters long."));
-        }
-        if(!member.getPassword().equals(password2)) {
+        if(!signInDto.getPassword().equals(password2)) {
             bindingResult.addError(new ObjectError("member", "Password is not equal."));
         }
-        if(member.getName().length() < 4) {
-            bindingResult.addError(new FieldError("member", "name", "Name must be at least 3 characters long."));
+
+        if(memberMapper.findByEmail(signInDto.getEmail()) > 0) {
+            bindingResult.addError(new ObjectError("member", "An account with this email already exists."));
         }
 
-        if(memberMapper.findByEmail(member.getEmail()) > 0) {
-            bindingResult.addError(new ObjectError("member", "An account with this email already exists."));
+        if(memberMapper.findByName(signInDto.getName()) > 0) {
+            bindingResult.addError(new ObjectError("member", "An account with this name already exists."));
         }
 
         if(bindingResult.hasErrors()) {
             log.info("error={}", bindingResult);
             return "member/addForm";
         }
+
+        Member member = new Member();
+        member.setEmail(signInDto.getEmail());
+        member.setName(signInDto.getName());
+        member.setPassword(signInDto.getPassword());
+
         memberService.save(member);
         return "redirect:/message";
     }
@@ -78,22 +79,50 @@ public class MemberController {
     @GetMapping("/updateForm")
     public String updateForm(@SessionAttribute(name = SessionConst.LOGIN_USER) Member loginUser, Model model) {
         model.addAttribute("loginUser", loginUser);
+
+        UpdateDto updateDto = new UpdateDto();
+        updateDto.setName(loginUser.getName());
+        updateDto.setEmail(loginUser.getEmail());
+        model.addAttribute("updateDto", updateDto);
+
         return "member/updateForm";
     }
 
     @PostMapping("/update")
     public String update(HttpServletRequest request,
                          @SessionAttribute(name = SessionConst.LOGIN_USER) Member loginUser,
-                         @RequestParam String password,
-                         @RequestParam String name,
+                         @Validated @ModelAttribute UpdateDto updateDto, BindingResult bindingResult,
                          Model model) throws Exception {
         Long memberId = loginUser.getId();
 
-        if(password.isBlank()) {
-            password = null;
+        if (updateDto.getCurrentPassword().isBlank() && updateDto.getPassword().isBlank() && updateDto.getName().equals(loginUser.getName())) {
+            return "redirect:/member/updateForm";
+        } else {
+            if (memberService.verifyCurrentPassword(loginUser.getId(), updateDto.getCurrentPassword()) == 0) {
+              bindingResult.addError(new FieldError("updateDto", "currentPassword", "Current password is not correct."));
+            } else {
+                if(memberMapper.findByName(updateDto.getName()) > 0) {
+                    if(!updateDto.getName().equals(loginUser.getName())) {
+                        bindingResult.addError(new FieldError("updateDto", "name", updateDto.getName(),false, null, null, "Same name already exists."));
+                    }
+                }
+                if (!updateDto.getPassword().equals(updateDto.getPassword2())) {
+                    bindingResult.addError(new FieldError("updateDto", "password2", "New password and check password are not equal."));
+                }
+                if(updateDto.getPassword().length() < 9 || updateDto.getPassword().length() > 21) {
+                    bindingResult.addError(new FieldError("updateDto", "password","Your password must be between 10 to 20 characters."));
+                }
+            }
         }
 
-        int result = memberMapper.Update(password, name, loginUser);
+        if(bindingResult.hasErrors()) {
+            log.info("error={}", bindingResult.getAllErrors());
+            return "member/updateForm";
+        }
+
+        int result = memberMapper.Update(updateDto.getPassword(), updateDto.getName(), loginUser);
+        loginUser.setName(updateDto.getName());
+        loginUser.setPassword(updateDto.getPassword());
 
         if (result == 0) {
             throw new Exception("Error");
