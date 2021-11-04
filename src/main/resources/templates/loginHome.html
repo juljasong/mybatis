@@ -9,6 +9,8 @@
     <main>
         <!-- ADD Section -->
         <section class="add-section">
+            <h5 class="field-error" th:if="${param.addFailure}" th:text="'ADD Failed: Check Name or Url is Empty.'">
+            </h5>
             <div class="container">
                 <button type="button" class="w-100 btn btn-primary btn-lg btn-block my-3" data-toggle="modal"
                     data-target="#addModal">
@@ -25,19 +27,18 @@
                                 <span aria-hidden="true"></span>
                             </button>
                         </div>
+
                         <form action="/url/add" th:object="${url}" method="post">
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="name" class="col-form-label">Name:</label>
-                                    <input type="text" class="form-control" th:errorclass="field-error" id="add_name"
-                                        th:field="*{name}" />
-                                    <div class="field-error" th:errors="*{name}">Error</div>
+                                    <input type="text" class="form-control" id="add_name" th:field="*{name}" />
+
                                 </div>
                                 <div class="form-group">
                                     <label for="url" class="col-form-label">URL:</label>
-                                    <input type="text" class="form-control" th:errorclass="field-error" id="add_url"
-                                        th:field="*{url}" />
-                                    <div class="field-error" th:errors="*{url}">Error</div>
+                                    <input type="text" class="form-control" id="add_url" th:field="*{url}" />
+
                                 </div>
                                 <div class="form-group">
                                     <label for="description" class="col-form-label">Description:</label>
@@ -66,81 +67,58 @@
                     </div>
                 </div>
             </div>
+
         </section>
 
         <!--Start URL-->
-        <section class="url-section">
-            <ul class="url-list list-group list-group-flush">
-                <li th:each="url : ${urls}" id="1" th:id="${url.id}" type="button"
-                    class="url-list-item w-100 list-group-item" data-bs-toggle="modal" data-bs-target="#updateModal">
-                    <form id="form_1" th:id="|form_${url.id}|">
-                        <input type="hidden" name="name" th:value="${url.name}" value="name" />
-                        <input type="hidden" name="url" th:value="${url.url}" value="url" />
-                        <input type="hidden" name="description" th:value="${url.description}" value="description" />
-                        <input type="hidden" name="expirationDate" th:value="${url.expirationDate}"
-                            value="1999-12-31" />
-                        <input type="hidden" name="isPublic" th:value="${url.isPublic}" value="1" />
-                        <input type="hidden" name="id" th:value="${url.id}" value="1" />
-                    </form>
-                    <span th:text="${url.name}">an item</span>
-                </li>
+        <!-- <section class="url-section">
 
-            </ul>
-            <hr />
-
-            <!-- Modal -->
-            <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="updateModalLabel">Update URL</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <form action="/url/update" th:object="${urls}" method="post">
+                <div th:each="enableUrl : ${enableUrls}" class="container url-field">
+                    <input type="hidden" class="form-control" th:id="|update_id${enableUrl.id}|" th:field="*{id}"
+                        th:value="${url.id}" />
+                    <div class="row mb-2">
+                        <div class="col-sm-4">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text">Name</span>
+                                <input type="text" th:field="*{name}" th:value="${enableUrl.name}" class="form-control">
+                            </div>
                         </div>
-                        <div class="modal-body">
-                            <form action="/url/update" method="post">
-                                <div class="modal-body">
-                                    <div class="form-group">
-                                        <label for="name" class="col-form-label">Name:</label>
-                                        <input type="text" class="form-control" id="update_name" name="name"
-                                            minlength="1" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="url" class="col-form-label">URL:</label>
-                                        <input type="text" class="form-control" id="update_url" name="url"
-                                            minlength="1" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="description" class="col-form-label">Description:</label>
-                                        <textarea class="form-control" id="update_description"
-                                            name="description"></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="expirationDate" class="col-form-label">Expiration Date:</label>
-                                        <input type="date" class="form-control" id="update_expirationDate"
-                                            name="expirationDate" />
-                                    </div>
-                                    <div class="form-check form-switch my-3">
-                                        <input class="form-check-input" type="checkbox" role="switch"
-                                            id="update_isPublic" name="isPublic" value="1" />
-                                        <label class="form-check-label" for="isPublic">is Public?</label>
-                                    </div>
-                                    <input type="hidden" class="form-control" id="update_memberId" name="memberId"
-                                        value="user" th:value="${loginUser.id}" />
-                                    <input type="hidden" class="form-control" id="update_id" name="id" value="1" />
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" id="btnDelete">
-                                        Delete
-                                    </button>
-                                    <button type="submit" class="btn btn-primary">OK!</button>
-                                </div>
-                            </form>
+                        <div class="col-sm-8">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text">URL</span>
+                                <input type="text" th:field="${url.url}" th:value="${url.url}" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" form-floating mb-2">
+                        <textarea class="form-control" th:field="${url.name}" th:text="${url.description}"></textarea>
+                        <label for="floatingTextarea">Description</label>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-7">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text">Date</span>
+                                <input type="date" th:field="${url.expirationDate}" th:value="${url.expirationDate}"
+                                    class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-check form-switch my-1">
+                                <input class="form-check-input" type="checkbox" role="switch" th:field="${url.isPublic}"
+                                    th:value="${url.isPublic}" value="1" />
+                                <label class="form-check-label" for="isPublic">is Public?</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn-close" id="btnDelete"></button>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </form>
+            <hr />
+
+        </section> -->
 
         <!--Start Expired URL-->
         <section class="expired-section">

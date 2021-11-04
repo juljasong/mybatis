@@ -1,7 +1,10 @@
 package com.example.mybatis.web.url;
 
+import com.example.mybatis.domain.member.Member;
 import com.example.mybatis.domain.url.Url;
+import com.example.mybatis.domain.url.UrlMapper;
 import com.example.mybatis.domain.url.UrlService;
+import com.example.mybatis.web.SessionConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -9,8 +12,11 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.sql.Date;
 import java.util.List;
 
@@ -20,20 +26,19 @@ import java.util.List;
 public class UrlController {
 
     private final UrlService urlService;
+    private final UrlMapper urlMapper;
 
     @PostMapping("/url/add")
-    public String add(@ModelAttribute Url url, BindingResult bindingResult,
-                      @RequestParam String date) throws Exception {
+    public String add(@SessionAttribute(name = SessionConst.LOGIN_USER, required = false) Member loginUser,
+                      @Valid @ModelAttribute Url url, BindingResult bindingResult,
+                      @RequestParam String date, RedirectAttributes redirectAttributes) throws Exception {
 
-        if(!StringUtils.hasText(url.getName())) {
-            bindingResult.addError(new FieldError("url", "name", "Name required."));
-        }
-        if(!StringUtils.hasText(url.getUrl())) {
-            bindingResult.addError(new FieldError("url", "url", "URL required."));
-        }
         if(bindingResult.hasErrors()) {
             log.info("error={}", bindingResult);
-            // *에러 처리 필요*
+            redirectAttributes.addAttribute("addFailure", true);
+//            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.url", bindingResult);
+//            redirectAttributes.addFlashAttribute("url", url);
+            return "redirect:/";
         }
 
         stringToDate(url, date);

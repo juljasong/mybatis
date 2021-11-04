@@ -29,13 +29,14 @@ public class HomeController {
             model.addAttribute("loginDto", new LoginDto());
             return "home";
         }
-            List<Url> urls = urlMapper.findByMemberId(loginUser.getId());
+            List<Url> enableUrls = urlMapper.findByMemberId(loginUser.getId());
             List<Url> disabledUrls = urlMapper.findExpiredByMemberId(loginUser.getId());
 
             model.addAttribute("url", new Url());
-            model.addAttribute("urls", urls);
+            model.addAttribute("enableUrls", enableUrls);
             model.addAttribute("disabledUrls", disabledUrls);
             model.addAttribute("loginUser", loginUser);
+
             return "loginHome";
     }
 }
