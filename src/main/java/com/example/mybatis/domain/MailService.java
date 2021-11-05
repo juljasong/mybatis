@@ -23,7 +23,7 @@ public class MailService {
 
         String authKey = UUID.randomUUID().toString().replace("-", "");
         String htmlStr = member.getName() + "님, MyBatis에서 회원 가입이 이루어졌습니다.<br><br>" +
-                "<a href='http://localhost:8080/member/"+ authKey + "'>해당 링크</a>를 클릭하시면 회원 가입이 완료됩니다.<br>" ;
+                "<a href='http://localhost:8080/member/chk/"+ authKey + "'>해당 링크</a>를 클릭하시면 회원 가입이 완료됩니다.<br>" ;
 
         MimeMessage message = mailSender.createMimeMessage();
         try {

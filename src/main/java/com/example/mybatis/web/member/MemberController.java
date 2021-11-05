@@ -4,6 +4,7 @@ import com.example.mybatis.domain.member.Member;
 import com.example.mybatis.domain.member.MemberMapper;
 import com.example.mybatis.domain.member.MemberService;
 import com.example.mybatis.web.SessionConst;
+import com.example.mybatis.web.argumentResolver.Login;
 import com.example.mybatis.web.login.AuthController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -70,14 +71,14 @@ public class MemberController {
         return "redirect:/message";
     }
 
-    @GetMapping("/{authKey}")
+    @GetMapping("/chk/{authKey}")
     public String mailChek(@PathVariable String authKey) {
         memberMapper.mailCheck(authKey);
         return "redirect:/message";
     }
 
     @GetMapping("/updateForm")
-    public String updateForm(@SessionAttribute(name = SessionConst.LOGIN_USER) Member loginUser, Model model) {
+    public String updateForm(@Login Member loginUser, Model model) {
         model.addAttribute("loginUser", loginUser);
 
         UpdateDto updateDto = new UpdateDto();
@@ -90,7 +91,7 @@ public class MemberController {
 
     @PostMapping("/update")
     public String update(HttpServletRequest request,
-                         @SessionAttribute(name = SessionConst.LOGIN_USER) Member loginUser,
+                         @Login Member loginUser,
                          @Validated @ModelAttribute UpdateDto updateDto, BindingResult bindingResult,
                          Model model) throws Exception {
         Long memberId = loginUser.getId();

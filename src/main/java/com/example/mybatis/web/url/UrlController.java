@@ -5,6 +5,7 @@ import com.example.mybatis.domain.url.Url;
 import com.example.mybatis.domain.url.UrlMapper;
 import com.example.mybatis.domain.url.UrlService;
 import com.example.mybatis.web.SessionConst;
+import com.example.mybatis.web.argumentResolver.Login;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,7 @@ public class UrlController {
     private final UrlMapper urlMapper;
 
     @PostMapping("/add")
-    public String add(@SessionAttribute(name = SessionConst.LOGIN_USER, required = false) Member loginUser,
+    public String add(@Login Member loginUser,
                       @Valid @ModelAttribute Url url, BindingResult bindingResult,
                       @RequestParam String date, RedirectAttributes redirectAttributes) throws Exception {
 

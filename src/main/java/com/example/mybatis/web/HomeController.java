@@ -1,5 +1,6 @@
 package com.example.mybatis.web;
 
+import com.example.mybatis.web.argumentResolver.Login;
 import com.example.mybatis.web.login.LoginDto;
 import com.example.mybatis.domain.member.Member;
 import com.example.mybatis.domain.member.MemberMapper;
@@ -23,7 +24,8 @@ public class HomeController {
     private final UrlMapper urlMapper;
 
     @RequestMapping("/")
-    public String home(@SessionAttribute(name = SessionConst.LOGIN_USER, required = false) Member loginUser,  Model model) {
+    public String home(//@SessionAttribute(name = SessionConst.LOGIN_USER, required = false)
+                       @Login Member loginUser, Model model) {
 
         if (loginUser == null) {
             model.addAttribute("loginDto", new LoginDto());
