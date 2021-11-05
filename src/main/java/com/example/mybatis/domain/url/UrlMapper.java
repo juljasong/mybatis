@@ -22,4 +22,7 @@ public interface UrlMapper {
 
     @Update("UPDATE urls SET name=#{url.name}, url=#{url.url}, description=#{url.description}, expirationDate=#{url.expirationDate}, isPublic=#{url.isPublic} WHERE id=#{url.id} AND member_id=#{memberId}")
     int updateById(@Param("memberId") Long memberId, @Param("url") Url url);
+
+    @Select("SELECT * FROM urls")
+    List<Url> findAll();
 }

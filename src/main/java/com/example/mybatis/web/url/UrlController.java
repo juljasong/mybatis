@@ -23,12 +23,13 @@ import java.util.List;
 @Controller
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/url")
 public class UrlController {
 
     private final UrlService urlService;
     private final UrlMapper urlMapper;
 
-    @PostMapping("/url/add")
+    @PostMapping("/add")
     public String add(@SessionAttribute(name = SessionConst.LOGIN_USER, required = false) Member loginUser,
                       @Valid @ModelAttribute Url url, BindingResult bindingResult,
                       @RequestParam String date, RedirectAttributes redirectAttributes) throws Exception {
@@ -50,15 +51,7 @@ public class UrlController {
         return "redirect:/";
     }
 
-
-    @GetMapping("/{userName}")
-    public String individual(@PathVariable String userName, Model model) {
-        List<Url> urls = urlService.listByMemberName(userName);
-        model.addAttribute("urls", urls);
-        return "individual";
-    }
-
-    @GetMapping("/url/delete/{id}")
+    @GetMapping("/delete/{id}")
     public String deleteUrl(@PathVariable Long id) throws Exception {
         int result = urlService.deleteUrl(id);
         if(result < 0) {
@@ -67,7 +60,7 @@ public class UrlController {
         return "redirect:/";
     }
 
-    @PostMapping("/url/update")
+    @PostMapping("/update")
     public String updateUrl(@RequestParam Long memberId,
                             @ModelAttribute Url url,
                             @RequestParam String date) throws Exception {

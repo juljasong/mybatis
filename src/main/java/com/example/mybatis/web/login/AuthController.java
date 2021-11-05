@@ -44,7 +44,8 @@ public class AuthController {
     */
 
     @PostMapping("/auth/login")
-    public String loginByHttpSession(@Validated @ModelAttribute LoginDto loginDto, BindingResult bindingResult, HttpServletRequest request) {
+    public String loginByHttpSession(@Validated @ModelAttribute LoginDto loginDto, BindingResult bindingResult,
+                                     HttpServletRequest request) {
 
         Member loginUser = loginService.login(loginDto);
 
@@ -58,9 +59,17 @@ public class AuthController {
         } else {
             HttpSession session = request.getSession();
             session.setAttribute(SessionConst.LOGIN_USER, loginUser);
-            log.info("Login email={}, loginTime={}", loginDto.getEmail(), LocalDateTime.now());
 
-            return "redirect:/";
+            String ref = request.getHeader("Referer");
+
+            if (ref.length() < 30) {
+                log.info("Login email={}, loginTime={}", loginDto.getEmail(), LocalDateTime.now());
+                return "redirect:/";
+            } else {
+                String redirectUrl = ref.substring(35);
+                log.info("Login email={}, loginTime={}, Redirect={}", loginDto.getEmail(), LocalDateTime.now(), redirectUrl);
+                return "redirect:" + redirectUrl;
+            }
         }
     }
 
