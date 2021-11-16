@@ -15,6 +15,9 @@ public interface UrlMapper {
     @Select("SELECT * FROM urls WHERE member_id=#{memberId} AND (expirationDate > NOW() OR expirationDate IS NULL)")
     List<Url> findByMemberId(@Param("memberId") Long memberId);
 
+    @Select("SELECT * FROM urls WHERE member_id=#{memberId} AND (expirationDate > NOW() OR expirationDate IS NULL) AND isPublic=1")
+    List<Url> findByMemberIdAndPublic(@Param("memberId") Long memberId);
+
     @Select("SELECT * FROM urls WHERE member_id=#{memberId} AND expirationDate < NOW()")
     List<Url> findExpiredByMemberId(@Param("memberId") Long memberId);
 

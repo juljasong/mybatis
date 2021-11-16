@@ -53,4 +53,10 @@ public class UrlService {
     public Url findUrlById(Long id) {
         return urlMapper.findUrlById(id);
     }
+
+    public List<Url> findByMemberIdAndPublic(String name) {
+        Long memberId = memberMapper.findMemberIdByMemberName(name);
+        List<Url> urls = urlMapper.findByMemberIdAndPublic(memberId);
+        return urls;
+    }
 }

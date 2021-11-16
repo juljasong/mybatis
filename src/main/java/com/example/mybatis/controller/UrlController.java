@@ -65,15 +65,25 @@ public class UrlController {
     }
 
     @PostMapping("/update")
-    public String updateUrl(@Login Member loginUser, @ModelAttribute Url url,
-                            @RequestParam String date) throws Exception {
+    public String updateUrl(@Login Member loginUser,
+                            @Valid @ModelAttribute Url url, BindingResult bindingResult,
+                            @RequestParam String date, RedirectAttributes redirectAttributes) throws Exception {
         log.info("{}, {}", url, date);
+
+        if(bindingResult.hasErrors()) {
+            log.info("error={}", bindingResult);
+            redirectAttributes.addAttribute("updateFailure", true);
+
+            return "redirect:/";
+        }
+
         stringToDate(url, date);
         int result = urlService.updateUrl(loginUser, url);
         if(result < 0) {
             throw new Exception("Not exist url id");
         }
         return "redirect:/";
+
     }
 
     private void stringToDate(Url url, String expirationDate) {

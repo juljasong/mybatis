@@ -72,11 +72,14 @@
 
         <!--Start URL-->
         <section class="url-section">
-
+            <h5 class="field-error" th:if="${param.updateFailure}"
+                th:text="'UPDATE Failed: Check Name or Url is Empty.'">
+            </h5>
             <ul class="url-list list-group list-group-flush">
                 <li th:each="url : ${enableUrls}" class="url-list-item w-100 list-group-item">
                     <button type="button" class="none-btn" th:text="${url.name}" th:onclick="|updateForm(${url.id})|"
-                        data-toggle="modal" data-target="#updateModal">un item</button>
+                        data-toggle="modal" data-target="#updateModal"
+                        th:attrappend=="class=${ url.isPublic == 0 ? ' text-muted' : ''}">un item</button>
                 </li>
             </ul>
 
@@ -91,14 +94,14 @@
                 <ul class="url-list list-group list-group-flush">
                     <li th:each="url : ${disabledUrls}" class="url-list-item w-100 list-group-item">
                         <button type="button" class="none-btn" th:text="${url.name}"
-                            th:onclick="|updateForm(${url.id})|" data-toggle="modal" data-target="#updateModal">un
+                            th:onclick="|updateForm(${url.id})|" data-toggle="modal" data-target="#updateModal"
+                            th:attrappend=="class=${ url.isPublic == 0 ? ' text-muted' : ''}">un
                             item</button>
                     </li>
                 </ul>
             </div>
 
         </section>
-
 
         <!--update Modal-->
         <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
@@ -115,12 +118,12 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <label for="name" class="col-form-label">Name:</label>
-                                <input type="text" class="form-control" id="updateName" th:field="*{name}" />
+                                <input type="text" class="form-control" id="updateName" th:field="*{name}" required />
 
                             </div>
                             <div class="form-group">
                                 <label for="url" class="col-form-label">URL:</label>
-                                <input type="text" class="form-control" id="updateUrl" th:field="*{url}" />
+                                <input type="text" class="form-control" id="updateUrl" th:field="*{url}" required />
 
                             </div>
                             <div class="form-group">
@@ -142,10 +145,10 @@
                             <input type="hidden" class="form-control" id="updateId" th:field="*{id}" />
                         </div>
                         <div class="modal-footer">
-                            <button id="delete-btn" type="button" class="btn btn-danger" data-dismiss="modal">
+                            <button type="submit" class="btn btn-primary">OK!</button><button id="delete-btn"
+                                type="button" class="btn btn-danger" data-dismiss="modal">
                                 Delete
                             </button>
-                            <button type="submit" class="btn btn-primary">OK!</button>
                         </div>
                     </form>
                 </div>
