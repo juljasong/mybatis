@@ -1,0 +1,27 @@
+body {
+  margin: 0 auto;
+  width: 40%;
+}
+
+.field-error {
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+.global-error {
+  border-color: #dc3545;
+  color: #dc3545;
+  font-weight: bolder;
+}
+
+#logo {
+  height: 80px;
+  float: left;
+  margin: 15px 0;
+}
+
+.none-btn {
+  border: none;
+  background-color: unset;
+  padding-right: 100px;
+}

@@ -2,7 +2,9 @@ package com.example.mybatis.service;
 
 import com.example.mybatis.dao.MemberMapper;
 import com.example.mybatis.dao.UrlMapper;
+import com.example.mybatis.entity.Member;
 import com.example.mybatis.entity.Url;
+import com.example.mybatis.util.argumentResolver.Login;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,9 +35,9 @@ public class UrlService {
         return urlMapper.deleteById(id);
     }
 
-    public int updateUrl(Long memberId, Url url) {
+    public int updateUrl(Member loginUser, Url url) {
         toAbsolutePath(url);
-        return urlMapper.updateById(memberId, url);
+        return urlMapper.updateById(loginUser.getId(), url);
     }
 
 
@@ -46,5 +48,9 @@ public class UrlService {
             log.info("not include");
             url.setUrl("https://" + inputUrl);
         }
+    }
+
+    public Url findUrlById(Long id) {
+        return urlMapper.findUrlById(id);
     }
 }

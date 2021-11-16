@@ -7,6 +7,8 @@ import com.example.mybatis.service.UrlService;
 import com.example.mybatis.util.argumentResolver.Login;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -55,13 +57,19 @@ public class UrlController {
         return "redirect:/";
     }
 
+    @ResponseBody
+    @GetMapping("/update")
+    public ResponseEntity<Url> updateForm(@RequestParam Long id) {
+        Url url = urlService.findUrlById(id);
+        return new ResponseEntity<Url>(url, HttpStatus.OK);
+    }
+
     @PostMapping("/update")
-    public String updateUrl(@RequestParam Long memberId,
-                            @ModelAttribute Url url,
+    public String updateUrl(@Login Member loginUser, @ModelAttribute Url url,
                             @RequestParam String date) throws Exception {
         log.info("{}, {}", url, date);
         stringToDate(url, date);
-        int result = urlService.updateUrl(memberId, url);
+        int result = urlService.updateUrl(loginUser, url);
         if(result < 0) {
             throw new Exception("Not exist url id");
         }

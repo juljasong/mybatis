@@ -26,4 +26,7 @@ public interface UrlMapper {
 
     @Select("SELECT * FROM urls")
     List<Url> findAll();
+
+    @Select("SELECT * FROM urls WHERE id=#{id}")
+    Url findUrlById(@Param("id") Long id);
 }
