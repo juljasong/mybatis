@@ -19,7 +19,7 @@ public class MailService {
         this.mailSender = mailSender;
     }
 
-    public String authenticationMailSend(Member member) {
+    public String sendAuthenticationMail(Member member) {
 
         String authKey = UUID.randomUUID().toString().replace("-", "");
         String htmlStr = member.getName() + "님, MyBatis에서 회원 가입이 이루어졌습니다.<br><br>" +
@@ -39,6 +39,25 @@ public class MailService {
             e.printStackTrace();
         }
         return authKey;
+    }
+
+    public void sendFindPasswordMail(String email, String authKey) {
+
+        String htmlStr = "<a href='http://localhost:8080/member/resetpwd/"+ authKey + "'>해당 링크</a>를 클릭하시면 비밀번호를 재설정할 수 있습니다.<br>" ;
+
+        MimeMessage message = mailSender.createMimeMessage();
+        try {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+            messageHelper.setSubject("[비밀번호 찾기] MyBatis: 비밀번호를 재설정 해주세요.");
+            messageHelper.setTo("zpion@naver.com");
+            //messageHelper.setTo(email);
+            messageHelper.setFrom(FROM_ADDRESS, "MyBatis_auto");
+            messageHelper.setText(htmlStr, true);
+            mailSender.send(message);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void sendPreConfiguredMail(String message) {

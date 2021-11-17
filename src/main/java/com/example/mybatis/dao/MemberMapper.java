@@ -45,4 +45,10 @@ public interface MemberMapper {
 
     @Select("SELECT COUNT(*) FROM members WHERE id=#{id} AND pwd=PASSWORD(#{currentPassword})")
     int findByCurrentPassword(@Param("id") Long id, @Param("currentPassword") String currentPassword);
+
+    @Update("UPDATE members SET authKey=#{authKey} WHERE email=#{email}") // ㅋㅋ 재설정 중에는 로그인할 수 없음
+    int setAuthKey(@Param("email") String email, @Param("authKey") String authKey);
+
+    @Update("UPDATE members SET pwd=PASSWORD(#{password}), authKey='Y' WHERE authKey=#{authKey}")
+    int updatePassword(@Param("password") String password, @Param("authKey") String authKey);
 }

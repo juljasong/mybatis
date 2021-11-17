@@ -5,6 +5,8 @@ import com.example.mybatis.dao.MemberMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Slf4j
 @Service
 public class MemberService {
@@ -23,7 +25,7 @@ public class MemberService {
 
     public void save(Member member) throws Exception {
         try {
-            String authKey = mailService.authenticationMailSend(member);
+            String authKey = mailService.sendAuthenticationMail(member);
             member.setAuthKey(authKey);
             System.out.println("authKey = " + authKey);
             memberMapper.insert(member);
@@ -34,5 +36,36 @@ public class MemberService {
 
     public int verifyCurrentPassword(Long id, String currentPassword) {
         return memberMapper.findByCurrentPassword(id, currentPassword);
+    }
+
+    public String findPassword(String email) {
+        try {
+            String authKey = UUID.randomUUID().toString().replace("-", "");
+            int result = memberMapper.setAuthKey(email, authKey);
+
+            if (result > 0) {
+                mailService.sendFindPasswordMail(email, authKey);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Check your Email";
+    }
+
+    public String resetPassword(String password1, String authKey) {
+        try {
+
+            int result = memberMapper.updatePassword(password1, authKey);
+
+            if (result > 0) {
+                return "Your password has been reset successfully";
+            } else {
+                return "An error occurred while setting the password.";
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

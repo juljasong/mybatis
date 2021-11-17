@@ -14,15 +14,18 @@
             </div>
 
             <label for="email">Email</label>
-            <input type="email" id="email" th:field="*{email}" th:errorclass="field-error" class="form-control my-2" placeholder="Write your Email.">
+            <input type="email" id="email" th:field="*{email}" th:errorclass="field-error" class="form-control my-2"
+                placeholder="Write your Email.">
             <div class="field-error" th:errors="*{email}">Error</div>
 
             <label for="email">password</label>
-            <input type="password" id="password" th:field="*{password}" class="form-control my-2" placeholder="Write your password.">
+            <input type="password" id="password" th:field="*{password}" class="form-control my-2"
+                placeholder="Write your password.">
             <div class="field-error" th:errors="*{password}">Error</div>
 
             <button class="w-100 btn btn-primary btn-lg btn-block my-3" type="submit">Log in</button>
             <a href="/member/add" class="w-100 btn btn-link">Sign in</a>
+            <a href="/member/findpwd" class="w-100 btn btn-link">Forget Password?</a>
         </form>
     </main>
 </body>

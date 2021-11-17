@@ -1,5 +1,6 @@
 package com.example.mybatis.controller;
 
+import com.example.mybatis.dto.FindPasswordDto;
 import com.example.mybatis.entity.Member;
 import com.example.mybatis.dao.MemberMapper;
 import com.example.mybatis.service.MemberService;
@@ -135,4 +136,39 @@ public class MemberController {
         }
     }
 
+    @GetMapping("/findpwd")
+    public String findPasswordForm() {
+        return "member/findPassword";
+    }
+
+    @PostMapping("/findpwd")
+    public String findPassword(@RequestParam String email) {
+        String message = memberService.findPassword(email);
+        return "redirect:/message";
+    }
+
+    @GetMapping("/resetpwd/{authKey}")
+    public String resetPasswordForm(@PathVariable String authKey, Model model) {
+        model.addAttribute(new FindPasswordDto("", "", authKey));
+        return "member/resetPassword";
+    }
+
+    @PostMapping("/resetpwd")
+    public String resetPassword(@ModelAttribute FindPasswordDto findPasswordDto, BindingResult bindingResult) {
+
+        if (!findPasswordDto.getPassword1().equals(findPasswordDto.getPassword2())) {
+            bindingResult.addError(new ObjectError("findPasswordDto", "New password and check password are not equal."));
+        }
+        if(findPasswordDto.getPassword1().length() < 9 || findPasswordDto.getPassword1().length() > 21) {
+            bindingResult.addError(new ObjectError("findPasswordDto", "Your password must be between 10 to 20 characters."));
+        }
+
+        if(bindingResult.hasErrors()) {
+            log.info("error={}", bindingResult.getAllErrors());
+            return "member/resetPassword";
+        }
+
+        String message = memberService.resetPassword(findPasswordDto.getPassword1(), findPasswordDto.getAuthKey());
+        return "redirect:/message";
+    }
 }
