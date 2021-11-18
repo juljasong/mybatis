@@ -24,10 +24,22 @@
             <div class="field-error" th:errors="*{password}">Error</div>
 
             <button class="w-100 btn btn-primary btn-lg btn-block my-3" type="submit">Log in</button>
+            <html>
+
             <a href="/member/add" class="w-100 btn btn-link">Sign in</a>
             <a href="/member/findpwd" class="w-100 btn btn-link">Forget Password?</a>
         </form>
+
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+        <div id="g_id_onload" data-client_id="302683262107-2r7fk6pha8tf4guabk57gk061opgdgsi.apps.googleusercontent.com"
+            data-login_uri="http://localhost:8080/login/oauth2/google">
+        </div>
+        <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with"
+            data-shape="rectangular" data-logo_alignment="left">
+        </div>
+
     </main>
+
 </body>
 
 </html>

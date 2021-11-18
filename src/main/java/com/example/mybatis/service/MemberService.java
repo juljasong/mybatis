@@ -68,4 +68,26 @@ public class MemberService {
         }
         return null;
     }
+
+    public String saveOauth2(Member member) {
+        int result = memberMapper.insert(member);
+        if (result == 0) {
+            return "An error has occurred.";
+        } else{
+            return "Sign in has been completed.";
+        }
+    }
+
+    public String linkOauth2(String email, String provider) {
+        int result = memberMapper.updateProvider(email, provider);
+        if (result == 0) {
+            return "An error has occurred.";
+        } else {
+            return "Link has been completed.";
+        }
+    }
+
+
+
+
 }

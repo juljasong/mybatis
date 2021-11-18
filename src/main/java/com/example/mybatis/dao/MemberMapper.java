@@ -7,7 +7,19 @@ import java.util.List;
 @Mapper
 public interface MemberMapper {
 
-    @Insert("INSERT INTO members (email, pwd, name, authKey) VALUES(#{member.email}, PASSWORD(#{member.password}), #{member.name}, #{member.authKey})")
+//    @Insert("INSERT INTO members (email, pwd, name, authKey, provider) VALUES(#{member.email}, PASSWORD(#{member.password}), #{member.name}, #{member.authKey})")
+    @Insert("<script>" +
+            "INSERT INTO members" +
+            "(" +
+            "email, name, authKey, pwd" +
+            "<if test='member.provider != null'>, provider</if>" +
+            ")" +
+            "VALUES" +
+            "(" +
+            "#{member.email}, #{member.name}, #{member.authKey}, PASSWORD(#{member.password})" +
+            "<if test='member.provider != null'>, #{member.provider}</if>" +
+            ")" +
+            "</script>")
     int insert(@Param("member") Member member); // 입력된 경우 1, 실패한 경우 0
 
     @Select("SELECT * FROM members WHERE email=#{email} AND pwd=PASSWORD(#{password}) AND authKey='Y'")
@@ -37,8 +49,8 @@ public interface MemberMapper {
                @Param("name") String name,
                @Param("loginUser") Member loginUser);
 
-    @Select("SELECT COUNT(*) FROM members WHERE email=#{email}")
-    int findByEmail(@Param("email") String email);
+    @Select("SELECT * FROM members WHERE email=#{email}")
+    Member findByEmail(@Param("email") String email);
 
     @Select("SELECT COUNT(*) FROM members WHERE name=#{name}")
     int findByName(@Param("name") String name);
@@ -51,4 +63,10 @@ public interface MemberMapper {
 
     @Update("UPDATE members SET pwd=PASSWORD(#{password}), authKey='Y' WHERE authKey=#{authKey}")
     int updatePassword(@Param("password") String password, @Param("authKey") String authKey);
+
+    @Select("SELECT * FROM members WHERE provider=#{provider} AND email=#{email}")
+    Member findByEmailAndProvider(@Param("email") String email, @Param("provider") String provider);
+
+    @Update("UPDATE members SET provider=#{provider} WHERE email=#{email}")
+    int updateProvider(@Param("email") String email, @Param("provider") String provider);
 }

@@ -48,7 +48,7 @@ public class MemberController {
             bindingResult.addError(new ObjectError("member", "Password is not equal."));
         }
 
-        if(memberMapper.findByEmail(signInDto.getEmail()) > 0) {
+        if(memberMapper.findByEmail(signInDto.getEmail()) != null) {
             bindingResult.addError(new ObjectError("member", "An account with this email already exists."));
         }
 
@@ -171,4 +171,22 @@ public class MemberController {
         String message = memberService.resetPassword(findPasswordDto.getPassword1(), findPasswordDto.getAuthKey());
         return "redirect:/message";
     }
+
+    @PostMapping("/oauth2/add")
+    public String addOauth2(@RequestParam String email, @RequestParam String name, @RequestParam String provider, Model model) {
+        String message = memberService.saveOauth2(new Member(email, "google", name, "Y", provider));
+        model.addAttribute("message", message);
+        return "redirect:/message";
+    }
+
+    @PostMapping("/oauth2/link")
+    public String linkOauth2(@RequestParam String email, @RequestParam String provider, Model model) {
+        String message = memberService.linkOauth2(email, provider);
+        model.addAttribute("message", message);
+        return "message:/message";
+    }
+
+
+
+
 }

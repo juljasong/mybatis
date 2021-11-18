@@ -36,4 +36,5 @@ out/
 ### VS Code ###
 .vscode/
 
-!**/src/main/java/com/example/mybatis/MailConfig.java
+!**/src/main/**/MailConfig.java
+application-oauth.properties
