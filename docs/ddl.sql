@@ -39,7 +39,7 @@ CREATE TABLE members (
   pwd            VARCHAR(255) NOT NULL COMMENT '비밀번호', -- 비밀번호
   name           VARCHAR(30)  NOT NULL COMMENT '이름', -- 이름
   create_date    DATETIME     NOT NULL DEFAULT now() COMMENT '가입일', -- 가입일
-  authKey        VARCHAR(50)  NULL     COMMENT '이메일인증', -- 이메일인증
+  auth_key        VARCHAR(50)  NULL     COMMENT '이메일인증', -- 이메일인증
   provider		 VARCHAR(20)  NULL	   COMMENT '정보제공자' -- 정보제공자
 )
 COMMENT '회원';
@@ -61,8 +61,8 @@ CREATE TABLE urls (
   name          VARCHAR(100) NOT NULL COMMENT '이름',
   url           TEXT         NOT NULL COMMENT 'url',
   description   TEXT         NULL     COMMENT '설명',
-  expirationDate DATETIME    NULL     COMMENT '만료일',
-  isPublic      INTEGER      NOT NULL DEFAULT 1 COMMENT '공개설정'
+  expiration_date DATETIME    NULL     COMMENT '만료일',
+  is_public      INTEGER      NOT NULL DEFAULT 1 COMMENT '공개설정'
 )
 COMMENT 'URL';
 

@@ -11,7 +11,7 @@ public interface MemberMapper {
     @Insert("<script>" +
             "INSERT INTO members" +
             "(" +
-            "email, name, authKey, pwd" +
+            "email, name, auth_key, pwd" +
             "<if test='member.provider != null'>, provider</if>" +
             ")" +
             "VALUES" +
@@ -22,7 +22,7 @@ public interface MemberMapper {
             "</script>")
     int insert(@Param("member") Member member); // 입력된 경우 1, 실패한 경우 0
 
-    @Select("SELECT * FROM members WHERE email=#{email} AND pwd=PASSWORD(#{password}) AND authKey='Y'")
+    @Select("SELECT * FROM members WHERE email=#{email} AND pwd=PASSWORD(#{password}) AND auth_key='Y'")
     Member findByLoginId(@Param("email") String email, @Param("password") String password); // 파라미터명 같아도 어노테이션 생략 불가
 
     @Select("SELECT * FROM members WHERE id=#{id}")
@@ -34,7 +34,7 @@ public interface MemberMapper {
     @Select("SELECT * FROM members")
     List<Member> findAll();
 
-    @Select("UPDATE members SET authKey='Y' WHERE authKey=#{authKey}")
+    @Select("UPDATE members SET auth_key='Y' WHERE auth_key=#{authKey}")
     Member mailCheck(@Param("authKey") String authKey);
 
     @Update({"<script>",
@@ -58,10 +58,10 @@ public interface MemberMapper {
     @Select("SELECT COUNT(*) FROM members WHERE id=#{id} AND pwd=PASSWORD(#{currentPassword})")
     int findByCurrentPassword(@Param("id") Long id, @Param("currentPassword") String currentPassword);
 
-    @Update("UPDATE members SET authKey=#{authKey} WHERE email=#{email}") // ㅋㅋ 재설정 중에는 로그인할 수 없음
+    @Update("UPDATE members SET auth_key=#{authKey} WHERE email=#{email}") // ㅋㅋ 재설정 중에는 로그인할 수 없음
     int setAuthKey(@Param("email") String email, @Param("authKey") String authKey);
 
-    @Update("UPDATE members SET pwd=PASSWORD(#{password}), authKey='Y' WHERE authKey=#{authKey}")
+    @Update("UPDATE members SET pwd=PASSWORD(#{password}), auth_key='Y' WHERE auth_key=#{authKey}")
     int updatePassword(@Param("password") String password, @Param("authKey") String authKey);
 
     @Select("SELECT * FROM members WHERE provider=#{provider} AND email=#{email}")
