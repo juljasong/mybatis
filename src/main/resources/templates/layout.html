@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html th:fragment="layout (title, main)" xmlns:th="http://www.thymeleaf.org">
+<html th:fragment="layout (title, main, javascript)" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8" />
@@ -53,7 +53,7 @@
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
     <script th:src="@{/js/main.js}" src="../static/js/main.js"></script>
-
+    <div th:replace="${javascript}"></div>
 </body>
 
 </html>

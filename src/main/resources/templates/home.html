@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html th:replace="~{layout :: layout(~{::title}, ~{::main})}" xmlns:th="http://www.thymeleaf.org">
+<html th:replace="~{layout :: layout(~{::title}, ~{::main}, ~{::javascript})}" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title>Home</title>
@@ -30,7 +30,7 @@
             <a href="/member/findpwd" class="w-100 btn btn-link">Forget Password?</a>
         </form>
 
-        <script src="https://accounts.google.com/gsi/client" async defer></script>
+
         <div id="g_id_onload" data-client_id="302683262107-2r7fk6pha8tf4guabk57gk061opgdgsi.apps.googleusercontent.com"
             data-login_uri="http://localhost:8080/login/oauth2/google">
         </div>
@@ -39,6 +39,10 @@
         </div>
 
     </main>
+
+    <div th:fragment="javascript" th:remove="tag">
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+    </div>
 
 </body>
 

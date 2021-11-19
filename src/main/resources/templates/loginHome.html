@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html th:replace="~{layout :: layout(~{::title}, ~{::main})}" xmlns:th="http://www.thymeleaf.org">
+<html th:replace="~{layout :: layout(~{::title}, ~{::main}, ~{::javascript})}" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title>Home</title>
@@ -154,8 +154,8 @@
                 </div>
             </div>
         </div>
-
     </main>
+    <div th:fragment="javascript" th:remove="tag"></div>
 </body>
 
 </html>
