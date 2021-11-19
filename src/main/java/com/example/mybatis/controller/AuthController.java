@@ -1,9 +1,9 @@
 package com.example.mybatis.controller;
 
-import com.example.mybatis.service.LoginService;
-import com.example.mybatis.entity.Member;
-import com.example.mybatis.util.SessionConst;
 import com.example.mybatis.dto.LoginDto;
+import com.example.mybatis.entity.Member;
+import com.example.mybatis.service.LoginService;
+import com.example.mybatis.util.SessionConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -11,17 +11,18 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.time.LocalDateTime;
-import java.util.Collections;
 
 @Controller
 @RequiredArgsConstructor
@@ -63,22 +64,9 @@ public class AuthController {
 
             return "home";
         } else {
-            HttpSession session = request.getSession();
-            session.setAttribute(SessionConst.LOGIN_USER, loginUser);
-
-            String ref = request.getHeader("Referer");
-
-            if (ref.length() < 30) {
-                log.info("Login email={}, loginTime={}", loginDto.getEmail(), LocalDateTime.now());
-                return "redirect:/";
-            } else {
-                String redirectUrl = ref.substring(35);
-                log.info("Login email={}, loginTime={}, Redirect={}", loginDto.getEmail(), LocalDateTime.now(), redirectUrl);
-                return "redirect:" + redirectUrl;
-            }
+            return login(request, loginUser);
         }
     }
-
 
     //@RequestMapping("/logout")
     public String logoutByCookie(HttpServletResponse response) {
@@ -114,19 +102,8 @@ public class AuthController {
         Member member = loginService.loginOauth2ByGoogle(credential, g_csrf_token);
 
         if (member.getProvider() != null && member.getProvider().equals("google")) {
-            HttpSession session = request.getSession();
-            session.setAttribute(SessionConst.LOGIN_USER, member);
 
-            String ref = request.getHeader("Referer");
-
-            if (ref.length() < 30) {
-                log.info("Login email={}, loginTime={}", member.getEmail(), LocalDateTime.now());
-                return "redirect:/";
-            } else {
-                String redirectUrl = ref.substring(35);
-                log.info("Login email={}, loginTime={}, Redirect={}", member.getEmail(), LocalDateTime.now(), redirectUrl);
-                return "redirect:" + redirectUrl;
-            }
+            return login(request, member);
 
         } else {
             //구글 연동된 email 존재 X
@@ -144,5 +121,22 @@ public class AuthController {
             }
         }
     }
+
+    private String login(HttpServletRequest request, Member member) {
+        HttpSession session = request.getSession();
+        session.setAttribute(SessionConst.LOGIN_USER, member);
+
+        String ref = request.getHeader("Referer");
+
+        if (ref.length() < 30) {
+            log.info("Login email={}, loginTime={}", member.getEmail(), LocalDateTime.now());
+            return "redirect:/";
+        } else {
+            String redirectUrl = ref.substring(35);
+            log.info("Login email={}, loginTime={}, Redirect={}", member.getEmail(), LocalDateTime.now(), redirectUrl);
+            return "redirect:" + redirectUrl;
+        }
+    }
+
 
 }
