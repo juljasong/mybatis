@@ -4,7 +4,6 @@ import com.example.mybatis.dao.MemberMapper;
 import com.example.mybatis.dao.UrlMapper;
 import com.example.mybatis.entity.Member;
 import com.example.mybatis.entity.Url;
-import com.example.mybatis.util.argumentResolver.Login;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

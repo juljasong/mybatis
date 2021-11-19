@@ -1,6 +1,5 @@
 package com.example.mybatis.service;
 
-import com.example.mybatis.dto.SignInDto;
 import com.example.mybatis.entity.Member;
 import com.example.mybatis.dao.MemberMapper;
 import com.example.mybatis.dto.LoginDto;
