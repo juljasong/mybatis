@@ -42,14 +42,17 @@
 
             <button class="w-100 btn btn-secondary btn-lg" onclick="location.href='/'"
                 th:onclick="|location.href='@{/}'|" type="button">Cancel</button>
-
         </form>
 
+        <button onclick="requestPay()">결제하기</button>
+
     </main>
+
     <div th:fragment="javascript" th:remove="tag">
         <!-- iamport.payment.js -->
         <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
     </div>
+
 </body>
 
 </html>
