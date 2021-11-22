@@ -43,7 +43,7 @@ CREATE TABLE members (
   pwd            VARCHAR(255) NOT NULL COMMENT '비밀번호', -- 비밀번호
   name           VARCHAR(30)  NOT NULL COMMENT '이름', -- 이름
   create_date    DATETIME     NOT NULL DEFAULT now() COMMENT '가입일', -- 가입일
-  auth_key        VARCHAR(50)  NULL     COMMENT '이메일인증', -- 이메일인증
+  auth_key       VARCHAR(50)  NULL     COMMENT '이메일인증', -- 이메일인증
   provider		 VARCHAR(20)  NULL	   COMMENT '정보제공자' -- 정보제공자
 )
 COMMENT '회원';

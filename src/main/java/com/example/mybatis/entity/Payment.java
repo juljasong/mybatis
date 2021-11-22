@@ -2,14 +2,16 @@ package com.example.mybatis.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class Payment {
 
     private String merchantUid;
-    private Long memberId;
-    private Long productId;
+    private Member member;
+    private Product product;
 
     private String payMethod;
     private int applyNum;

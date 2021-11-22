@@ -1,0 +1,28 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mybatis.dao.OrderMapper">
+
+    <resultMap type="com.example.mybatis.entity.Order" id="OrderMap">
+        <id column="id" property="id" />
+        <result column="member_id" property="member.id" />
+        <result column="product_id" property="product.id" />
+        <result column="start_date" property="startDate" />
+        <result column="end_date" property="endDate" />
+        <result column="email" property="member.email" />
+        <result column="name" property="member.name" />
+        <result column="create_date" property="member.signInDate" />
+        <result column="auth_key" property="member.authKey" />
+        <result column="provider" property="member.provider" />
+    </resultMap>
+
+    <select id="findOrderAndMemberByMemberId" resultMap="OrderMap" parameterType="long">
+        SELECT *
+        FROM orders
+        JOIN members
+        ON orders.member_id=members.id
+        WHERE member_id=#{memberId}
+    </select>
+
+</mapper>
