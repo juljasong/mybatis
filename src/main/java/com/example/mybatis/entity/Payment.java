@@ -8,15 +8,15 @@ import lombok.Setter;
 public class Payment {
 
     private String merchantUid;
-    //private Long memberId;
+    private Long memberId;
+    private Long productId;
 
     private String payMethod;
-    private String orderName;
-    private Long applyNum;
+    private int applyNum;
     private String cardName;
     private String cardNum;
-    private Integer cardQuota;
-    private Long paidAmount;
-
+    private Integer quota;
+    private Long amount;
+    private int paidAt;
 
 }

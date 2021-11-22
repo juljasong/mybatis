@@ -28,9 +28,13 @@ GRANT ALL ON demodb.* TO demo@'::1';
 -- 데이터베이스 접속
 use demodb;
 
--- 회원
+
 DROP TABLE IF EXISTS members RESTRICT;
 DROP TABLE IF EXISTS urls RESTRICT;
+DROP TABLE IF EXISTS products RESTRICT;
+DROP TABLE IF EXISTS payments RESTRICT;
+DROP TABLE IF EXISTS orders RESTRICT;
+
 
 -- 회원
 CREATE TABLE members (
@@ -54,6 +58,7 @@ ALTER TABLE members
 ALTER TABLE members
   MODIFY COLUMN id INTEGER NOT NULL AUTO_INCREMENT COMMENT '회원번호';
 
+
 -- url
 CREATE TABLE urls (
   id            INTEGER      NOT NULL COMMENT '등록번호',
@@ -74,4 +79,67 @@ ALTER TABLE urls
     );
 
 ALTER TABLE urls
+  MODIFY COLUMN id INTEGER NOT NULL AUTO_INCREMENT COMMENT '등록번호';
+
+
+-- 상품
+CREATE TABLE products (
+  id            INTEGER      NOT NULL COMMENT '등록번호',
+  name          VARCHAR(100) NOT NULL COMMENT '이름',
+  price         INTEGER      NOT NULL COMMENT '가격'
+)
+COMMENT '상품';
+
+-- 상품
+ALTER TABLE products
+  ADD CONSTRAINT PK_products -- products 기본키
+    PRIMARY KEY (
+      id -- 등록번호
+    );
+
+ALTER TABLE products
+  MODIFY COLUMN id INTEGER NOT NULL AUTO_INCREMENT COMMENT '등록번호';
+
+
+-- 결제
+CREATE TABLE payments (
+  id            VARCHAR(30)  NOT NULL COMMENT '등록번호',
+  member_id     INTEGER      NOT NULL COMMENT '회원번호',
+  product_id    INTEGER      NOT NULL COMMENT '상품번호',
+  pay_method    VARCHAR(100) NULL     COMMENT '결제수단',
+  amount        INTEGER      NULL     COMMENT '금액',
+  quota         INTEGER      NULL     COMMENT '할부개월수',
+  card_num      VARCHAR(20)  NULL     COMMENT '카드번호',
+  card_name     VARCHAR(30)  NULL     COMMENT '카드이름',
+  paid_at       INTEGER      NULL     COMMENT '결제시간',
+  imp_uid       VARCHAR(50)  NULL     COMMENT '아임포트고유결제번호'
+)
+COMMENT '결제';
+
+-- 결제
+ALTER TABLE payments
+  ADD CONSTRAINT PK_payments -- payments 기본키
+    PRIMARY KEY (
+      id -- 등록번호
+    );
+
+
+-- 주문
+CREATE TABLE orders (
+  id            INTEGER      NOT NULL COMMENT '등록번호',
+  member_id     INTEGER      NOT NULL COMMENT '회원번호',
+  product_id    INTEGER      NOT NULL COMMENT '상품번호',
+  start_date    DATETIME     NOT NULL COMMENT '시작일',
+  end_date      DATETIME     NULL     COMMENT '마감일'
+)
+COMMENT '주문';
+
+-- 주문
+ALTER TABLE orders
+  ADD CONSTRAINT PK_orders -- orders 기본키
+    PRIMARY KEY (
+      id -- 등록번호
+    );
+
+ALTER TABLE orders
   MODIFY COLUMN id INTEGER NOT NULL AUTO_INCREMENT COMMENT '등록번호';

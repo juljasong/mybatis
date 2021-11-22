@@ -65,15 +65,15 @@ function requestPay() {
             type: 'POST',
             dataType: 'json',
             data: {
-              //impUid: rsp.imp_uid,
+              impUid: rsp.imp_uid,
               payMethod: rsp.pay_method,
               merchantUid: rsp.merchant_uid,
-              orderName: rsp.name,
               applyNum: rsp.apply_num,
               cardName: rsp.card_name,
               cardNum: rsp.card_number,
-              cardQuota: rsp.card_quota,
-              paidAmount: rsp.paid_amount,
+              quota: rsp.card_quota,
+              amount: rsp.paid_amount,
+              paidAt: paid_at,
             },
           })
           .done(function (data) {

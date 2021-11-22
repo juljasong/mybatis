@@ -14,9 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PaymentController {
 
     @PostMapping("/complete")
-    public String completePayments(Model model, @ModelAttribute Payment payment) {
-        log.info("merchantUid={}, payMethod={}, orderName={}", payment.getMerchantUid(), payment.getPayMethod(), payment.getOrderName());
-        model.addAttribute("message", "결제 완료");
-        return "/message";
+    public void completePayments(Model model, @ModelAttribute Payment payment) {
+        log.info("merchantUid={}, payMethod={}, amount={}", payment.getMerchantUid(), payment.getPayMethod(), payment.getAmount());
+
     }
 }
