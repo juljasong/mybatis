@@ -61,6 +61,7 @@ public class UrlController {
     @GetMapping("/update")
     public ResponseEntity<Url> updateForm(@Login Member loginUser, @RequestParam Long id) {
         Url url = urlService.findUrlById(loginUser.getId(), id);
+        log.info("{}", url);
         return new ResponseEntity<Url>(url, HttpStatus.OK);
     }
 
