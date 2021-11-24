@@ -17,12 +17,12 @@
         <result column="provider" property="member.provider" />
     </resultMap>
 
-    <select id="findOrderAndMemberByMemberId" resultMap="OrderMap" parameterType="long">
-        SELECT *
-        FROM orders
-        JOIN members
-        ON orders.member_id=members.id
-        WHERE member_id=#{memberId}
-    </select>
+<!--    <select id="findOrderByMemberId" resultMap="OrderMap" parameterType="long">-->
+<!--        SELECT *-->
+<!--        FROM orders-->
+<!--        JOIN members-->
+<!--        ON orders.member_id=members.id-->
+<!--        WHERE member_id=#{memberId}-->
+<!--    </select>-->
 
 </mapper>

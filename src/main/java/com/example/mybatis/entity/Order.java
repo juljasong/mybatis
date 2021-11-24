@@ -11,7 +11,7 @@ import java.sql.Date;
 @ToString
 public class Order {
 
-    private Long id;
+    private String id;
     private Long productId;
     private Long memberId;
     private Date startDate;

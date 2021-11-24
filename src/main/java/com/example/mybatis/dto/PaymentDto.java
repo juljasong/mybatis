@@ -35,7 +35,5 @@ public class PaymentDto {
     private int paidAt;
     private Long productId;
     private Long memberId;
-    private Date startDate;
-    private Date endDate;
 
 }

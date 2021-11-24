@@ -3,6 +3,7 @@ package com.example.mybatis.controller;
 import com.example.mybatis.dto.PaymentDto;
 import com.example.mybatis.dto.PaymentFormDto;
 import com.example.mybatis.entity.Member;
+import com.example.mybatis.entity.Order;
 import com.example.mybatis.entity.Product;
 import com.example.mybatis.service.OrderService;
 import com.example.mybatis.service.PaymentService;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -32,6 +34,12 @@ public class PaymentController {
 
     @GetMapping("/plus")
     public ResponseEntity<PaymentFormDto> payPlus(@Login Member loginUser, @RequestParam Long productId) {
+
+        Order order = orderService.findAvailableOrderByMemberId(loginUser.getId());
+
+        if (order != null) {
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
         //주문번호 생성
         String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
@@ -58,10 +66,7 @@ public class PaymentController {
         try {
             paymentDto.setBuyerName(loginUser.getName());
             paymentDto.setBuyerEmail(loginUser.getEmail());
-
             paymentDto.setMemberId(loginUser.getId());
-//            paymentDto.setStartDate();
-//            paymentDto.setEndDate();
 
             paymentService.add(paymentDto);
             orderService.add(paymentDto);
