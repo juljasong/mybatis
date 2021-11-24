@@ -21,7 +21,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-
 @Controller
 @Slf4j
 @RequestMapping("/payments")
@@ -38,7 +37,7 @@ public class PaymentController {
         Order order = orderService.findAvailableOrderByMemberId(loginUser.getId());
 
         if (order != null) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
         //주문번호 생성

@@ -24,7 +24,6 @@ import java.sql.Date;
 public class UrlController {
 
     private final UrlService urlService;
-    private final UrlMapper urlMapper;
 
     @PostMapping("/add")
     public String add(@Login Member loginUser,

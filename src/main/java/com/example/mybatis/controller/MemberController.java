@@ -3,12 +3,17 @@ package com.example.mybatis.controller;
 import com.example.mybatis.dto.FindPasswordDto;
 import com.example.mybatis.entity.Member;
 import com.example.mybatis.dao.MemberMapper;
+import com.example.mybatis.entity.Order;
 import com.example.mybatis.service.MemberService;
+import com.example.mybatis.service.OrderService;
 import com.example.mybatis.util.SessionConst;
 import com.example.mybatis.util.argumentResolver.Login;
 import com.example.mybatis.dto.SignInDto;
 import com.example.mybatis.dto.UpdateDto;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,17 +28,14 @@ import javax.servlet.http.HttpSession;
 @Slf4j
 @Controller
 @RequestMapping("/member")
+@RequiredArgsConstructor
 public class MemberController {
 
     private final MemberMapper memberMapper;
     private final MemberService memberService;
     private final AuthController authController;
+    private final OrderService orderService;
 
-    public MemberController(MemberMapper memberMapper, MemberService memberService, AuthController authController) {
-        this.memberMapper = memberMapper;
-        this.memberService = memberService;
-        this.authController = authController;
-    }
 
     @GetMapping("/add")
     public String addForm(Model model) {
@@ -79,6 +81,7 @@ public class MemberController {
     @GetMapping("/updateForm")
     public String updateForm(@Login Member loginUser, Model model) {
         model.addAttribute("loginUser", loginUser);
+        model.addAttribute("order", orderService.findAvailableOrderByMemberId(loginUser.getId()));
 
         UpdateDto updateDto = new UpdateDto();
         updateDto.setName(loginUser.getName());
