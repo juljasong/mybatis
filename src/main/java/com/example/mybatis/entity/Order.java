@@ -12,9 +12,8 @@ import java.sql.Date;
 public class Order {
 
     private Long id;
-    private Member member;
-    private Product product;
-
+    private Long productId;
+    private Long memberId;
     private Date startDate;
     private Date endDate;
 

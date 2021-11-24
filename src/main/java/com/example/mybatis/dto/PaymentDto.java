@@ -1,24 +1,41 @@
-package com.example.mybatis.entity;
+package com.example.mybatis.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
+import java.sql.Date;
 
 @Getter
 @Setter
 @ToString
-public class Payment {
+public class PaymentDto {
 
+    @NotNull
     private String merchantUid;
+    @NotNull
     private String impUid;
+    @NotNull
+    private String buyerEmail;
+    @NotNull
+    private String buyerName;
+    @NotNull
     private String payMethod;
+    @NotNull
     private int applyNum;
+    @NotNull
     private String cardName;
+    @NotNull
     private String cardNum;
     private Integer quota;
+    @NotNull
     private int amount;
+    @NotNull
     private int paidAt;
+    private Long productId;
+    private Long memberId;
+    private Date startDate;
+    private Date endDate;
 
 }

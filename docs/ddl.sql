@@ -103,9 +103,7 @@ ALTER TABLE products
 
 -- 결제
 CREATE TABLE payments (
-  id            VARCHAR(30)  NOT NULL COMMENT '등록번호',
-  member_id     INTEGER      NOT NULL COMMENT '회원번호',
-  product_id    INTEGER      NOT NULL COMMENT '상품번호',
+  id            VARCHAR(100) NOT NULL COMMENT '등록번호',
   pay_method    VARCHAR(100) NULL     COMMENT '결제수단',
   amount        INTEGER      NULL     COMMENT '금액',
   quota         INTEGER      NULL     COMMENT '할부개월수',
@@ -126,10 +124,10 @@ ALTER TABLE payments
 
 -- 주문
 CREATE TABLE orders (
-  id            INTEGER      NOT NULL COMMENT '등록번호',
+  id            VARCHAR(100) NOT NULL COMMENT '등록번호',
   member_id     INTEGER      NOT NULL COMMENT '회원번호',
   product_id    INTEGER      NOT NULL COMMENT '상품번호',
-  start_date    DATETIME     NOT NULL COMMENT '시작일',
+  start_date    DATETIME     NULL     COMMENT '시작일',
   end_date      DATETIME     NULL     COMMENT '마감일'
 )
 COMMENT '주문';
@@ -140,6 +138,3 @@ ALTER TABLE orders
     PRIMARY KEY (
       id -- 등록번호
     );
-
-ALTER TABLE orders
-  MODIFY COLUMN id INTEGER NOT NULL AUTO_INCREMENT COMMENT '등록번호';
