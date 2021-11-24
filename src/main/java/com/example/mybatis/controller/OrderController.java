@@ -19,18 +19,18 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @GetMapping("/test")
-    public String test(Model model) {
-
-        Long memberId=11L;
-
-        List<Order> orders = orderService.showOrder(memberId);
-        for (Order order : orders) {
-            log.info("{}", order);
-        }
-        model.addAttribute("message", "ok");
-        return "message";
-    }
+//    @GetMapping("/test")
+//    public String test(Model model) {
+//
+//        Long memberId=11L;
+//
+//        List<Order> orders = orderService.showOrder(memberId);
+//        for (Order order : orders) {
+//            log.info("{}", order);
+//        }
+//        model.addAttribute("message", "ok");
+//        return "message";
+//    }
 
 
 }

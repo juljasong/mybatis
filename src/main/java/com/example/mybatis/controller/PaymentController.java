@@ -3,8 +3,6 @@ package com.example.mybatis.controller;
 import com.example.mybatis.dto.PaymentDto;
 import com.example.mybatis.dto.PaymentFormDto;
 import com.example.mybatis.entity.Member;
-import com.example.mybatis.entity.Order;
-import com.example.mybatis.entity.Payment;
 import com.example.mybatis.entity.Product;
 import com.example.mybatis.service.OrderService;
 import com.example.mybatis.service.PaymentService;
@@ -15,11 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -57,14 +53,18 @@ public class PaymentController {
     }
 
     @PostMapping("/complete")
-    public ResponseEntity<PaymentDto> completePayments(@Login Member loginUser, @Validated @ModelAttribute PaymentDto paymentDto, BindingResult bindingResult) {
-        log.info("{}", paymentDto);
+    public ResponseEntity<PaymentDto> completePayments(@Login Member loginUser, @ModelAttribute PaymentDto paymentDto) {
 
         try {
             paymentDto.setBuyerName(loginUser.getName());
             paymentDto.setBuyerEmail(loginUser.getEmail());
+
+            paymentDto.setMemberId(loginUser.getId());
+//            paymentDto.setStartDate();
+//            paymentDto.setEndDate();
+
             paymentService.add(paymentDto);
-            //orderService.add(payment);
+            orderService.add(paymentDto);
         } catch (Exception e) {
             e.printStackTrace();
         }
