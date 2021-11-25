@@ -58,4 +58,16 @@ public class UrlService {
         List<Url> urls = urlMapper.findByMemberIdAndPublic(memberId);
         return urls;
     }
+
+    public List<Url> findByMemberId(Long id) {
+        return urlMapper.findByMemberId(id);
+    }
+
+    public List<Url> findExpiredByMemberId(Long id) {
+        return urlMapper.findExpiredByMemberId(id);
+    }
+
+    public int countAllByMemberId(Long id) {
+        return urlMapper.countAllByMemberId(id);
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.mybatis.controller;
 
+import com.example.mybatis.service.UrlService;
 import com.example.mybatis.util.argumentResolver.Login;
 import com.example.mybatis.dto.LoginDto;
 import com.example.mybatis.entity.Member;
@@ -19,8 +20,7 @@ import java.util.List;
 @Slf4j
 public class HomeController {
 
-    private final MemberMapper memberMapper;
-    private final UrlMapper urlMapper;
+    private final UrlService urlService;
 
     @RequestMapping("/")
     public String home(//@SessionAttribute(name = SessionConst.LOGIN_USER, required = false)
@@ -30,8 +30,8 @@ public class HomeController {
             model.addAttribute("loginDto", new LoginDto());
             return "home";
         }
-            List<Url> enableUrls = urlMapper.findByMemberId(loginUser.getId());
-            List<Url> disabledUrls = urlMapper.findExpiredByMemberId(loginUser.getId());
+            List<Url> enableUrls = urlService.findByMemberId(loginUser.getId());
+            List<Url> disabledUrls = urlService.findExpiredByMemberId(loginUser.getId());
 
             model.addAttribute("url", new Url());
             model.addAttribute("enableUrls", enableUrls);

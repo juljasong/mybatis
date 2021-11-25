@@ -9,6 +9,25 @@ function copy() {
   alert('Copied!');
 }
 
+function enableAddUrl() {
+  let isSubmit = false;
+
+  $.ajax({
+    url: '/url/add',
+    type: 'GET',
+    async: false,
+  }).done((message) => {
+    console.log(message);
+    if (message == 'false') {
+      alert('멤버쉽을 이용하지 않으면, 5개까지 공유할 수 있습니다.');
+      isSubmit = false;
+    } else {
+      isSubmit = true;
+    }
+  });
+  if (!isSubmit) return false;
+}
+
 function updateForm(no) {
   $.ajax({
     url: '/url/update',

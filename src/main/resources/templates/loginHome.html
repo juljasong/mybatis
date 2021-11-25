@@ -28,7 +28,7 @@
                             </button>
                         </div>
 
-                        <form action="/url/add" th:object="${url}" method="post">
+                        <form action="/url/add" th:object="${url}" method="post" onsubmit="return enableAddUrl()">
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="name" class="col-form-label">Name:</label>

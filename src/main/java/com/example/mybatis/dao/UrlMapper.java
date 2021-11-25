@@ -32,4 +32,7 @@ public interface UrlMapper {
 
     @Select("SELECT * FROM urls WHERE id=#{id} AND member_id=#{memberId}")
     Url findUrlById(@Param("memberId") Long memberId, @Param("id") Long id);
+
+    @Select("SELECT COUNT(*) FROM urls WHERE member_id=#{id}")
+    int countAllByMemberId(@Param("id") Long id);
 }
