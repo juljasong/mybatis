@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html th:replace="~{layout :: layout(~{::title}, ~{::main})}" xmlns:th="http://www.thymeleaf.org">
+<html th:replace="~{layout :: layout(~{::title}, ~{::main}, ~{::javascript})}" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title>Error</title>
 </head>
 
 <body>
-<main>
-    <h1>5XX ERROR</h1>
-</main>
+    <main>
+        <h1>5XX ERROR</h1>
+        <a href="http://localhost:8080/">Go main</a>
+    </main>
+    <div th:fragment="javascript" th:remove="tag"></div>
 </body>
 
 </html>
