@@ -21,6 +21,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -44,7 +45,7 @@ public class MemberController {
     }
 
     @PostMapping("/add")
-    public String save(@Validated @ModelAttribute SignInDto signInDto, BindingResult bindingResult, @RequestParam String password2) throws Exception {
+    public String save(@Validated @ModelAttribute SignInDto signInDto, BindingResult bindingResult, @RequestParam String password2, RedirectAttributes redirectAttributes) throws Exception {
 
         if(!signInDto.getPassword().equals(password2)) {
             bindingResult.addError(new ObjectError("member", "Password is not equal."));
@@ -68,13 +69,17 @@ public class MemberController {
         member.setName(signInDto.getName());
         member.setPassword(signInDto.getPassword());
 
-        memberService.save(member);
+        int result = memberService.save(member);
+        if (result == 1) {
+            redirectAttributes.addFlashAttribute("message", "Check your email.");
+        }
         return "redirect:/message";
     }
 
     @GetMapping("/chk/{authKey}")
-    public String mailChek(@PathVariable String authKey) {
-        memberMapper.mailCheck(authKey);
+    public String mailChek(@PathVariable String authKey, RedirectAttributes redirectAttributes) {
+        String message = memberService.mailCheck(authKey);
+        redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/message";
     }
 
@@ -145,8 +150,9 @@ public class MemberController {
     }
 
     @PostMapping("/findpwd")
-    public String findPassword(@RequestParam String email) {
+    public String findPassword(@RequestParam String email, RedirectAttributes redirectAttributes) {
         String message = memberService.findPassword(email);
+        redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/message";
     }
 
@@ -157,7 +163,7 @@ public class MemberController {
     }
 
     @PostMapping("/resetpwd")
-    public String resetPassword(@ModelAttribute FindPasswordDto findPasswordDto, BindingResult bindingResult) {
+    public String resetPassword(@ModelAttribute FindPasswordDto findPasswordDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
         if (!findPasswordDto.getPassword1().equals(findPasswordDto.getPassword2())) {
             bindingResult.addError(new ObjectError("findPasswordDto", "New password and check password are not equal."));
@@ -172,21 +178,22 @@ public class MemberController {
         }
 
         String message = memberService.resetPassword(findPasswordDto.getPassword1(), findPasswordDto.getAuthKey());
+        redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/message";
     }
 
     @PostMapping("/oauth2/add")
-    public String addOauth2(@RequestParam String email, @RequestParam String name, @RequestParam String provider, Model model) {
+    public String addOauth2(@RequestParam String email, @RequestParam String name, @RequestParam String provider, RedirectAttributes redirectAttributes) {
         String message = memberService.saveOauth2(new Member(email, "google", name, "Y", provider));
-        model.addAttribute("message", message);
+        redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/message";
     }
 
     @PostMapping("/oauth2/link")
-    public String linkOauth2(@RequestParam String email, @RequestParam String provider, Model model) {
+    public String linkOauth2(@RequestParam String email, @RequestParam String provider, RedirectAttributes redirectAttributes) {
         String message = memberService.linkOauth2(email, provider);
-        model.addAttribute("message", message);
-        return "message:/message";
+        redirectAttributes.addFlashAttribute("message", message);
+        return "redirect:/message";
     }
 
 

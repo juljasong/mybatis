@@ -23,15 +23,17 @@ public class MemberService {
         return memberMapper.findById(id);
     }
 
-    public void save(Member member) throws Exception {
+    public int save(Member member) throws Exception {
+        int result = 0;
         try {
             String authKey = mailService.sendAuthenticationMail(member);
             member.setAuthKey(authKey);
             System.out.println("authKey = " + authKey);
-            memberMapper.insert(member);
+            result = memberMapper.insert(member);
         }catch (Exception e) {
             e.printStackTrace();
         }
+        return result;
     }
 
     public int verifyCurrentPassword(Long id, String currentPassword) {
@@ -88,6 +90,14 @@ public class MemberService {
     }
 
 
-
-
+    public String mailCheck(String authKey) {
+        int result = memberMapper.mailCheck(authKey);
+        String msg = "";
+        if (result < 1) {
+            msg = "An error has occurred.";
+        }else {
+            msg = "Membership registration has been completed.";
+        }
+        return msg;
+    }
 }

@@ -34,8 +34,8 @@ public interface MemberMapper {
     @Select("SELECT * FROM members")
     List<Member> findAll();
 
-    @Select("UPDATE members SET auth_key='Y' WHERE auth_key=#{authKey}")
-    Member mailCheck(@Param("authKey") String authKey);
+    @Update("UPDATE members SET auth_key='Y' WHERE auth_key=#{authKey}")
+    int mailCheck(@Param("authKey") String authKey);
 
     @Update({"<script>",
             "UPDATE members",
