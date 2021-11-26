@@ -16,11 +16,11 @@
             <img id="logo" th:src="@{/images/logo.jpg}" src="../static/images/logo.jpg">
         </a>
 
-        <div th:if="${session.loginUser} != null">
+        <div th:if="${session.loginAdmin} != null">
             <div class="d-flex flex-row-reverse bd-highlight">
                 <a href="/admin/logout" style="margin-top: 30px">Logout</a>
                 <a href="/admin/updateForm" style="text-decoration: none; color: black; margin:30px 10px 0px 0px">
-                    <p th:text="|Welcome, ${session.loginUser.name}!|">Welcome, user!</p>
+                    <p th:text="|Welcome, ${session.loginAdmin.name}!|">Welcome, user!</p>
                 </a>
             </div>
         </div>

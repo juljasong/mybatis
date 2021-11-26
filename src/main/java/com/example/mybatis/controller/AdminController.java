@@ -57,7 +57,7 @@ public class AdminController {
 
     private void login(HttpServletRequest request, Admin loginAdmin) {
         HttpSession session = request.getSession();
-        session.setAttribute(SessionConst.LOGIN_USER, loginAdmin);
+        session.setAttribute(SessionConst.LOGIN_ADMIN, loginAdmin);
     }
 
 }

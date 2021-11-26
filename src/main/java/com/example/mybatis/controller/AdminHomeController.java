@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 public class AdminHomeController {
 
     @GetMapping("/admin")
-    public String adminHome(@SessionAttribute(name = SessionConst.LOGIN_USER, required = false) Admin admin) {
+    public String adminHome(@SessionAttribute(name = SessionConst.LOGIN_ADMIN, required = false) Admin admin) {
 
         if (admin == null) {
             return "admin/home";
