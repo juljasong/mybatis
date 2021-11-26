@@ -33,6 +33,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	//testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'ch.qos.logback:logback-classic:1.2.7'
 	implementation 'javax.validation:validation-api:2.0.1.Final'
 }
 
