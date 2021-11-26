@@ -14,6 +14,7 @@ public class AdminCheckInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
+        log.info("AdminCheckInterceptor");
         HttpSession session = request.getSession();
 
         if (session == null || session.getAttribute(SessionConst.LOGIN_ADMIN) == null) {

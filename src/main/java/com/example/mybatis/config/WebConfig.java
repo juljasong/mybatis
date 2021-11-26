@@ -22,11 +22,11 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/css/**", "/images/**", "/*.ico", "/error");
         registry.addInterceptor(new LoginCheckInterceptor())
-                .order(3)
-                .addPathPatterns("/**")
-                .excludePathPatterns("/", "/member/add", "/*", "/logout", "/css/**", "/images/**", "/*.ico", "/error", "/auth/login", "/member/chk/*", "/member/findpwd", "/member/resetpwd/*", "/member/resetpwd", "/login/oauth2/*", "/member/oauth2/*");
-        registry.addInterceptor(new AdminCheckInterceptor())
                 .order(2)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/","/admin/**", "/member/add", "/*", "/logout", "/css/**", "/images/**", "/*.ico", "/error", "/auth/login", "/member/chk/*", "/member/findpwd", "/member/resetpwd/*", "/member/resetpwd", "/login/oauth2/*", "/member/oauth2/*");
+        registry.addInterceptor(new AdminCheckInterceptor())
+                .order(3)
                 .addPathPatterns("/admin/**")
                 .excludePathPatterns("/admin", "/admin/login");
     }
