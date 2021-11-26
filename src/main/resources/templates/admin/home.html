@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html th:replace="~{admin/adminLayout :: layout(~{::title}, ~{::main}, ~{::javascript})}"
+    xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>ADMIN| HOME</title>
+</head>
+
+<body>
+    <main>
+        <form action="/admin/login" method="post">
+
+            <label for="adminId">id</label>
+            <input type="text" id="adminId" name="adminId" class="form-control my-2" placeholder="Write your Email.">
+
+            <label for="password">password</label>
+            <input type="password" id="adminPassword" name="password" class="form-control my-2"
+                placeholder="Write your password.">
+
+            <button class="w-100 btn btn-primary btn-lg btn-block my-3" type="submit">Log in</button>
+            <html>
+        </form>
+    </main>
+
+    <div th:fragment="javascript" th:remove="tag"></div>
+
+</body>
+
+</html>

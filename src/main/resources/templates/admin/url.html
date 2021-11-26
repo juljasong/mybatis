@@ -1,24 +1,24 @@
 <!DOCTYPE html>
-<html th:replace="~{layout :: layout(~{::title}, ~{::main})}" xmlns:th="http://www.thymeleaf.org">
+<html th:replace="~{admin/adminLayout :: layout(~{::title}, ~{::main}, ~{::javascript})}"
+    xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Admin/Home</title>
+    <title>ADMIN| URL</title>
 </head>
 
-
 <body>
-<!--Start URL-->
-<main>
-    <ul class="url-list list-group list-group-flush">
-        <li th:each="url : ${urls}" class="url-list-item w-100 list-group-item"
-            th:utext="|<a href='${url.url}' style='text-decoration: none; color: black;'>${url.name}</a>|">
-            un item
-        </li>
-        <!-- <li th:each="url : ${urls}" class="url-list-item w-100 list-group-item" th:text="${url.name}">
-            <a href="#" th:href="${url.url}">un item</a>
-        </li> -->
-    </ul>
-</main>
+    <!--Start URL-->
+    <main>
+        <ul class="url-list list-group list-group-flush">
+            <li th:each="url : ${urls}" class="url-list-item w-100 list-group-item"
+                th:utext="|<a href='${url.url}' style='text-decoration: none; color: black;'>${url.name}</a>|">
+                un item
+            </li>
+        </ul>
+    </main>
+
+    <div th:fragment="javascript" th:remove="tag"></div>
+
 </body>
 
 </html>

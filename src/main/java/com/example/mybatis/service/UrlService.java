@@ -70,4 +70,8 @@ public class UrlService {
     public int countAllByMemberId(Long id) {
         return urlMapper.countAllByMemberId(id);
     }
+
+    public List<Url> findAll() {
+        return urlMapper.findAll();
+    }
 }
