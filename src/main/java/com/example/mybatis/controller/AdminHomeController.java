@@ -18,6 +18,6 @@ public class AdminHomeController {
             return "admin/home";
         }
 
-        return "admin/url";
+        return "admin/loginHome";
     }
 }
