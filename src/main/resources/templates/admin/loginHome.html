@@ -24,16 +24,15 @@
             </li>
         </ul>
 
-        <!--Result-->
-
         <div class="input-group my-3">
-            <input type="text" class="form-control" id="searchInput">
+            <input type="text" class="form-control" id="inputSearchText">
             <span class="input-group-text">🔍</span>
         </div>
 
-        <ul id="result-list" class="list-group list-group-flush">
+        <!--Result-->
+        <table id="result-table" class="table table-hover">
 
-        </ul>
+        </table>
 
     </main>
     <div th:fragment="javascript" th:remove="tag"></div>

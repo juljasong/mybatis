@@ -63,6 +63,12 @@ public class AdminController {
         return new ResponseEntity<>(urls, HttpStatus.OK);
     }
 
+    @GetMapping("urls/{input}")
+    public ResponseEntity<List<Url>> getUrlsByInput(@PathVariable String input) {
+        List<Url> urls = urlService.findByInput(input);
+        return new ResponseEntity<>(urls, HttpStatus.OK);
+    }
+
     @GetMapping("/members")
     public ResponseEntity<List<Member>> getAllMembers() {
         List<Member> members = memberService.findAll();

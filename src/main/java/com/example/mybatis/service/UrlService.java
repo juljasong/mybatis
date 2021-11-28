@@ -74,4 +74,8 @@ public class UrlService {
     public List<Url> findAll() {
         return urlMapper.findAll();
     }
+
+    public List<Url> findByInput(String input) {
+        return urlMapper.findByInput(input);
+    }
 }

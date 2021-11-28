@@ -35,4 +35,7 @@ public interface UrlMapper {
 
     @Select("SELECT COUNT(*) FROM urls WHERE member_id=#{id}")
     int countAllByMemberId(@Param("id") Long id);
+
+    @Select("SELECT * FROM urls WHERE id LIKE CONCAT('%', #{input}, '%') OR member_id LIKE CONCAT('%', #{input}, '%') OR name LIKE CONCAT('%', #{input}, '%') OR url LIKE CONCAT('%', #{input}, '%')")
+    List<Url> findByInput(@Param("input") String input);
 }
