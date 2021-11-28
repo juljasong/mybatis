@@ -103,22 +103,25 @@ public class MemberController {
                          Model model) throws Exception {
         Long memberId = loginUser.getId();
 
-        if (updateDto.getCurrentPassword().isBlank() && updateDto.getPassword().isBlank() && updateDto.getName().equals(loginUser.getName())) {
-            return "redirect:/member/updateForm";
-        } else {
-            if (memberService.verifyCurrentPassword(loginUser.getId(), updateDto.getCurrentPassword()) == 0) {
-              bindingResult.addError(new FieldError("updateDto", "currentPassword", "Current password is not correct."));
+        if (loginUser.getProvider().isBlank()) {
+
+            if (updateDto.getCurrentPassword().isBlank() && updateDto.getPassword().isBlank() && updateDto.getName().equals(loginUser.getName())) {
+                return "redirect:/member/updateForm";
             } else {
-                if(memberMapper.findByName(updateDto.getName()) > 0) {
-                    if(!updateDto.getName().equals(loginUser.getName())) {
-                        bindingResult.addError(new FieldError("updateDto", "name", updateDto.getName(),false, null, null, "Same name already exists."));
+                if (memberService.verifyCurrentPassword(loginUser.getId(), updateDto.getCurrentPassword()) == 0) {
+                    bindingResult.addError(new FieldError("updateDto", "currentPassword", "Current password is not correct."));
+                } else {
+                    if (memberMapper.findByName(updateDto.getName()) > 0) {
+                        if (!updateDto.getName().equals(loginUser.getName())) {
+                            bindingResult.addError(new FieldError("updateDto", "name", updateDto.getName(), false, null, null, "Same name already exists."));
+                        }
                     }
-                }
-                if (!updateDto.getPassword().equals(updateDto.getPassword2())) {
-                    bindingResult.addError(new FieldError("updateDto", "password2", "New password and check password are not equal."));
-                }
-                if(updateDto.getPassword().length() < 9 || updateDto.getPassword().length() > 21) {
-                    bindingResult.addError(new FieldError("updateDto", "password","Your password must be between 10 to 20 characters."));
+                    if (!updateDto.getPassword().equals(updateDto.getPassword2())) {
+                        bindingResult.addError(new FieldError("updateDto", "password2", "New password and check password are not equal."));
+                    }
+                    if (updateDto.getPassword().length() < 9 || updateDto.getPassword().length() > 21) {
+                        bindingResult.addError(new FieldError("updateDto", "password", "Your password must be between 10 to 20 characters."));
+                    }
                 }
             }
         }
