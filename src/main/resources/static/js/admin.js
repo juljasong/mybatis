@@ -5,11 +5,13 @@ const inputSearchText = document.getElementById('inputSearchText');
 
 function getUrls() {
   $('#result-table').empty();
+  $('#search-result-table').empty();
   $('#member-list-button').removeClass('active');
   $('#order-list-button').removeClass('active');
   $('#url-list-button').addClass('active');
 
   let table = document.getElementById('result-table');
+  let searchTable = document.getElementById('search-result-table');
 
   $.ajax({
     url: '/admin/urls',
@@ -32,17 +34,31 @@ function getUrls() {
     .always((data) => {
       inputSearchText.addEventListener('input', () => {
         let searchText = inputSearchText.value;
+        searchTable.innerHTML = '';
+
         if (searchText == '') {
-          $('#result-table > tbody').show();
+          $('#result-table').show();
+          $('#search-result-table').hide();
         } else {
-          $('#result-table > tbody').hide();
+          $('#search-result-table').show();
+          $('#result-table').hide();
+
           $.ajax({
             url: '/admin/urls/' + searchText,
             type: 'get',
           }).done((data) => {
+            searchTable.innerHTML +=
+              '<thead>' +
+              '<th scope="col">#</th>' +
+              '<th scope="col">NAME</th>' +
+              '<th scope="col">URL</th>' +
+              '</thead>' +
+              '<tbody>';
             for (i in data) {
-              table.innerHTML += `<tr><th scope="memberId">${data[i].memberId}</th><td>${data[i].name}</td><td>${data[i].url}</td>`;
+              searchTable.innerHTML += `<tr><th scope="memberId">${data[i].memberId}</th><td>${data[i].name}</td><td>${data[i].url}</td>`;
             }
+
+            searchTable.innerHTML += '</tbody>';
           });
         }
       });
