@@ -3,7 +3,7 @@
     xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>ADMIN| URL</title>
+    <title>ADMIN| MEMBER</title>
 </head>
 
 <body>
@@ -12,11 +12,11 @@
         <ul class="nav nav-tabs">
             <!--Url-->
             <li class="nav-item" id="url-list">
-                <a href="/admin/urls" class="nav-link active">URLS</a>
+                <a href="/admin/urls" class="nav-link">URLS</a>
             </li>
             <!--Members-->
             <li class="nav-item" id="member-list">
-                <a href="/admin/members" class="nav-link">MEMBERS</a>
+                <a href="/admin/members" class="nav-link active">MEMBERS</a>
             </li>
             <!--Orders-->
             <li class="nav-item" id="order-list">
@@ -32,14 +32,18 @@
         <table id="result-table" class="table table-hover">
             <thead>
                 <th scope="col">#</th>
+                <th scope="col">EMAIL</th>
                 <th scope="col">NAME</th>
-                <th scope="col">URL</th>
+                <th scope="col">SIGN IN DATE</th>
+                <th scope="col">PROVIDER</th>
             </thead>
             <tbody>
-                <tr th:each="url : ${urls}">
-                    <th scope="memberId" th:text="${url.memberId}">MEMBER_ID</th>
-                    <td th:text="${url.name}">NAME</td>
-                    <td th:text="${url.url}">URL</td>
+                <tr th:each="member : ${members}">
+                    <th scope="memberId" th:text="${member.id}">MEMBER_ID</th>
+                    <td th:text="${member.email}">EMAIL</td>
+                    <td th:text="${member.name}">NAME</td>
+                    <td th:text="${#dates.format(member.createDate, 'yyyy-MM-dd HH:mm:ss')}">SIGN IN DATE</td>
+                    <td th:text="${member.provider}">PROVIDER</td>
                 </tr>
             </tbody>
         </table>
@@ -47,8 +51,10 @@
         <table id="search-result-table" class="table table-hover hidden">
             <thead>
                 <th scope="col">#</th>
+                <th scope="col">EMAIL</th>
                 <th scope="col">NAME</th>
-                <th scope="col">URL</th>
+                <th scope="col">SIGN IN DATE</th>
+                <th scope="col">PROVIDER</th>
             </thead>
             <tbody id="search-tbody">
             </tbody>

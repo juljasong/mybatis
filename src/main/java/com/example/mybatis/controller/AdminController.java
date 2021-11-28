@@ -58,9 +58,9 @@ public class AdminController {
     }
 
     @GetMapping("/urls")
-    public ResponseEntity<List<Url>> getAllUrls() {
-        List<Url> urls = urlService.findAll();
-        return new ResponseEntity<>(urls, HttpStatus.OK);
+    public String getAllUrls(Model model) {
+        model.addAttribute("urls", urlService.findAll());
+        return "admin/url";
     }
 
     @GetMapping("urls/{input}")
@@ -70,14 +70,26 @@ public class AdminController {
     }
 
     @GetMapping("/members")
-    public ResponseEntity<List<Member>> getAllMembers() {
-        List<Member> members = memberService.findAll();
+    public String getAllMembers(Model model) {
+        model.addAttribute("members", memberService.findAll());
+        return "admin/member";
+    }
+
+    @GetMapping("members/{input}")
+    public ResponseEntity<List<Member>> getMembersByInput(@PathVariable String input) {
+        List<Member> members = memberService.findByInput(input);
         return new ResponseEntity<>(members, HttpStatus.OK);
     }
 
     @GetMapping("/orders")
-    public ResponseEntity<List<Order>> getAllOrders() {
-        List<Order> orders = orderService.findAll();
+    public String getAllOrders(Model model) {
+        model.addAttribute("orders", orderService.findAll());
+        return "admin/order";
+    }
+
+    @GetMapping("orders/{input}")
+    public ResponseEntity<List<Order>> getOrdersByInput(@PathVariable String input) {
+        List<Order> orders = orderService.findByInput(input);
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 

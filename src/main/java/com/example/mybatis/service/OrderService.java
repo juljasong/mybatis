@@ -2,6 +2,7 @@ package com.example.mybatis.service;
 
 import com.example.mybatis.dao.OrderMapper;
 import com.example.mybatis.dto.PaymentDto;
+import com.example.mybatis.entity.Member;
 import com.example.mybatis.entity.Order;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,5 +27,9 @@ public class OrderService {
 
     public List<Order> findAll() {
         return orderMapper.findAll();
+    }
+
+    public List<Order> findByInput(String input) {
+        return orderMapper.findByInput(input);
     }
 }

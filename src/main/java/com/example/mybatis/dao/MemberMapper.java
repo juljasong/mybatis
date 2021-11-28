@@ -69,4 +69,7 @@ public interface MemberMapper {
 
     @Update("UPDATE members SET provider=#{provider} WHERE email=#{email}")
     int updateProvider(@Param("email") String email, @Param("provider") String provider);
+
+    @Select("SELECT * FROM members WHERE id LIKE CONCAT('%', #{input}, '%') OR email LIKE CONCAT('%', #{input}, '%') OR name LIKE CONCAT('%', #{input}, '%') OR create_date LIKE CONCAT('%', #{input}, '%') OR provider LIKE CONCAT('%', #{input}, '%')")
+    List<Member> findByInput(@Param("input") String input);
 }

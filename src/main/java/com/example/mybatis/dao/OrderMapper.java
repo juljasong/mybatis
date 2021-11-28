@@ -1,6 +1,7 @@
 package com.example.mybatis.dao;
 
 import com.example.mybatis.dto.PaymentDto;
+import com.example.mybatis.entity.Member;
 import com.example.mybatis.entity.Order;
 import org.apache.ibatis.annotations.*;
 
@@ -19,4 +20,7 @@ public interface OrderMapper {
 
     @Select("SELECT * FROM orders")
     List<Order> findAll();
+
+    @Select("SELECT * FROM orders WHERE id LIKE CONCAT('%', #{input}, '%') OR member_id LIKE CONCAT('%', #{input}, '%') OR product_id LIKE CONCAT('%', #{input}, '%') OR start_date LIKE CONCAT('%', #{input}, '%') OR end_date LIKE CONCAT('%', #{input}, '%')")
+    List<Order> findByInput(@Param("input") String input);
 }

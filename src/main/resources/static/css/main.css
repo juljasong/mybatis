@@ -24,3 +24,7 @@ body {
   border: none;
   background-color: unset;
 }
+
+.hidden {
+  display: none;
+}

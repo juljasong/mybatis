@@ -105,4 +105,8 @@ public class MemberService {
     public List<Member> findAll() {
         return memberMapper.findAll();
     }
+
+    public List<Member> findByInput(String input) {
+        return memberMapper.findByInput(input);
+    }
 }

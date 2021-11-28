@@ -1,104 +1,64 @@
-/**
- * Search
- */
 const inputSearchText = document.getElementById('inputSearchText');
+const active = document.getElementsByClassName('active')[0].innerHTML;
 
-function getUrls() {
-  $('#result-table').empty();
-  $('#search-result-table').empty();
-  $('#member-list-button').removeClass('active');
-  $('#order-list-button').removeClass('active');
-  $('#url-list-button').addClass('active');
+inputSearchText.addEventListener('input', () => {
+  let searchText = inputSearchText.value;
+  let searchTable = document.getElementById('search-tbody');
+  $('#search-tbody').empty();
 
-  let table = document.getElementById('result-table');
-  let searchTable = document.getElementById('search-result-table');
+  if (searchText == '') {
+    $('#result-table').show();
+    $('#search-result-table').hide();
+  } else {
+    $('#search-result-table').show();
+    $('#result-table').hide();
 
-  $.ajax({
-    url: '/admin/urls',
-    type: 'GET',
-    dataType: 'json',
-  })
-    .done((data) => {
-      table.innerHTML +=
-        '<thead>' +
-        '<th scope="col">#</th>' +
-        '<th scope="col">NAME</th>' +
-        '<th scope="col">URL</th>' +
-        '</thead>' +
-        '<tbody>';
-      for (i in data) {
-        table.innerHTML += `<tr><th scope="memberId">${data[i].memberId}</th><td>${data[i].name}</td><td>${data[i].url}</td>`;
-      }
-      table.innerHTML += '</tbody>';
-    })
-    .always((data) => {
-      inputSearchText.addEventListener('input', () => {
-        let searchText = inputSearchText.value;
-        searchTable.innerHTML = '';
-
-        if (searchText == '') {
-          $('#result-table').show();
-          $('#search-result-table').hide();
-        } else {
-          $('#search-result-table').show();
-          $('#result-table').hide();
-
-          $.ajax({
-            url: '/admin/urls/' + searchText,
-            type: 'get',
-          }).done((data) => {
-            searchTable.innerHTML +=
-              '<thead>' +
-              '<th scope="col">#</th>' +
-              '<th scope="col">NAME</th>' +
-              '<th scope="col">URL</th>' +
-              '</thead>' +
-              '<tbody>';
-            for (i in data) {
-              searchTable.innerHTML += `<tr><th scope="memberId">${data[i].memberId}</th><td>${data[i].name}</td><td>${data[i].url}</td>`;
-            }
-
-            searchTable.innerHTML += '</tbody>';
-          });
+    if (active == 'URLS') {
+      $.ajax({
+        url: '/admin/urls/' + searchText,
+        type: 'get',
+      }).done((data) => {
+        for (i in data) {
+          searchTable.innerHTML += `<tr><th scope="memberId">${data[i].memberId}</th><td>${data[i].name}</td><td>${data[i].url}</td></tr>`;
         }
       });
-    });
-}
-
-function getMembers() {
-  $('#result-table').empty();
-  $('#url-list-button').removeClass('active');
-  $('#order-list-button').removeClass('active');
-  $('#member-list-button').addClass('active');
-
-  let list = document.getElementById('result-table');
-
-  $.ajax({
-    url: '/admin/members',
-    type: 'GET',
-    dataType: 'json',
-  }).done((data) => {
-    for (i in data) {
-      list.innerHTML += `<li class="list-group-item"> ${data[i].id} | ${data[i].email} | ${data[i].name} | ${data[i].createDate}</li>`;
+    } else if (active == 'MEMBERS') {
+      $.ajax({
+        url: '/admin/members/' + searchText,
+        type: 'get',
+      }).done((data) => {
+        for (i in data) {
+          let date = getFormatDate(`${data[i].createDate}`);
+          searchTable.innerHTML += `<tr><th scope="id">${data[i].id}</th><td>${data[i].email}</td><td>${data[i].name}</td><td>${date}</td><td>${data[i].provider}</td></tr>`;
+        }
+      });
+    } else if (active == 'ORDERS') {
+      $.ajax({
+        url: '/admin/orders/' + searchText,
+        type: 'get',
+      }).done((data) => {
+        for (i in data) {
+          let startDate = getFormatDate(`${data[i].startDate}`);
+          let endDate = getFormatDate(`${data[i].endDate}`);
+          searchTable.innerHTML += `<tr><th scope="id">${data[i].id}</th><td>${data[i].memberId}</td><td>${data[i].productId}</td><td>${startDate}</td><td>${endDate}</td></tr>`;
+        }
+      });
     }
-  });
-}
+  }
+});
 
-function getOrders() {
-  $('#result-table').empty();
-  $('#url-list-button').removeClass('active');
-  $('#member-list-button').removeClass('active');
-  $('#order-list-button').addClass('active');
+function getFormatDate(str) {
+  let date = new Date(str);
 
-  let list = document.getElementById('result-table');
+  const year = date.getFullYear(); //yyyy
+  const month = ('0' + (date.getMonth() + 1)).slice(-2);
+  const day = ('0' + date.getDate()).slice(-2);
 
-  $.ajax({
-    url: '/admin/orders',
-    type: 'GET',
-    dataType: 'json',
-  }).done((data) => {
-    for (i in data) {
-      list.innerHTML += `<li class="list-group-item">${data[i].id} | ${data[i].memberId} | ${data[i].startDate} | ${data[i].endDate}</li>`;
-    }
-  });
+  const hours = ('0' + date.getHours()).slice(-2);
+  const minutes = ('0' + date.getMinutes()).slice(-2);
+  const seconds = ('0' + date.getSeconds()).slice(-2);
+
+  let timeString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+  return timeString;
 }
