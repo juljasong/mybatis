@@ -4,6 +4,8 @@ import com.example.mybatis.dto.PaymentDto;
 import com.example.mybatis.entity.Order;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 
 @Mapper
 public interface OrderMapper {
@@ -15,4 +17,6 @@ public interface OrderMapper {
     @Select("SELECT * FROM orders WHERE member_id=#{id} AND start_date < NOW() AND end_date > NOW()")
     Order findAvailableOrderByMemberId(@Param("id") Long id);
 
+    @Select("SELECT * FROM orders")
+    List<Order> findAll();
 }

@@ -9,9 +9,31 @@
 <body>
     <main>
 
-        <a href="/admin/urls">url</a>
-        <a href="/admin/members">members</a>
-        <a href="admin/orders">orders</a>
+        <ul class="nav nav-tabs">
+            <!--Url-->
+            <li class="nav-item" id="url-list">
+                <button type="button" class="nav-link" id="url-list-button" onclick="getUrls()">URL</button>
+            </li>
+            <!--Members-->
+            <li class="nav-item" id="member-list">
+                <button type="button" class="nav-link" id="member-list-button" onclick="getMembers()">MEMBERS</button>
+            </li>
+            <!--Orders-->
+            <li class="nav-item" id="order-list">
+                <button type="button" class="nav-link" id="order-list-button" onclick="getOrders()">ORDERS</button>
+            </li>
+        </ul>
+
+        <!--Result-->
+
+        <div class="input-group my-3">
+            <input type="text" class="form-control" id="searchInput">
+            <span class="input-group-text">🔍</span>
+        </div>
+
+        <ul id="result-list" class="list-group list-group-flush">
+
+        </ul>
 
     </main>
     <div th:fragment="javascript" th:remove="tag"></div>

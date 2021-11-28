@@ -16,7 +16,7 @@ public class Member {
     private String password;
     @Length(min = 3, max = 30)
     private String name;
-    private Date signInDate;
+    private Date createDate;
     private String authKey;
     private String provider;
 

@@ -5,6 +5,7 @@ import com.example.mybatis.dao.MemberMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -99,5 +100,9 @@ public class MemberService {
             msg = "Membership registration has been completed.";
         }
         return msg;
+    }
+
+    public List<Member> findAll() {
+        return memberMapper.findAll();
     }
 }

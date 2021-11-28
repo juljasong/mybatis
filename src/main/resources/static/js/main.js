@@ -35,6 +35,7 @@ function updateForm(no) {
     data: { id: no },
   })
     .done((data) => {
+      console.log(data);
       $('#updateName').val(data.name);
       $('#updateUrl').val(data.url);
       $('#updateDescription').val(data.description);
