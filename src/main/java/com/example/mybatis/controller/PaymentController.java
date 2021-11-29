@@ -43,7 +43,7 @@ public class PaymentController {
         //주문번호 생성
         String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
         int hashedEmail = loginUser.getEmail().hashCode();
-        String merchantUid = "order_no_" + date + hashedEmail;
+        String merchantUid = date + hashedEmail;
 
         Product product = productService.getById(productId);
 

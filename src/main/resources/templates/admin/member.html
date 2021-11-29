@@ -40,7 +40,7 @@
             <tbody>
                 <tr th:each="member : ${members}">
                     <th scope="memberId" th:text="${member.id}">MEMBER_ID</th>
-                    <td th:text="${member.email}">EMAIL</td>
+                    <td th:onclick="|location.href='/admin/members/${member.id}'|" th:text="${member.email}">EMAIL</td>
                     <td th:text="${member.name}">NAME</td>
                     <td th:text="${#dates.format(member.createDate, 'yyyy-MM-dd HH:mm:ss')}">SIGN IN DATE</td>
                     <td th:text="${member.provider}">PROVIDER</td>

@@ -39,8 +39,11 @@
             </thead>
             <tbody>
                 <tr th:each="order : ${orders}">
-                    <th scope="orderId" th:text="${order.id}">ORDER_ID</th>
-                    <td th:text="${order.memberId}">MEMBER_ID</td>
+                    <th th:onclick="'location.href=\'/admin/orders/'+ @{${order.id}} + '\''" scope="orderId"
+                        th:text="${order.id}">
+                        ORDER_ID</th>
+                    <td th:text="${order.memberId}">MEMBER_ID
+                    </td>
                     <td th:text="${order.productId}">PRODUCT_ID</td>
                     <td th:text="${#dates.format(order.startDate, 'yyyy-MM-dd HH:mm:ss')}">START_DATE</td>
                     <td th:text="${#dates.format(order.endDate, 'yyyy-MM-dd HH:mm:ss')}">END_DATE</td>

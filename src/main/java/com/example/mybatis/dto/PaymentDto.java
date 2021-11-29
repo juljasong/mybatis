@@ -13,7 +13,7 @@ import java.sql.Date;
 public class PaymentDto {
 
     @NotNull
-    private String merchantUid;
+    private Long merchantUid;
     @NotNull
     private String impUid;
     @NotNull

@@ -38,7 +38,7 @@
             <tbody>
                 <tr th:each="url : ${urls}">
                     <th scope="memberId" th:text="${url.memberId}">MEMBER_ID</th>
-                    <td th:text="${url.name}">NAME</td>
+                    <td th:onclick="|location.href='/admin/urls/${url.id}'|" th:text="${url.name}">NAME</td>
                     <td th:text="${url.url}">URL</td>
                 </tr>
             </tbody>
