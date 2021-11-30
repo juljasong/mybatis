@@ -60,7 +60,7 @@ IMP.init('imp71830241');
 function joinPlus(no) {
   // IMP.request_pay(param, callback)
   $.ajax({
-    url: '/payments/plus',
+    url: '/payments/add',
     type: 'GET',
     data: { productId: no },
   }).done((data) => {

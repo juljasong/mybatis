@@ -3,8 +3,8 @@ package com.example.mybatis.controller;
 import com.example.mybatis.entity.Member;
 import com.example.mybatis.entity.Order;
 import com.example.mybatis.entity.Url;
-import com.example.mybatis.service.impl.OrderServiceImpl;
-import com.example.mybatis.service.impl.UrlServiceImpl;
+import com.example.mybatis.service.OrderService;
+import com.example.mybatis.service.UrlService;
 import com.example.mybatis.util.argumentResolver.Login;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,13 +24,13 @@ import java.sql.Date;
 @RequestMapping("/url")
 public class UrlController {
 
-    private final UrlServiceImpl urlService;
-    private final OrderServiceImpl orderService;
+    private final UrlService urlService;
+    private final OrderService orderService;
 
+    // membership 확인 & url 저장 개수 확인
     @GetMapping("/add")
     @ResponseBody
-    public String enableAddUrl(@Login Member loginUser, @ModelAttribute Url url) {
-
+    public String addEnableUrl(@Login Member loginUser, @ModelAttribute Url url) {
         Order membership = orderService.findAvailableOrderByMemberId(loginUser.getId());
         int urls = urlService.countAllByMemberId(loginUser.getId());
 
@@ -38,7 +38,6 @@ public class UrlController {
             return "false";
         }
         return "ok";
-
     }
 
     @PostMapping("/add")
@@ -64,7 +63,7 @@ public class UrlController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteUrl(@PathVariable Long id) throws Exception {
+    public String delete(@PathVariable Long id) throws Exception {
         int result = urlService.deleteUrl(id);
         if(result < 0) {
             throw new Exception("Not exist url id");
@@ -81,7 +80,7 @@ public class UrlController {
     }
 
     @PostMapping("/update")
-    public String updateUrl(@Login Member loginUser,
+    public String update(@Login Member loginUser,
                             @Valid @ModelAttribute Url url, BindingResult bindingResult,
                             @RequestParam String date, RedirectAttributes redirectAttributes) throws Exception {
         log.info("{}, {}", url, date);
@@ -107,4 +106,5 @@ public class UrlController {
             url.setExpirationDate(Date.valueOf(expirationDate));
         }
     }
+
 }

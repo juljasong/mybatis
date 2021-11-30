@@ -1,7 +1,7 @@
 package com.example.mybatis.controller;
 
 import com.example.mybatis.entity.Url;
-import com.example.mybatis.service.impl.UrlServiceImpl;
+import com.example.mybatis.service.UrlService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -16,10 +16,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ViewController {
 
-    private final UrlServiceImpl urlService;
+    private final UrlService urlService;
 
     @GetMapping("/{userName}")
-    public String individual(@PathVariable String userName, Model model) {
+    public String list(@PathVariable String userName, Model model) {
         List<Url> urls = urlService.findByMemberIdAndPublic(userName);
         model.addAttribute("urls", urls);
         return "individual";

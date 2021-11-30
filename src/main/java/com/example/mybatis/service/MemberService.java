@@ -26,4 +26,10 @@ public interface MemberService {
 
     List<Member> findByInput(String input);
 
+    Member findByEmail(String email);
+
+    int findByName(String name);
+
+    int update(String password, String name, Member loginUser);
+
 }

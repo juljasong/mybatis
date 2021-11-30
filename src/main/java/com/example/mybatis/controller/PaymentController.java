@@ -5,9 +5,9 @@ import com.example.mybatis.dto.PaymentFormDto;
 import com.example.mybatis.entity.Member;
 import com.example.mybatis.entity.Order;
 import com.example.mybatis.entity.Product;
-import com.example.mybatis.service.impl.OrderServiceImpl;
-import com.example.mybatis.service.impl.PaymentServiceImpl;
-import com.example.mybatis.service.impl.ProductServiceImpl;
+import com.example.mybatis.service.OrderService;
+import com.example.mybatis.service.PaymentService;
+import com.example.mybatis.service.ProductService;
 import com.example.mybatis.util.argumentResolver.Login;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,12 +25,12 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 public class PaymentController {
 
-    private final PaymentServiceImpl paymentService;
-    private final OrderServiceImpl orderService;
-    private final ProductServiceImpl productService;
+    private final PaymentService paymentService;
+    private final OrderService orderService;
+    private final ProductService productService;
 
-    @GetMapping("/plus")
-    public ResponseEntity<PaymentFormDto> payPlus(@Login Member loginUser, @RequestParam Long productId) {
+    @GetMapping("/add")
+    public ResponseEntity<PaymentFormDto> addPayment(@Login Member loginUser, @RequestParam Long productId) {
 
         Order order = orderService.findAvailableOrderByMemberId(loginUser.getId());
 
@@ -38,7 +38,7 @@ public class PaymentController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
-        //주문번호 생성
+        //주문번호 생성(주문 시간 + 해쉬화된 email)
         String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
         int hashedEmail = loginUser.getEmail().hashCode();
         String merchantUid = date + hashedEmail;
@@ -73,4 +73,5 @@ public class PaymentController {
 
         return new ResponseEntity<PaymentDto>(paymentDto, HttpStatus.OK);
     }
+
 }

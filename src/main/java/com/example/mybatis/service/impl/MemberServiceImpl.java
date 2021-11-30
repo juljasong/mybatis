@@ -2,7 +2,9 @@ package com.example.mybatis.service.impl;
 
 import com.example.mybatis.entity.Member;
 import com.example.mybatis.dao.MemberMapper;
+import com.example.mybatis.service.MailService;
 import com.example.mybatis.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -11,15 +13,11 @@ import java.util.UUID;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
     
     private final MemberMapper memberMapper;
-    private final MailServiceImpl mailServiceImpl;
-
-    public MemberServiceImpl(MemberMapper memberMapper, MailServiceImpl mailServiceImpl) {
-        this.memberMapper = memberMapper;
-        this.mailServiceImpl = mailServiceImpl;
-    }
+    private final MailService mailService;
 
     public Member findMemberById(Long id) {
         return memberMapper.findById(id);
@@ -28,7 +26,7 @@ public class MemberServiceImpl implements MemberService {
     public int save(Member member) throws Exception {
         int result = 0;
         try {
-            String authKey = mailServiceImpl.sendAuthenticationMail(member);
+            String authKey = mailService.sendAuthenticationMail(member);
             member.setAuthKey(authKey);
             System.out.println("authKey = " + authKey);
             result = memberMapper.insert(member);
@@ -48,7 +46,7 @@ public class MemberServiceImpl implements MemberService {
             int result = memberMapper.setAuthKey(email, authKey);
 
             if (result > 0) {
-                mailServiceImpl.sendFindPasswordMail(email, authKey);
+                mailService.sendFindPasswordMail(email, authKey);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -110,4 +108,17 @@ public class MemberServiceImpl implements MemberService {
     public List<Member> findByInput(String input) {
         return memberMapper.findByInput(input);
     }
+
+    public Member findByEmail(String email) {
+        return memberMapper.findByEmail(email);
+    }
+
+    public int findByName(String name) {
+        return memberMapper.findByName(name);
+    }
+
+    public int update(String password, String name, Member loginUser) {
+        return memberMapper.update(password, name, loginUser);
+    }
+
 }

@@ -45,7 +45,7 @@ public interface MemberMapper {
             "  </set>",
             "WHERE id=#{loginUser.id}",
             "</script>"})
-    int Update(@Param("password") String password,
+    int update(@Param("password") String password,
                @Param("name") String name,
                @Param("loginUser") Member loginUser);
 

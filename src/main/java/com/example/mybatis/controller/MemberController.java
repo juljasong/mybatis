@@ -5,7 +5,6 @@ import com.example.mybatis.entity.Member;
 import com.example.mybatis.dao.MemberMapper;
 import com.example.mybatis.service.MemberService;
 import com.example.mybatis.service.OrderService;
-import com.example.mybatis.service.impl.OrderServiceImpl;
 import com.example.mybatis.util.SessionConst;
 import com.example.mybatis.util.argumentResolver.Login;
 import com.example.mybatis.dto.SignInDto;
@@ -30,11 +29,9 @@ import javax.servlet.http.HttpSession;
 @RequiredArgsConstructor
 public class MemberController {
 
-    private final MemberMapper memberMapper;
     private final MemberService memberService;
     private final AuthController authController;
-    private final OrderServiceImpl orderService;
-
+    private final OrderService orderService;
 
     @GetMapping("/add")
     public String addForm(Model model) {
@@ -43,17 +40,17 @@ public class MemberController {
     }
 
     @PostMapping("/add")
-    public String save(@Validated @ModelAttribute SignInDto signInDto, BindingResult bindingResult, @RequestParam String password2, RedirectAttributes redirectAttributes) throws Exception {
+    public String add(@Validated @ModelAttribute SignInDto signInDto, BindingResult bindingResult, @RequestParam String password2, RedirectAttributes redirectAttributes) throws Exception {
 
         if(!signInDto.getPassword().equals(password2)) {
             bindingResult.addError(new ObjectError("member", "Password is not equal."));
         }
 
-        if(memberMapper.findByEmail(signInDto.getEmail()) != null) {
+        if(memberService.findByEmail(signInDto.getEmail()) != null) {
             bindingResult.addError(new ObjectError("member", "An account with this email already exists."));
         }
 
-        if(memberMapper.findByName(signInDto.getName()) > 0) {
+        if(memberService.findByName(signInDto.getName()) > 0) {
             bindingResult.addError(new ObjectError("member", "An account with this name already exists."));
         }
 
@@ -75,7 +72,7 @@ public class MemberController {
     }
 
     @GetMapping("/chk/{authKey}")
-    public String mailChek(@PathVariable String authKey, RedirectAttributes redirectAttributes) {
+    public String checkMail(@PathVariable String authKey, RedirectAttributes redirectAttributes) {
         String message = memberService.mailCheck(authKey);
         redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/message";
@@ -109,7 +106,7 @@ public class MemberController {
                 if (memberService.verifyCurrentPassword(loginUser.getId(), updateDto.getCurrentPassword()) == 0) {
                     bindingResult.addError(new FieldError("updateDto", "currentPassword", "Current password is not correct."));
                 } else {
-                    if (memberMapper.findByName(updateDto.getName()) > 0) {
+                    if (memberService.findByName(updateDto.getName()) > 0) {
                         if (!updateDto.getName().equals(loginUser.getName())) {
                             bindingResult.addError(new FieldError("updateDto", "name", updateDto.getName(), false, null, null, "Same name already exists."));
                         }
@@ -130,7 +127,7 @@ public class MemberController {
             return "member/updateForm";
         }
 
-        int result = memberMapper.Update(updateDto.getPassword(), updateDto.getName(), loginUser);
+        int result = memberService.update(updateDto.getPassword(), updateDto.getName(), loginUser);
         loginUser.setName(updateDto.getName());
         loginUser.setPassword(updateDto.getPassword());
 
@@ -183,22 +180,5 @@ public class MemberController {
         redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/message";
     }
-
-    @PostMapping("/oauth2/add")
-    public String addOauth2(@RequestParam String email, @RequestParam String name, @RequestParam String provider, RedirectAttributes redirectAttributes) {
-        String message = memberService.saveOauth2(new Member(email, "google", name, "Y", provider));
-        redirectAttributes.addFlashAttribute("message", message);
-        return "redirect:/message";
-    }
-
-    @PostMapping("/oauth2/link")
-    public String linkOauth2(@RequestParam String email, @RequestParam String provider, RedirectAttributes redirectAttributes) {
-        String message = memberService.linkOauth2(email, provider);
-        redirectAttributes.addFlashAttribute("message", message);
-        return "redirect:/message";
-    }
-
-
-
 
 }

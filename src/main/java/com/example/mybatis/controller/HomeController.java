@@ -1,6 +1,6 @@
 package com.example.mybatis.controller;
 
-import com.example.mybatis.service.impl.UrlServiceImpl;
+import com.example.mybatis.service.UrlService;
 import com.example.mybatis.util.argumentResolver.Login;
 import com.example.mybatis.dto.LoginDto;
 import com.example.mybatis.entity.Member;
@@ -18,7 +18,7 @@ import java.util.List;
 @Slf4j
 public class HomeController {
 
-    private final UrlServiceImpl urlService;
+    private final UrlService urlService;
 
     @RequestMapping("/")
     public String home(//@SessionAttribute(name = SessionConst.LOGIN_USER, required = false)
@@ -38,4 +38,5 @@ public class HomeController {
 
             return "loginHome";
     }
+
 }

@@ -23,6 +23,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.time.LocalDateTime;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,25 +32,6 @@ import java.time.LocalDateTime;
 public class AuthController {
 
     private final LoginService loginService;
-
-    /*
-    @PostMapping("/login")
-    public String loginByCookie(@RequestParam String email, @RequestParam String password, HttpServletResponse response) throws Exception {
-
-        Member loginUser = loginService.login(email, password);
-
-        if (loginUser == null) {
-            throw new Exception("Incorrect Email or Password.");
-        } else {
-            log.info("Login email = {}", email);
-
-            Cookie idCookie = new Cookie("memberId", String.valueOf(loginUser.getId()));
-            response.addCookie(idCookie);
-
-            return "redirect:/";
-        }
-    }
-    */
 
     @PostMapping("/auth/login")
     public String loginByHttpSession(@Validated @ModelAttribute LoginDto loginDto, BindingResult bindingResult,
@@ -64,24 +47,8 @@ public class AuthController {
 
             return "home";
         } else {
-            return login(request, loginUser);
+            return login(request, loginUser, request.getHeader("Referer"));
         }
-    }
-
-    //@RequestMapping("/logout")
-    public String logoutByCookie(HttpServletResponse response) {
-        expireCookie(response, "memberId");
-        return "redirect:/";
-    }
-
-    /**
-     * @param response
-     * @param cookieName: 만료할 Cookie명
-     */
-    private void expireCookie(HttpServletResponse response, String cookieName) {
-        Cookie cookie = new Cookie(cookieName, null);
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
     }
 
     @RequestMapping("/logout")
@@ -103,7 +70,7 @@ public class AuthController {
 
         if (member.getProvider() != null && member.getProvider().equals("google")) {
 
-            return login(request, member);
+            return login(request, member, request.getHeader("Referer"));
 
         } else {
             //구글 연동된 email 존재 X
@@ -122,20 +89,61 @@ public class AuthController {
         }
     }
 
-    private String login(HttpServletRequest request, Member member) {
+    private String login(HttpServletRequest request, Member member, String referer) {
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_USER, member);
 
-        String ref = request.getHeader("Referer");
+        String redirect = null;
 
-        if (ref.length() < 30) {
+        Pattern urlPattern = Pattern.compile("redirect=(.*)");
+        Matcher matcher = urlPattern.matcher(referer);
+
+        if (matcher.find()) {
+            redirect = matcher.group(1);
+        }
+
+        if (redirect == null) {
             log.info("Login email={}, loginTime={}", member.getEmail(), LocalDateTime.now());
             return "redirect:/";
         } else {
-            String redirectUrl = ref.substring(35);
-            log.info("Login email={}, loginTime={}, Redirect={}", member.getEmail(), LocalDateTime.now(), redirectUrl);
-            return "redirect:" + redirectUrl;
+            //String redirectUrl = ref.substring(35);
+            log.info("Login email={}, loginTime={}, Redirect={}", member.getEmail(), LocalDateTime.now(), redirect);
+            return "redirect:" + redirect;
         }
+    }
+
+    //@PostMapping("/login")
+    public String loginByCookie(@Validated @ModelAttribute LoginDto loginDto, BindingResult bindingResult,
+                                HttpServletResponse response) throws Exception {
+
+        Member loginUser = loginService.login(loginDto);
+
+        if (loginUser == null) {
+            throw new Exception("Incorrect Email or Password.");
+        } else {
+            log.info("Login email = {}", loginDto.getEmail());
+
+            Cookie idCookie = new Cookie("memberId", String.valueOf(loginUser.getId()));
+            response.addCookie(idCookie);
+
+            return "redirect:/";
+        }
+    }
+
+    //@RequestMapping("/logout")
+    public String logoutByCookie(HttpServletResponse response) {
+        expireCookie(response, "memberId");
+        return "redirect:/";
+    }
+
+    /**
+     * @param response
+     * @param cookieName: 만료할 Cookie명
+     */
+    private void expireCookie(HttpServletResponse response, String cookieName) {
+        Cookie cookie = new Cookie(cookieName, null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
     }
 
 }
