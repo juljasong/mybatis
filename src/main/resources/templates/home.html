@@ -7,7 +7,7 @@
 
 <body>
     <main>
-        <form action="/auth/login" th:object="${loginDto}" method="post">
+        <form action="/auth/login" th:object="${loginDTO}" method="post">
 
             <div th:if="${#fields.hasGlobalErrors()}">
                 <p class="global-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">Global Error</p>

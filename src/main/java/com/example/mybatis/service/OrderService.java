@@ -1,19 +1,18 @@
 package com.example.mybatis.service;
 
-import com.example.mybatis.dto.PaymentDto;
+import com.example.mybatis.dto.PaymentDTO;
 import com.example.mybatis.entity.Order;
 
 import java.util.List;
 
 public interface OrderService {
 
-    void add(PaymentDto paymentDto);
+    void addOrder(PaymentDTO paymentDTO);
 
     Order findAvailableOrderByMemberId(Long id);
 
-    List<Order> findAll();
+    List<Order> findAllOrders();
 
-    List<Order> findByInput(String input);
+    List<Order> findOrderByInput(String input);
 
-    
 }

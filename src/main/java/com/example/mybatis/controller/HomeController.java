@@ -2,7 +2,7 @@ package com.example.mybatis.controller;
 
 import com.example.mybatis.service.UrlService;
 import com.example.mybatis.util.argumentResolver.Login;
-import com.example.mybatis.dto.LoginDto;
+import com.example.mybatis.dto.LoginDTO;
 import com.example.mybatis.entity.Member;
 import com.example.mybatis.entity.Url;
 import lombok.RequiredArgsConstructor;
@@ -25,11 +25,11 @@ public class HomeController {
                        @Login Member loginUser, Model model) {
 
         if (loginUser == null) {
-            model.addAttribute("loginDto", new LoginDto());
+            model.addAttribute("loginDTO", new LoginDTO());
             return "home";
         }
-            List<Url> enableUrls = urlService.findByMemberId(loginUser.getId());
-            List<Url> disabledUrls = urlService.findExpiredByMemberId(loginUser.getId());
+            List<Url> enableUrls = urlService.findEnabledUrlsByMemberId(loginUser.getId());
+            List<Url> disabledUrls = urlService.findExpiredUrlsByMemberId(loginUser.getId());
 
             model.addAttribute("url", new Url());
             model.addAttribute("enableUrls", enableUrls);

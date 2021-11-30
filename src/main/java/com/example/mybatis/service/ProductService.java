@@ -4,6 +4,6 @@ import com.example.mybatis.entity.Product;
 
 public interface ProductService {
 
-    Product getById(Long productId);
+    Product findProductById(Long productId);
 
 }

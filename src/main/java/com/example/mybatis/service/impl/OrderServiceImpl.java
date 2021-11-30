@@ -1,7 +1,7 @@
 package com.example.mybatis.service.impl;
 
 import com.example.mybatis.dao.OrderDAO;
-import com.example.mybatis.dto.PaymentDto;
+import com.example.mybatis.dto.PaymentDTO;
 import com.example.mybatis.entity.Order;
 import com.example.mybatis.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -17,19 +17,19 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderDAO orderDAO;
 
-    public void add(PaymentDto paymentDto) {
-        int result = orderDAO.insert(paymentDto);
+    public void addOrder(PaymentDTO paymentDTO) {
+        int result = orderDAO.insert(paymentDTO);
     }
 
     public Order findAvailableOrderByMemberId(Long id) {
-        return orderDAO.findAvailableOrderByMemberId(id);
+        return orderDAO.selectAvailableOrderByMemberId(id);
     }
 
-    public List<Order> findAll() {
-        return orderDAO.findAll();
+    public List<Order> findAllOrders() {
+        return orderDAO.selectAllOrders();
     }
 
-    public List<Order> findByInput(String input) {
-        return orderDAO.findByInput(input);
+    public List<Order> findOrderByInput(String input) {
+        return orderDAO.selectOrderByInput(input);
     }
 }

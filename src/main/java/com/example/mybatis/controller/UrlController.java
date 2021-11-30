@@ -32,7 +32,7 @@ public class UrlController {
     @ResponseBody
     public String addEnableUrl(@Login Member loginUser, @ModelAttribute Url url) {
         Order membership = orderService.findAvailableOrderByMemberId(loginUser.getId());
-        int urls = urlService.countAllByMemberId(loginUser.getId());
+        int urls = urlService.findCntByMemberId(loginUser.getId());
 
         if (membership == null && urls > 4) {
             return "false";
@@ -55,7 +55,7 @@ public class UrlController {
 
         stringToDate(url, date);
 
-        int result = urlService.add(url);
+        int result = urlService.addUrl(url);
         if (result == 0) {
             throw new Exception("Error");
         }
@@ -64,7 +64,7 @@ public class UrlController {
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) throws Exception {
-        int result = urlService.deleteUrl(id);
+        int result = urlService.removeUrl(id);
         if(result < 0) {
             throw new Exception("Not exist url id");
         }
@@ -93,7 +93,7 @@ public class UrlController {
         }
 
         stringToDate(url, date);
-        int result = urlService.updateUrl(loginUser, url);
+        int result = urlService.modifyUrl(loginUser, url);
         if(result < 0) {
             throw new Exception("Not exist url id");
         }

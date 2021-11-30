@@ -20,14 +20,14 @@ public class OauthController {
 
     @PostMapping("/add")
     public String add(@RequestParam String email, @RequestParam String name, @RequestParam String provider, RedirectAttributes redirectAttributes) {
-        String message = memberService.saveOauth2(new Member(email, "google", name, "Y", provider));
+        String message = memberService.addOauth2(new Member(email, "google", name, "Y", provider));
         redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/message";
     }
 
     @PostMapping("/link")
     public String link(@RequestParam String email, @RequestParam String provider, RedirectAttributes redirectAttributes) {
-        String message = memberService.linkOauth2(email, provider);
+        String message = memberService.modifyProvider(email, provider);
         redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/message";
     }

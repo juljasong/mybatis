@@ -1,13 +1,13 @@
 package com.example.mybatis.controller;
 
-import com.example.mybatis.dto.FindPasswordDto;
+import com.example.mybatis.dto.FindPasswordDTO;
 import com.example.mybatis.entity.Member;
 import com.example.mybatis.service.MemberService;
 import com.example.mybatis.service.OrderService;
 import com.example.mybatis.util.SessionConst;
 import com.example.mybatis.util.argumentResolver.Login;
-import com.example.mybatis.dto.SignInDto;
-import com.example.mybatis.dto.UpdateDto;
+import com.example.mybatis.dto.SignInDTO;
+import com.example.mybatis.dto.UpdateDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -34,22 +34,22 @@ public class MemberController {
 
     @GetMapping("/add")
     public String addForm(Model model) {
-        model.addAttribute(new SignInDto());
+        model.addAttribute(new SignInDTO());
         return "member/addForm";
     }
 
     @PostMapping("/add")
-    public String add(@Validated @ModelAttribute SignInDto signInDto, BindingResult bindingResult, @RequestParam String password2, RedirectAttributes redirectAttributes) throws Exception {
+    public String add(@Validated @ModelAttribute SignInDTO signInDTO, BindingResult bindingResult, @RequestParam String password2, RedirectAttributes redirectAttributes) throws Exception {
 
-        if(!signInDto.getPassword().equals(password2)) {
+        if(!signInDTO.getPassword().equals(password2)) {
             bindingResult.addError(new ObjectError("member", "Password is not equal."));
         }
 
-        if(memberService.findByEmail(signInDto.getEmail()) != null) {
+        if(memberService.findMemberByEmail(signInDTO.getEmail()) != null) {
             bindingResult.addError(new ObjectError("member", "An account with this email already exists."));
         }
 
-        if(memberService.findByName(signInDto.getName()) > 0) {
+        if(memberService.findCntByName(signInDTO.getName()) > 0) {
             bindingResult.addError(new ObjectError("member", "An account with this name already exists."));
         }
 
@@ -59,11 +59,11 @@ public class MemberController {
         }
 
         Member member = new Member();
-        member.setEmail(signInDto.getEmail());
-        member.setName(signInDto.getName());
-        member.setPassword(signInDto.getPassword());
+        member.setEmail(signInDTO.getEmail());
+        member.setName(signInDTO.getName());
+        member.setPassword(signInDTO.getPassword());
 
-        int result = memberService.save(member);
+        int result = memberService.add(member);
         if (result == 1) {
             redirectAttributes.addFlashAttribute("message", "Check your email.");
         }
@@ -72,7 +72,7 @@ public class MemberController {
 
     @GetMapping("/chk/{authKey}")
     public String checkMail(@PathVariable String authKey, RedirectAttributes redirectAttributes) {
-        String message = memberService.mailCheck(authKey);
+        String message = memberService.modifyAuthKey(authKey);
         redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/message";
     }
@@ -82,10 +82,10 @@ public class MemberController {
         model.addAttribute("loginUser", loginUser);
         model.addAttribute("order", orderService.findAvailableOrderByMemberId(loginUser.getId()));
 
-        UpdateDto updateDto = new UpdateDto();
-        updateDto.setName(loginUser.getName());
-        updateDto.setEmail(loginUser.getEmail());
-        model.addAttribute("updateDto", updateDto);
+        UpdateDTO updateDTO = new UpdateDTO();
+        updateDTO.setName(loginUser.getName());
+        updateDTO.setEmail(loginUser.getEmail());
+        model.addAttribute("updateDTO", updateDTO);
 
         return "member/updateForm";
     }
@@ -93,28 +93,28 @@ public class MemberController {
     @PostMapping("/update")
     public String update(HttpServletRequest request,
                          @Login Member loginUser,
-                         @Validated @ModelAttribute UpdateDto updateDto, BindingResult bindingResult,
+                         @Validated @ModelAttribute UpdateDTO updateDTO, BindingResult bindingResult,
                          Model model) throws Exception {
         Long memberId = loginUser.getId();
 
         if (loginUser.getProvider() == null) {
 
-            if (updateDto.getCurrentPassword().isBlank() && updateDto.getPassword().isBlank() && updateDto.getName().equals(loginUser.getName())) {
+            if (updateDTO.getCurrentPassword().isBlank() && updateDTO.getPassword().isBlank() && updateDTO.getName().equals(loginUser.getName())) {
                 return "redirect:/member/updateForm";
             } else {
-                if (memberService.verifyCurrentPassword(loginUser.getId(), updateDto.getCurrentPassword()) == 0) {
-                    bindingResult.addError(new FieldError("updateDto", "currentPassword", "Current password is not correct."));
+                if (memberService.verifyCurrentPassword(loginUser.getId(), updateDTO.getCurrentPassword()) == 0) {
+                    bindingResult.addError(new FieldError("updateDTO", "currentPassword", "Current password is not correct."));
                 } else {
-                    if (memberService.findByName(updateDto.getName()) > 0) {
-                        if (!updateDto.getName().equals(loginUser.getName())) {
-                            bindingResult.addError(new FieldError("updateDto", "name", updateDto.getName(), false, null, null, "Same name already exists."));
+                    if (memberService.findCntByName(updateDTO.getName()) > 0) {
+                        if (!updateDTO.getName().equals(loginUser.getName())) {
+                            bindingResult.addError(new FieldError("updateDTO", "name", updateDTO.getName(), false, null, null, "Same name already exists."));
                         }
                     }
-                    if (!updateDto.getPassword().equals(updateDto.getPassword2())) {
-                        bindingResult.addError(new FieldError("updateDto", "password2", "New password and check password are not equal."));
+                    if (!updateDTO.getPassword().equals(updateDTO.getPassword2())) {
+                        bindingResult.addError(new FieldError("updateDTO", "password2", "New password and check password are not equal."));
                     }
-                    if (updateDto.getPassword().length() < 9 || updateDto.getPassword().length() > 21) {
-                        bindingResult.addError(new FieldError("updateDto", "password", "Your password must be between 10 to 20 characters."));
+                    if (updateDTO.getPassword().length() < 9 || updateDTO.getPassword().length() > 21) {
+                        bindingResult.addError(new FieldError("updateDTO", "password", "Your password must be between 10 to 20 characters."));
                     }
                 }
             }
@@ -126,9 +126,9 @@ public class MemberController {
             return "member/updateForm";
         }
 
-        int result = memberService.update(updateDto.getPassword(), updateDto.getName(), loginUser);
-        loginUser.setName(updateDto.getName());
-        loginUser.setPassword(updateDto.getPassword());
+        int result = memberService.modifyMember(updateDTO.getPassword(), updateDTO.getName(), loginUser);
+        loginUser.setName(updateDTO.getName());
+        loginUser.setPassword(updateDTO.getPassword());
 
         if (result == 0) {
             throw new Exception("Error");
@@ -149,25 +149,25 @@ public class MemberController {
 
     @PostMapping("/findpwd")
     public String findPassword(@RequestParam String email, RedirectAttributes redirectAttributes) {
-        String message = memberService.findPassword(email);
+        String message = memberService.findPasswordByEmail(email);
         redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/message";
     }
 
     @GetMapping("/resetpwd/{authKey}")
     public String resetPasswordForm(@PathVariable String authKey, Model model) {
-        model.addAttribute(new FindPasswordDto("", "", authKey));
+        model.addAttribute(new FindPasswordDTO("", "", authKey));
         return "member/resetPassword";
     }
 
     @PostMapping("/resetpwd")
-    public String resetPassword(@ModelAttribute FindPasswordDto findPasswordDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String resetPassword(@ModelAttribute FindPasswordDTO findPasswordDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
-        if (!findPasswordDto.getPassword1().equals(findPasswordDto.getPassword2())) {
-            bindingResult.addError(new ObjectError("findPasswordDto", "New password and check password are not equal."));
+        if (!findPasswordDTO.getPassword1().equals(findPasswordDTO.getPassword2())) {
+            bindingResult.addError(new ObjectError("findPasswordDTO", "New password and check password are not equal."));
         }
-        if(findPasswordDto.getPassword1().length() < 9 || findPasswordDto.getPassword1().length() > 21) {
-            bindingResult.addError(new ObjectError("findPasswordDto", "Your password must be between 10 to 20 characters."));
+        if(findPasswordDTO.getPassword1().length() < 9 || findPasswordDTO.getPassword1().length() > 21) {
+            bindingResult.addError(new ObjectError("findPasswordDTO", "Your password must be between 10 to 20 characters."));
         }
 
         if(bindingResult.hasErrors()) {
@@ -175,7 +175,7 @@ public class MemberController {
             return "member/resetPassword";
         }
 
-        String message = memberService.resetPassword(findPasswordDto.getPassword1(), findPasswordDto.getAuthKey());
+        String message = memberService.modifyPassword(findPasswordDTO.getPassword1(), findPasswordDTO.getAuthKey());
         redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/message";
     }

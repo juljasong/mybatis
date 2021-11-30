@@ -8,7 +8,7 @@
 <body>
 
     <main class="container">
-        <form action="/member/update" th:object="${updateDto}" method="post">
+        <form action="/member/update" th:object="${updateDTO}" method="post">
 
             <label for="email">Email</label>
             <input type="email" id="email" th:field="*{email}" class="form-control my-2" value="email" readonly>

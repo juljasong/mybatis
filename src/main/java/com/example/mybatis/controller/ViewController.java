@@ -20,7 +20,7 @@ public class ViewController {
 
     @GetMapping("/{userName}")
     public String list(@PathVariable String userName, Model model) {
-        List<Url> urls = urlService.findByMemberIdAndPublic(userName);
+        List<Url> urls = urlService.findUrlsByMemberIdAndPublic(userName);
         model.addAttribute("urls", urls);
         return "individual";
     }

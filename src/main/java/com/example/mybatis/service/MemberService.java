@@ -8,28 +8,28 @@ public interface MemberService {
 
     Member findMemberById(Long id);
 
-    int save(Member member) throws Exception;
+    int findCntByName(String name);
+
+    String findPasswordByEmail(String email);
+
+    List<Member> findAllMembers();
+
+    List<Member> findMembersByInput(String input);
+
+    Member findMemberByEmail(String email);
 
     int verifyCurrentPassword(Long id, String currentPassword);
 
-    String findPassword(String email);
+    int add(Member member) throws Exception;
 
-    String resetPassword(String password1, String authKey);
+    String addOauth2(Member member);
 
-    String saveOauth2(Member member);
+    String modifyPassword(String password1, String authKey);
 
-    String linkOauth2(String email, String provider);
+    String modifyProvider(String email, String provider);
 
-    String mailCheck(String authKey);
+    String modifyAuthKey(String authKey);
 
-    List<Member> findAll();
-
-    List<Member> findByInput(String input);
-
-    Member findByEmail(String email);
-
-    int findByName(String name);
-
-    int update(String password, String name, Member loginUser);
+    int modifyMember(String password, String name, Member loginUser);
 
 }

@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @ToString
-public class PaymentDto {
+public class PaymentDTO {
 
     @NotNull
     private String merchantUid;

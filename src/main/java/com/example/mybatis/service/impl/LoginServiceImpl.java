@@ -2,7 +2,7 @@ package com.example.mybatis.service.impl;
 
 import com.example.mybatis.entity.Member;
 import com.example.mybatis.dao.MemberDAO;
-import com.example.mybatis.dto.LoginDto;
+import com.example.mybatis.dto.LoginDTO;
 import com.example.mybatis.service.LoginService;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
@@ -24,9 +24,9 @@ public class LoginServiceImpl implements LoginService {
     private final String GOOGLE_CLIENT_ID = "302683262107-2r7fk6pha8tf4guabk57gk061opgdgsi.apps.googleusercontent.com";
     private final MemberDAO memberDAO;
 
-    public Member login(LoginDto loginDto) {
+    public Member login(LoginDTO loginDTO) {
 
-        Member loginUser = memberDAO.findByLoginId(loginDto.getEmail(), loginDto.getPassword());
+        Member loginUser = memberDAO.selectMemberByLoginId(loginDTO.getEmail(), loginDTO.getPassword());
 
         if (loginUser != null) {
             return loginUser;
@@ -61,12 +61,12 @@ public class LoginServiceImpl implements LoginService {
 
             log.info("email={}, emailVerified={}, name={}", email, emailVerified, name);
 
-            Member member = memberDAO.findByEmailAndProvider(email, "google");
+            Member member = memberDAO.selectMemberByEmailAndProvider(email, "google");
             if (member != null) {
                 log.info("loginService google1");
                 return member;
             } else {
-                member = memberDAO.findByEmail(email);
+                member = memberDAO.selectMemberByEmail(email);
                 if (member != null) {
                     log.info("loginService google2");
                     return member;

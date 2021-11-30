@@ -14,7 +14,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductDAO productDAO;
 
-    public Product getById(Long productId) {
-        return productDAO.findById(productId);
+    public Product findProductById(Long productId) {
+        return productDAO.selectProductById(productId);
     }
 }

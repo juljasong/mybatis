@@ -7,26 +7,26 @@ import java.util.List;
 
 public interface UrlService {
 
-    int add(Url url);
+    int addUrl(Url url);
 
-    int deleteUrl(Long id);
+    int removeUrl(Long id);
 
-    int updateUrl(Member loginUser, Url url);
+    int modifyUrl(Member loginUser, Url url);
 
-    int countAllByMemberId(Long id);
+    int findCntByMemberId(Long id);
 
     Url findUrlById(Long memberId, Long id);
 
-    List<Url> listByMemberName(String name);
+    List<Url> findUrlsByMemberName(String name);
 
-    List<Url> findByMemberIdAndPublic(String name);
+    List<Url> findUrlsByMemberIdAndPublic(String name);
 
-    List<Url> findByMemberId(Long id);
+    List<Url> findEnabledUrlsByMemberId(Long id);
 
-    List<Url> findExpiredByMemberId(Long id);
+    List<Url> findExpiredUrlsByMemberId(Long id);
 
-    List<Url> findAll();
+    List<Url> findAllUrls();
 
-    List<Url> findByInput(String input);
+    List<Url> findUrlsByInput(String input);
 
 }

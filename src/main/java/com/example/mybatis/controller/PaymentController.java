@@ -1,7 +1,7 @@
 package com.example.mybatis.controller;
 
-import com.example.mybatis.dto.PaymentDto;
-import com.example.mybatis.dto.PaymentFormDto;
+import com.example.mybatis.dto.PaymentDTO;
+import com.example.mybatis.dto.PaymentFormDTO;
 import com.example.mybatis.entity.Member;
 import com.example.mybatis.entity.Order;
 import com.example.mybatis.entity.Product;
@@ -30,7 +30,7 @@ public class PaymentController {
     private final ProductService productService;
 
     @GetMapping("/add")
-    public ResponseEntity<PaymentFormDto> addPayment(@Login Member loginUser, @RequestParam Long productId) {
+    public ResponseEntity<PaymentFormDTO> addPayment(@Login Member loginUser, @RequestParam Long productId) {
 
         Order order = orderService.findAvailableOrderByMemberId(loginUser.getId());
 
@@ -43,35 +43,35 @@ public class PaymentController {
         int hashedEmail = loginUser.getEmail().hashCode();
         String merchantUid = date + hashedEmail;
 
-        Product product = productService.getById(productId);
+        Product product = productService.findProductById(productId);
 
-        PaymentFormDto paymentFormDto = new PaymentFormDto();
-        paymentFormDto.setMerchantUid(merchantUid);
-        paymentFormDto.setOrderName(product.getName());
-        paymentFormDto.setAmount(product.getPrice());
-        paymentFormDto.setBuyerEmail(loginUser.getEmail());
-        paymentFormDto.setBuyerName(loginUser.getName());
+        PaymentFormDTO paymentFormDTO = new PaymentFormDTO();
+        paymentFormDTO.setMerchantUid(merchantUid);
+        paymentFormDTO.setOrderName(product.getName());
+        paymentFormDTO.setAmount(product.getPrice());
+        paymentFormDTO.setBuyerEmail(loginUser.getEmail());
+        paymentFormDTO.setBuyerName(loginUser.getName());
 
-        log.info("{}", paymentFormDto);
+        log.info("{}", paymentFormDTO);
 
-        return new ResponseEntity<PaymentFormDto>(paymentFormDto, HttpStatus.OK);
+        return new ResponseEntity<PaymentFormDTO>(paymentFormDTO, HttpStatus.OK);
     }
 
     @PostMapping("/complete")
-    public ResponseEntity<PaymentDto> completePayments(@Login Member loginUser, @ModelAttribute PaymentDto paymentDto) {
+    public ResponseEntity<PaymentDTO> completePayments(@Login Member loginUser, @ModelAttribute PaymentDTO paymentDTO) {
 
         try {
-            paymentDto.setBuyerName(loginUser.getName());
-            paymentDto.setBuyerEmail(loginUser.getEmail());
-            paymentDto.setMemberId(loginUser.getId());
+            paymentDTO.setBuyerName(loginUser.getName());
+            paymentDTO.setBuyerEmail(loginUser.getEmail());
+            paymentDTO.setMemberId(loginUser.getId());
 
-            paymentService.add(paymentDto);
-            orderService.add(paymentDto);
+            paymentService.addPayment(paymentDTO);
+            orderService.addOrder(paymentDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return new ResponseEntity<PaymentDto>(paymentDto, HttpStatus.OK);
+        return new ResponseEntity<PaymentDTO>(paymentDTO, HttpStatus.OK);
     }
 
 }

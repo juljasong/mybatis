@@ -9,6 +9,6 @@ import org.apache.ibatis.annotations.Select;
 public interface ProductDAO {
 
     @Select("SELECT * FROM products WHERE id=#{productId}")
-    Product findById(@Param("productId") Long productId);
+    Product selectProductById(@Param("productId") Long productId);
 
 }

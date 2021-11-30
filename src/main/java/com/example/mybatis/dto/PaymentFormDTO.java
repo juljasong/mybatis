@@ -10,7 +10,7 @@ import java.sql.Date;
 @Getter
 @Setter
 @ToString
-public class PaymentFormDto {
+public class PaymentFormDTO {
 
     @NotNull
     private String merchantUid;

@@ -13,29 +13,29 @@ public interface UrlDAO {
     int insert(@Param("url") Url url);
 
     @Select("SELECT * FROM urls WHERE member_id=#{memberId} AND (expiration_date > NOW() OR expiration_date IS NULL)")
-    List<Url> findByMemberId(@Param("memberId") Long memberId);
+    List<Url> selectByEnabledUrlsMemberId(@Param("memberId") Long memberId);
 
     @Select("SELECT * FROM urls WHERE member_id=#{memberId} AND (expiration_date > NOW() OR expiration_date IS NULL) AND is_public=1")
-    List<Url> findByMemberIdAndPublic(@Param("memberId") Long memberId);
+    List<Url> selectEnabledUrlsByMemberIdAndPublic(@Param("memberId") Long memberId);
 
     @Select("SELECT * FROM urls WHERE member_id=#{memberId} AND expiration_date < NOW()")
-    List<Url> findExpiredByMemberId(@Param("memberId") Long memberId);
+    List<Url> selectExpiredUrlsByMemberId(@Param("memberId") Long memberId);
 
     @Delete("DELETE FROM urls WHERE id=#{id}")
-    int deleteById(Long id);
+    int deleteUrlById(Long id);
 
     @Update("UPDATE urls SET name=#{url.name}, url=#{url.url}, description=#{url.description}, expiration_date=#{url.expirationDate}, is_public=#{url.isPublic} WHERE id=#{url.id} AND member_id=#{memberId}")
-    int updateById(@Param("memberId") Long memberId, @Param("url") Url url);
+    int updateUrlById(@Param("memberId") Long memberId, @Param("url") Url url);
 
     @Select("SELECT * FROM urls")
-    List<Url> findAll();
+    List<Url> selectAllUrls();
 
     @Select("SELECT * FROM urls WHERE id=#{id} AND member_id=#{memberId}")
-    Url findUrlById(@Param("memberId") Long memberId, @Param("id") Long id);
+    Url selectUrlById(@Param("memberId") Long memberId, @Param("id") Long id);
 
     @Select("SELECT COUNT(*) FROM urls WHERE member_id=#{id}")
-    int countAllByMemberId(@Param("id") Long id);
+    int selectCntByMemberId(@Param("id") Long id);
 
     @Select("SELECT * FROM urls WHERE id LIKE CONCAT('%', #{input}, '%') OR member_id LIKE CONCAT('%', #{input}, '%') OR name LIKE CONCAT('%', #{input}, '%') OR url LIKE CONCAT('%', #{input}, '%')")
-    List<Url> findByInput(@Param("input") String input);
+    List<Url> selectUrlsByInput(@Param("input") String input);
 }

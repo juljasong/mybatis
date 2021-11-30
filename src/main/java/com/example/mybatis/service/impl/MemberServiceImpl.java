@@ -20,10 +20,10 @@ public class MemberServiceImpl implements MemberService {
     private final MailService mailService;
 
     public Member findMemberById(Long id) {
-        return memberDAO.findById(id);
+        return memberDAO.selectMemberById(id);
     }
 
-    public int save(Member member) throws Exception {
+    public int add(Member member) throws Exception {
         int result = 0;
         try {
             String authKey = mailService.sendAuthenticationMail(member);
@@ -37,13 +37,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     public int verifyCurrentPassword(Long id, String currentPassword) {
-        return memberDAO.findByCurrentPassword(id, currentPassword);
+        return memberDAO.selectCntByIdAndPassword(id, currentPassword);
     }
 
-    public String findPassword(String email) {
+    public String findPasswordByEmail(String email) {
         try {
             String authKey = UUID.randomUUID().toString().replace("-", "");
-            int result = memberDAO.setAuthKey(email, authKey);
+            int result = memberDAO.updateAuthKeyByEmail(email, authKey);
 
             if (result > 0) {
                 mailService.sendFindPasswordMail(email, authKey);
@@ -54,7 +54,7 @@ public class MemberServiceImpl implements MemberService {
         return "Check your Email";
     }
 
-    public String resetPassword(String password1, String authKey) {
+    public String modifyPassword(String password1, String authKey) {
         try {
 
             int result = memberDAO.updatePassword(password1, authKey);
@@ -71,7 +71,7 @@ public class MemberServiceImpl implements MemberService {
         return null;
     }
 
-    public String saveOauth2(Member member) {
+    public String addOauth2(Member member) {
         int result = memberDAO.insert(member);
         if (result == 0) {
             return "An error has occurred.";
@@ -80,7 +80,7 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
-    public String linkOauth2(String email, String provider) {
+    public String modifyProvider(String email, String provider) {
         int result = memberDAO.updateProvider(email, provider);
         if (result == 0) {
             return "An error has occurred.";
@@ -89,9 +89,8 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
-
-    public String mailCheck(String authKey) {
-        int result = memberDAO.mailCheck(authKey);
+    public String modifyAuthKey(String authKey) {
+        int result = memberDAO.updateAuthKey(authKey);
         String msg = "";
         if (result < 1) {
             msg = "An error has occurred.";
@@ -101,23 +100,23 @@ public class MemberServiceImpl implements MemberService {
         return msg;
     }
 
-    public List<Member> findAll() {
-        return memberDAO.findAll();
+    public List<Member> findAllMembers() {
+        return memberDAO.selectAllMember();
     }
 
-    public List<Member> findByInput(String input) {
-        return memberDAO.findByInput(input);
+    public List<Member> findMembersByInput(String input) {
+        return memberDAO.selectMembersByInput(input);
     }
 
-    public Member findByEmail(String email) {
-        return memberDAO.findByEmail(email);
+    public Member findMemberByEmail(String email) {
+        return memberDAO.selectMemberByEmail(email);
     }
 
-    public int findByName(String name) {
-        return memberDAO.findByName(name);
+    public int findCntByName(String name) {
+        return memberDAO.selectCntByName(name);
     }
 
-    public int update(String password, String name, Member loginUser) {
+    public int modifyMember(String password, String name, Member loginUser) {
         return memberDAO.update(password, name, loginUser);
     }
 

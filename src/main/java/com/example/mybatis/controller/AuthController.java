@@ -1,6 +1,6 @@
 package com.example.mybatis.controller;
 
-import com.example.mybatis.dto.LoginDto;
+import com.example.mybatis.dto.LoginDTO;
 import com.example.mybatis.entity.Member;
 import com.example.mybatis.service.LoginService;
 import com.example.mybatis.util.SessionConst;
@@ -34,15 +34,15 @@ public class AuthController {
     private final LoginService loginService;
 
     @PostMapping("/auth/login")
-    public String loginByHttpSession(@Validated @ModelAttribute LoginDto loginDto, BindingResult bindingResult,
+    public String loginByHttpSession(@Validated @ModelAttribute LoginDTO loginDTO, BindingResult bindingResult,
                                      HttpServletRequest request) {
 
-        Member loginUser = loginService.login(loginDto);
+        Member loginUser = loginService.login(loginDTO);
 
         if (loginUser == null) {
             log.info("error={}", bindingResult.getAllErrors());
-            if (!loginDto.getEmail().isBlank() && !loginDto.getPassword().isBlank()) {
-                bindingResult.addError(new ObjectError("loginDto", "Incorrect email or password."));
+            if (!loginDTO.getEmail().isBlank() && !loginDTO.getPassword().isBlank()) {
+                bindingResult.addError(new ObjectError("loginDTO", "Incorrect email or password."));
             }
 
             return "home";
@@ -113,15 +113,15 @@ public class AuthController {
     }
 
     //@PostMapping("/login")
-    public String loginByCookie(@Validated @ModelAttribute LoginDto loginDto, BindingResult bindingResult,
+    public String loginByCookie(@Validated @ModelAttribute LoginDTO loginDTO, BindingResult bindingResult,
                                 HttpServletResponse response) throws Exception {
 
-        Member loginUser = loginService.login(loginDto);
+        Member loginUser = loginService.login(loginDTO);
 
         if (loginUser == null) {
             throw new Exception("Incorrect Email or Password.");
         } else {
-            log.info("Login email = {}", loginDto.getEmail());
+            log.info("Login email = {}", loginDTO.getEmail());
 
             Cookie idCookie = new Cookie("memberId", String.valueOf(loginUser.getId()));
             response.addCookie(idCookie);

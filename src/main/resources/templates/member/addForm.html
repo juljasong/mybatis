@@ -8,7 +8,7 @@
 <body>
     <main>
 
-        <form action="/member/addForm" th:action th:object="${signInDto}" method="post">
+        <form action="/member/addForm" th:action th:object="${signInDTO}" method="post">
 
             <div th:if="${#fields.hasGlobalErrors()}">
                 <p class="global-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">Global Error</p>

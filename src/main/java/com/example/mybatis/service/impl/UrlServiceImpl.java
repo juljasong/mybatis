@@ -19,24 +19,24 @@ public class UrlServiceImpl implements UrlService {
     private final UrlDAO urlDAO;
     private final MemberDAO memberDAO;
 
-    public int add(Url url) {
+    public int addUrl(Url url) {
         toAbsolutePath(url);
         return urlDAO.insert(url);
     }
 
-    public List<Url> listByMemberName(String name) {
-        Long memberId = memberDAO.findMemberIdByMemberName(name);
-        List<Url> urls = urlDAO.findByMemberId(memberId);
+    public List<Url> findUrlsByMemberName(String name) {
+        Long memberId = memberDAO.selectMemberIdByMemberName(name);
+        List<Url> urls = urlDAO.selectByEnabledUrlsMemberId(memberId);
         return urls;
     }
 
-    public int deleteUrl(Long id) {
-        return urlDAO.deleteById(id);
+    public int removeUrl(Long id) {
+        return urlDAO.deleteUrlById(id);
     }
 
-    public int updateUrl(Member loginUser, Url url) {
+    public int modifyUrl(Member loginUser, Url url) {
         toAbsolutePath(url);
-        return urlDAO.updateById(loginUser.getId(), url);
+        return urlDAO.updateUrlById(loginUser.getId(), url);
     }
 
 
@@ -50,32 +50,32 @@ public class UrlServiceImpl implements UrlService {
     }
 
     public Url findUrlById(Long memberId, Long id) {
-        return urlDAO.findUrlById(memberId, id);
+        return urlDAO.selectUrlById(memberId, id);
     }
 
-    public List<Url> findByMemberIdAndPublic(String name) {
-        Long memberId = memberDAO.findMemberIdByMemberName(name);
-        List<Url> urls = urlDAO.findByMemberIdAndPublic(memberId);
+    public List<Url> findUrlsByMemberIdAndPublic(String name) {
+        Long memberId = memberDAO.selectMemberIdByMemberName(name);
+        List<Url> urls = urlDAO.selectEnabledUrlsByMemberIdAndPublic(memberId);
         return urls;
     }
 
-    public List<Url> findByMemberId(Long id) {
-        return urlDAO.findByMemberId(id);
+    public List<Url> findEnabledUrlsByMemberId(Long id) {
+        return urlDAO.selectByEnabledUrlsMemberId(id);
     }
 
-    public List<Url> findExpiredByMemberId(Long id) {
-        return urlDAO.findExpiredByMemberId(id);
+    public List<Url> findExpiredUrlsByMemberId(Long id) {
+        return urlDAO.selectExpiredUrlsByMemberId(id);
     }
 
-    public int countAllByMemberId(Long id) {
-        return urlDAO.countAllByMemberId(id);
+    public int findCntByMemberId(Long id) {
+        return urlDAO.selectCntByMemberId(id);
     }
 
-    public List<Url> findAll() {
-        return urlDAO.findAll();
+    public List<Url> findAllUrls() {
+        return urlDAO.selectAllUrls();
     }
 
-    public List<Url> findByInput(String input) {
-        return urlDAO.findByInput(input);
+    public List<Url> findUrlsByInput(String input) {
+        return urlDAO.selectUrlsByInput(input);
     }
 }
