@@ -1,7 +1,7 @@
 package com.example.mybatis.controller;
 
 import com.example.mybatis.entity.Url;
-import com.example.mybatis.service.UrlService;
+import com.example.mybatis.service.impl.UrlServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ViewController {
 
-    private final UrlService urlService;
+    private final UrlServiceImpl urlService;
 
     @GetMapping("/{userName}")
     public String individual(@PathVariable String userName, Model model) {

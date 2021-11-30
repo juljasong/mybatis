@@ -3,17 +3,14 @@ package com.example.mybatis.controller;
 import com.example.mybatis.dto.FindPasswordDto;
 import com.example.mybatis.entity.Member;
 import com.example.mybatis.dao.MemberMapper;
-import com.example.mybatis.entity.Order;
 import com.example.mybatis.service.MemberService;
-import com.example.mybatis.service.OrderService;
+import com.example.mybatis.service.impl.OrderServiceImpl;
 import com.example.mybatis.util.SessionConst;
 import com.example.mybatis.util.argumentResolver.Login;
 import com.example.mybatis.dto.SignInDto;
 import com.example.mybatis.dto.UpdateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,7 +32,7 @@ public class MemberController {
     private final MemberMapper memberMapper;
     private final MemberService memberService;
     private final AuthController authController;
-    private final OrderService orderService;
+    private final OrderServiceImpl orderService;
 
 
     @GetMapping("/add")
@@ -103,7 +100,7 @@ public class MemberController {
                          Model model) throws Exception {
         Long memberId = loginUser.getId();
 
-        if (loginUser.getProvider().isBlank()) {
+        if (loginUser.getProvider() == null) {
 
             if (updateDto.getCurrentPassword().isBlank() && updateDto.getPassword().isBlank() && updateDto.getName().equals(loginUser.getName())) {
                 return "redirect:/member/updateForm";

@@ -5,8 +5,8 @@ import com.example.mybatis.entity.Member;
 import com.example.mybatis.entity.Order;
 import com.example.mybatis.entity.Url;
 import com.example.mybatis.service.MemberService;
-import com.example.mybatis.service.OrderService;
-import com.example.mybatis.service.UrlService;
+import com.example.mybatis.service.impl.OrderServiceImpl;
+import com.example.mybatis.service.impl.UrlServiceImpl;
 import com.example.mybatis.util.SessionConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 @Slf4j
@@ -28,9 +27,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminController {
 
-    private final UrlService urlService;
+    private final UrlServiceImpl urlService;
     private final MemberService memberService;
-    private final OrderService orderService;
+    private final OrderServiceImpl orderService;
 
     @PostMapping("/login")
     public String adminLogin(@ModelAttribute Admin admin, HttpServletRequest request, RedirectAttributes redirectAttributes) {
@@ -60,10 +59,10 @@ public class AdminController {
     @GetMapping("/urls")
     public String getAllUrls(Model model) {
         model.addAttribute("urls", urlService.findAll());
-        return "admin/url";
+        return "admin/urls";
     }
 
-    @GetMapping("urls/{input}")
+    @GetMapping("/urls/{input}")
     public ResponseEntity<List<Url>> getUrlsByInput(@PathVariable String input) {
         List<Url> urls = urlService.findByInput(input);
         return new ResponseEntity<>(urls, HttpStatus.OK);
@@ -72,10 +71,10 @@ public class AdminController {
     @GetMapping("/members")
     public String getAllMembers(Model model) {
         model.addAttribute("members", memberService.findAll());
-        return "admin/member";
+        return "admin/members";
     }
 
-    @GetMapping("members/{input}")
+    @GetMapping("/members/{input}")
     public ResponseEntity<List<Member>> getMembersByInput(@PathVariable String input) {
         List<Member> members = memberService.findByInput(input);
         return new ResponseEntity<>(members, HttpStatus.OK);
@@ -84,10 +83,10 @@ public class AdminController {
     @GetMapping("/orders")
     public String getAllOrders(Model model) {
         model.addAttribute("orders", orderService.findAll());
-        return "admin/order";
+        return "admin/orders";
     }
 
-    @GetMapping("orders/{input}")
+    @GetMapping("/orders/{input}")
     public ResponseEntity<List<Order>> getOrdersByInput(@PathVariable String input) {
         List<Order> orders = orderService.findByInput(input);
         return new ResponseEntity<>(orders, HttpStatus.OK);

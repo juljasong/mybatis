@@ -5,9 +5,9 @@ import com.example.mybatis.dto.PaymentFormDto;
 import com.example.mybatis.entity.Member;
 import com.example.mybatis.entity.Order;
 import com.example.mybatis.entity.Product;
-import com.example.mybatis.service.OrderService;
-import com.example.mybatis.service.PaymentService;
-import com.example.mybatis.service.ProductService;
+import com.example.mybatis.service.impl.OrderServiceImpl;
+import com.example.mybatis.service.impl.PaymentServiceImpl;
+import com.example.mybatis.service.impl.ProductServiceImpl;
 import com.example.mybatis.util.argumentResolver.Login;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -27,9 +25,9 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 public class PaymentController {
 
-    private final PaymentService paymentService;
-    private final OrderService orderService;
-    private final ProductService productService;
+    private final PaymentServiceImpl paymentService;
+    private final OrderServiceImpl orderService;
+    private final ProductServiceImpl productService;
 
     @GetMapping("/plus")
     public ResponseEntity<PaymentFormDto> payPlus(@Login Member loginUser, @RequestParam Long productId) {

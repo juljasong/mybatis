@@ -1,12 +1,10 @@
 package com.example.mybatis.controller;
 
-import com.example.mybatis.service.UrlService;
+import com.example.mybatis.service.impl.UrlServiceImpl;
 import com.example.mybatis.util.argumentResolver.Login;
 import com.example.mybatis.dto.LoginDto;
 import com.example.mybatis.entity.Member;
-import com.example.mybatis.dao.MemberMapper;
 import com.example.mybatis.entity.Url;
-import com.example.mybatis.dao.UrlMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -20,7 +18,7 @@ import java.util.List;
 @Slf4j
 public class HomeController {
 
-    private final UrlService urlService;
+    private final UrlServiceImpl urlService;
 
     @RequestMapping("/")
     public String home(//@SessionAttribute(name = SessionConst.LOGIN_USER, required = false)

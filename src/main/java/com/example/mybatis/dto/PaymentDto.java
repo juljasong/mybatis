@@ -5,7 +5,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
-import java.sql.Date;
 
 @Getter
 @Setter
@@ -13,7 +12,7 @@ import java.sql.Date;
 public class PaymentDto {
 
     @NotNull
-    private Long merchantUid;
+    private String merchantUid;
     @NotNull
     private String impUid;
     @NotNull

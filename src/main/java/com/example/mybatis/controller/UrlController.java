@@ -3,9 +3,8 @@ package com.example.mybatis.controller;
 import com.example.mybatis.entity.Member;
 import com.example.mybatis.entity.Order;
 import com.example.mybatis.entity.Url;
-import com.example.mybatis.dao.UrlMapper;
-import com.example.mybatis.service.OrderService;
-import com.example.mybatis.service.UrlService;
+import com.example.mybatis.service.impl.OrderServiceImpl;
+import com.example.mybatis.service.impl.UrlServiceImpl;
 import com.example.mybatis.util.argumentResolver.Login;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.sql.Date;
-import java.util.List;
 
 @Controller
 @Slf4j
@@ -26,8 +24,8 @@ import java.util.List;
 @RequestMapping("/url")
 public class UrlController {
 
-    private final UrlService urlService;
-    private final OrderService orderService;
+    private final UrlServiceImpl urlService;
+    private final OrderServiceImpl orderService;
 
     @GetMapping("/add")
     @ResponseBody
