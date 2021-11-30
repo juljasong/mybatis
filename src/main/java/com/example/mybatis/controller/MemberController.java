@@ -4,6 +4,7 @@ import com.example.mybatis.dto.FindPasswordDto;
 import com.example.mybatis.entity.Member;
 import com.example.mybatis.dao.MemberMapper;
 import com.example.mybatis.service.MemberService;
+import com.example.mybatis.service.OrderService;
 import com.example.mybatis.service.impl.OrderServiceImpl;
 import com.example.mybatis.util.SessionConst;
 import com.example.mybatis.util.argumentResolver.Login;
@@ -125,6 +126,7 @@ public class MemberController {
 
         if(bindingResult.hasErrors()) {
             log.info("error={}", bindingResult.getAllErrors());
+            model.addAttribute("order", orderService.findAvailableOrderByMemberId(loginUser.getId()));
             return "member/updateForm";
         }
 
