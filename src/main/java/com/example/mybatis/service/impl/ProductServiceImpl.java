@@ -1,6 +1,6 @@
 package com.example.mybatis.service.impl;
 
-import com.example.mybatis.dao.ProductMapper;
+import com.example.mybatis.dao.ProductDAO;
 import com.example.mybatis.entity.Product;
 import com.example.mybatis.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductMapper productMapper;
+    private final ProductDAO productDAO;
 
     public Product getById(Long productId) {
-        return productMapper.findById(productId);
+        return productDAO.findById(productId);
     }
 }

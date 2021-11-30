@@ -2,7 +2,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.mybatis.dao.OrderMapper">
+<mapper namespace="com.example.mybatis.dao.OrderDAO">
 
     <resultMap type="com.example.mybatis.entity.Order" id="OrderMap">
         <id column="id" property="id" />

@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.*;
 import java.util.List;
 
 @Mapper
-public interface UrlMapper {
+public interface UrlDAO {
 
     //INSERT INTO urls(member_id, name, url, description, expirationDate, isPublic) VALUES (#{url.memberId}, #{url.name}, #{url.url}, #{url.description}, #{url.expirationDate}, #{url.isPublic});
     @Insert("INSERT INTO urls(member_id, name, url, description, expiration_date, is_public) VALUES (#{url.memberId}, #{url.name}, #{url.url}, #{url.description}, #{url.expirationDate}, #{url.isPublic})")

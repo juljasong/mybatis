@@ -1,7 +1,7 @@
 package com.example.mybatis.service.impl;
 
 import com.example.mybatis.entity.Member;
-import com.example.mybatis.dao.MemberMapper;
+import com.example.mybatis.dao.MemberDAO;
 import com.example.mybatis.service.MailService;
 import com.example.mybatis.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +16,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
     
-    private final MemberMapper memberMapper;
+    private final MemberDAO memberDAO;
     private final MailService mailService;
 
     public Member findMemberById(Long id) {
-        return memberMapper.findById(id);
+        return memberDAO.findById(id);
     }
 
     public int save(Member member) throws Exception {
@@ -29,7 +29,7 @@ public class MemberServiceImpl implements MemberService {
             String authKey = mailService.sendAuthenticationMail(member);
             member.setAuthKey(authKey);
             System.out.println("authKey = " + authKey);
-            result = memberMapper.insert(member);
+            result = memberDAO.insert(member);
         }catch (Exception e) {
             e.printStackTrace();
         }
@@ -37,13 +37,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     public int verifyCurrentPassword(Long id, String currentPassword) {
-        return memberMapper.findByCurrentPassword(id, currentPassword);
+        return memberDAO.findByCurrentPassword(id, currentPassword);
     }
 
     public String findPassword(String email) {
         try {
             String authKey = UUID.randomUUID().toString().replace("-", "");
-            int result = memberMapper.setAuthKey(email, authKey);
+            int result = memberDAO.setAuthKey(email, authKey);
 
             if (result > 0) {
                 mailService.sendFindPasswordMail(email, authKey);
@@ -57,7 +57,7 @@ public class MemberServiceImpl implements MemberService {
     public String resetPassword(String password1, String authKey) {
         try {
 
-            int result = memberMapper.updatePassword(password1, authKey);
+            int result = memberDAO.updatePassword(password1, authKey);
 
             if (result > 0) {
                 return "Your password has been reset successfully";
@@ -72,7 +72,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     public String saveOauth2(Member member) {
-        int result = memberMapper.insert(member);
+        int result = memberDAO.insert(member);
         if (result == 0) {
             return "An error has occurred.";
         } else{
@@ -81,7 +81,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     public String linkOauth2(String email, String provider) {
-        int result = memberMapper.updateProvider(email, provider);
+        int result = memberDAO.updateProvider(email, provider);
         if (result == 0) {
             return "An error has occurred.";
         } else {
@@ -91,7 +91,7 @@ public class MemberServiceImpl implements MemberService {
 
 
     public String mailCheck(String authKey) {
-        int result = memberMapper.mailCheck(authKey);
+        int result = memberDAO.mailCheck(authKey);
         String msg = "";
         if (result < 1) {
             msg = "An error has occurred.";
@@ -102,23 +102,23 @@ public class MemberServiceImpl implements MemberService {
     }
 
     public List<Member> findAll() {
-        return memberMapper.findAll();
+        return memberDAO.findAll();
     }
 
     public List<Member> findByInput(String input) {
-        return memberMapper.findByInput(input);
+        return memberDAO.findByInput(input);
     }
 
     public Member findByEmail(String email) {
-        return memberMapper.findByEmail(email);
+        return memberDAO.findByEmail(email);
     }
 
     public int findByName(String name) {
-        return memberMapper.findByName(name);
+        return memberDAO.findByName(name);
     }
 
     public int update(String password, String name, Member loginUser) {
-        return memberMapper.update(password, name, loginUser);
+        return memberDAO.update(password, name, loginUser);
     }
 
 }

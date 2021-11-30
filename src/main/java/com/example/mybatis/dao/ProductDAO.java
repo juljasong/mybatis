@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 @Mapper
-public interface ProductMapper {
+public interface ProductDAO {
 
     @Select("SELECT * FROM products WHERE id=#{productId}")
     Product findById(@Param("productId") Long productId);

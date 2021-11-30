@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.*;
 import java.util.List;
 
 @Mapper
-public interface MemberMapper {
+public interface MemberDAO {
 
 //    @Insert("INSERT INTO members (email, pwd, name, authKey, provider) VALUES(#{member.email}, PASSWORD(#{member.password}), #{member.name}, #{member.authKey})")
     @Insert("<script>" +

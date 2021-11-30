@@ -2,7 +2,6 @@ package com.example.mybatis.controller;
 
 import com.example.mybatis.dto.FindPasswordDto;
 import com.example.mybatis.entity.Member;
-import com.example.mybatis.dao.MemberMapper;
 import com.example.mybatis.service.MemberService;
 import com.example.mybatis.service.OrderService;
 import com.example.mybatis.util.SessionConst;

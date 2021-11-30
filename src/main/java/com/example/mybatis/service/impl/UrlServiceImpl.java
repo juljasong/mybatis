@@ -1,7 +1,7 @@
 package com.example.mybatis.service.impl;
 
-import com.example.mybatis.dao.MemberMapper;
-import com.example.mybatis.dao.UrlMapper;
+import com.example.mybatis.dao.MemberDAO;
+import com.example.mybatis.dao.UrlDAO;
 import com.example.mybatis.entity.Member;
 import com.example.mybatis.entity.Url;
 import com.example.mybatis.service.UrlService;
@@ -16,27 +16,27 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UrlServiceImpl implements UrlService {
 
-    private final UrlMapper urlMapper;
-    private final MemberMapper memberMapper;
+    private final UrlDAO urlDAO;
+    private final MemberDAO memberDAO;
 
     public int add(Url url) {
         toAbsolutePath(url);
-        return urlMapper.insert(url);
+        return urlDAO.insert(url);
     }
 
     public List<Url> listByMemberName(String name) {
-        Long memberId = memberMapper.findMemberIdByMemberName(name);
-        List<Url> urls = urlMapper.findByMemberId(memberId);
+        Long memberId = memberDAO.findMemberIdByMemberName(name);
+        List<Url> urls = urlDAO.findByMemberId(memberId);
         return urls;
     }
 
     public int deleteUrl(Long id) {
-        return urlMapper.deleteById(id);
+        return urlDAO.deleteById(id);
     }
 
     public int updateUrl(Member loginUser, Url url) {
         toAbsolutePath(url);
-        return urlMapper.updateById(loginUser.getId(), url);
+        return urlDAO.updateById(loginUser.getId(), url);
     }
 
 
@@ -50,32 +50,32 @@ public class UrlServiceImpl implements UrlService {
     }
 
     public Url findUrlById(Long memberId, Long id) {
-        return urlMapper.findUrlById(memberId, id);
+        return urlDAO.findUrlById(memberId, id);
     }
 
     public List<Url> findByMemberIdAndPublic(String name) {
-        Long memberId = memberMapper.findMemberIdByMemberName(name);
-        List<Url> urls = urlMapper.findByMemberIdAndPublic(memberId);
+        Long memberId = memberDAO.findMemberIdByMemberName(name);
+        List<Url> urls = urlDAO.findByMemberIdAndPublic(memberId);
         return urls;
     }
 
     public List<Url> findByMemberId(Long id) {
-        return urlMapper.findByMemberId(id);
+        return urlDAO.findByMemberId(id);
     }
 
     public List<Url> findExpiredByMemberId(Long id) {
-        return urlMapper.findExpiredByMemberId(id);
+        return urlDAO.findExpiredByMemberId(id);
     }
 
     public int countAllByMemberId(Long id) {
-        return urlMapper.countAllByMemberId(id);
+        return urlDAO.countAllByMemberId(id);
     }
 
     public List<Url> findAll() {
-        return urlMapper.findAll();
+        return urlDAO.findAll();
     }
 
     public List<Url> findByInput(String input) {
-        return urlMapper.findByInput(input);
+        return urlDAO.findByInput(input);
     }
 }

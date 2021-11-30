@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @Mapper
-public interface OrderMapper {
+public interface OrderDAO {
 
     @Insert("INSERT INTO orders (id, member_id, product_id, start_date, end_date) " +
             "VALUES (#{paymentDto.merchantUid}, #{paymentDto.memberId}, #{paymentDto.productId}, FROM_UNIXTIME(#{paymentDto.paidAt}, '%Y-%m-%d %h:%i:%s'), FROM_UNIXTIME(#{paymentDto.paidAt}+2592000, '%Y-%m-%d %h:%i:%s'))")
