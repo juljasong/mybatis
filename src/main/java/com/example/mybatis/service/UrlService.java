@@ -15,7 +15,7 @@ public interface UrlService {
 
     int findCntByMemberId(Long id);
 
-    Url findUrlById(Long memberId, Long id);
+    Url findUrlById(Long id);
 
     List<Url> findUrlsByMemberName(String name);
 

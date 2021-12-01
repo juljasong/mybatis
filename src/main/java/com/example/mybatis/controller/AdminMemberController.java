@@ -22,17 +22,22 @@ public class AdminMemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/")
+    @GetMapping("/members")
     public String getAllMembers(Model model) {
         model.addAttribute("members", memberService.findAllMembers());
-        return "admin/members";
+        return "admin/memberList";
     }
 
-    @GetMapping("/{input}")
+    @GetMapping("/members/{input}")
     public ResponseEntity<List<Member>> getMembersByInput(@PathVariable String input) {
         List<Member> members = memberService.findMembersByInput(input);
         return new ResponseEntity<>(members, HttpStatus.OK);
     }
 
+    @GetMapping("/member/{id}")
+    public String getMember(@PathVariable Long id, Model model) {
+        model.addAttribute("member", memberService.findMemberById(id));
+        return "admin/member";
+    }
 
 }

@@ -3,7 +3,7 @@
     xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>ADMIN| MEMBER</title>
+    <title>ADMIN| ORDER</title>
 </head>
 
 <body>
@@ -16,11 +16,11 @@
             </li>
             <!--Members-->
             <li class="nav-item" id="member-list">
-                <a href="/admin/members" class="nav-link active">MEMBERS</a>
+                <a href="/admin/members" class="nav-link">MEMBERS</a>
             </li>
             <!--Orders-->
             <li class="nav-item" id="order-list">
-                <a href="/admin/orders" class="nav-link">ORDERS</a>
+                <a href="/admin/orders" class="nav-link active">ORDERS</a>
             </li>
         </ul>
 
@@ -32,18 +32,21 @@
         <table id="result-table" class="table table-hover">
             <thead>
                 <th scope="col">#</th>
-                <th scope="col">EMAIL</th>
-                <th scope="col">NAME</th>
-                <th scope="col">SIGN IN DATE</th>
-                <th scope="col">PROVIDER</th>
+                <th scope="col">MEMBER</th>
+                <th scope="col">PRODUCT</th>
+                <th scope="col">START</th>
+                <th scope="col">END</th>
             </thead>
             <tbody>
-                <tr th:each="member : ${members}">
-                    <th scope="memberId" th:text="${member.id}">MEMBER_ID</th>
-                    <td th:onclick="|location.href='/admin/members/${member.id}'|" th:text="${member.email}">EMAIL</td>
-                    <td th:text="${member.name}">NAME</td>
-                    <td th:text="${#dates.format(member.createDate, 'yyyy-MM-dd HH:mm:ss')}">SIGN IN DATE</td>
-                    <td th:text="${member.provider}">PROVIDER</td>
+                <tr th:each="order : ${orders}">
+                    <th th:onclick="'location.href=\'/admin/order/'+ @{${order.id}} + '\''" scope="orderId"
+                        th:text="${order.id}">
+                        ORDER_ID</th>
+                    <td th:text="${order.memberId}">MEMBER_ID
+                    </td>
+                    <td th:text="${order.productId}">PRODUCT_ID</td>
+                    <td th:text="${#dates.format(order.startDate, 'yyyy-MM-dd HH:mm:ss')}">START_DATE</td>
+                    <td th:text="${#dates.format(order.endDate, 'yyyy-MM-dd HH:mm:ss')}">END_DATE</td>
                 </tr>
             </tbody>
         </table>
@@ -51,10 +54,10 @@
         <table id="search-result-table" class="table table-hover hidden">
             <thead>
                 <th scope="col">#</th>
-                <th scope="col">EMAIL</th>
-                <th scope="col">NAME</th>
-                <th scope="col">SIGN IN DATE</th>
-                <th scope="col">PROVIDER</th>
+                <th scope="col">MEMBER</th>
+                <th scope="col">PRODUCT</th>
+                <th scope="col">START</th>
+                <th scope="col">END</th>
             </thead>
             <tbody id="search-tbody">
             </tbody>

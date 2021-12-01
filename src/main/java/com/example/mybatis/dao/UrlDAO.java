@@ -30,8 +30,8 @@ public interface UrlDAO {
     @Select("SELECT * FROM urls")
     List<Url> selectAllUrls();
 
-    @Select("SELECT * FROM urls WHERE id=#{id} AND member_id=#{memberId}")
-    Url selectUrlById(@Param("memberId") Long memberId, @Param("id") Long id);
+    @Select("SELECT * FROM urls WHERE id=#{id}")
+    Url selectUrlById(@Param("id") Long id);
 
     @Select("SELECT COUNT(*) FROM urls WHERE member_id=#{id}")
     int selectCntByMemberId(@Param("id") Long id);

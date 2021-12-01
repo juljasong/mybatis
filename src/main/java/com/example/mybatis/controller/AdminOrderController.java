@@ -22,16 +22,22 @@ public class AdminOrderController {
 
     private final OrderServiceImpl orderService;
 
-    @GetMapping("/")
+    @GetMapping("/orders")
     public String getAllOrders(Model model) {
         model.addAttribute("orders", orderService.findAllOrders());
-        return "admin/orders";
+        return "admin/orderList";
     }
 
-    @GetMapping("/{input}")
+    @GetMapping("/orders/{input}")
     public ResponseEntity<List<Order>> getOrdersByInput(@PathVariable String input) {
         List<Order> orders = orderService.findOrderByInput(input);
         return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+
+    @GetMapping("/order/{id}")
+    public String getOrder(@PathVariable Long id, Model model) {
+        model.addAttribute("order", orderService.findOrderById(id));
+        return "admin/order";
     }
 
 }

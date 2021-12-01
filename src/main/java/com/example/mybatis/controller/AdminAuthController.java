@@ -19,7 +19,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
 @Controller
@@ -36,7 +39,6 @@ public class AdminAuthController {
             loginAdmin.setName("admin1");
 
             login(request, loginAdmin);
-
             return "redirect:/admin";
         }
         redirectAttributes.addFlashAttribute("message", "Incorrect.");

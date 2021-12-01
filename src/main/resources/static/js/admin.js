@@ -19,7 +19,7 @@ inputSearchText.addEventListener('input', () => {
         type: 'get',
       }).done((data) => {
         for (i in data) {
-          searchTable.innerHTML += `<tr><th scope="memberId">${data[i].memberId}</th><td onclick="location.href='/admin/urls/${data[i].id}'">${data[i].name}</td><td>${data[i].url}</td></tr>`;
+          searchTable.innerHTML += `<tr><th scope="memberId">${data[i].memberId}</th><td onclick="location.href='/admin/url/${data[i].id}'">${data[i].name}</td><td>${data[i].url}</td></tr>`;
         }
       });
     } else if (active == 'MEMBERS') {
@@ -29,7 +29,7 @@ inputSearchText.addEventListener('input', () => {
       }).done((data) => {
         for (i in data) {
           let date = getFormatDate(`${data[i].createDate}`);
-          searchTable.innerHTML += `<tr><th scope="id">${data[i].id}</th><td onclick="location.href='/admin/members/${data[i].id}'">${data[i].email}</td><td>${data[i].name}</td><td>${date}</td><td>${data[i].provider}</td></tr>`;
+          searchTable.innerHTML += `<tr><th scope="id">${data[i].id}</th><td onclick="location.href='/admin/member/${data[i].id}'">${data[i].email}</td><td>${data[i].name}</td><td>${date}</td><td>${data[i].provider}</td></tr>`;
         }
       });
     } else if (active == 'ORDERS') {
@@ -40,7 +40,7 @@ inputSearchText.addEventListener('input', () => {
         for (i in data) {
           let startDate = getFormatDate(`${data[i].startDate}`);
           let endDate = getFormatDate(`${data[i].endDate}`);
-          searchTable.innerHTML += `<tr><th scope="id" onclick="location.href='/admin/orders/${data[i].id}'">${data[i].id}</th><td>${data[i].memberId}</td><td>${data[i].productId}</td><td>${startDate}</td><td>${endDate}</td></tr>`;
+          searchTable.innerHTML += `<tr><th scope="id" onclick="location.href='/admin/order/${data[i].id}'">${data[i].id}</th><td>${data[i].memberId}</td><td>${data[i].productId}</td><td>${startDate}</td><td>${endDate}</td></tr>`;
         }
       });
     }
@@ -61,4 +61,15 @@ function getFormatDate(str) {
   let timeString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 
   return timeString;
+}
+
+function deleteUrl(id) {
+  $.ajax({
+    url: '/admin/url/delete/',
+    type: 'GET',
+    data: { id: id },
+  }).done(() => {
+    alert('ok');
+    location.href = '/admin/urls';
+  });
 }

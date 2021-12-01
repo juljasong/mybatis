@@ -32,4 +32,9 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> findOrderByInput(String input) {
         return orderDAO.selectOrderByInput(input);
     }
+
+    @Override
+    public Order findOrderById(Long id) {
+        return orderDAO.selectOrderById(id);
+    }
 }

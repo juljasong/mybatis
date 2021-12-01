@@ -22,4 +22,7 @@ public interface OrderDAO {
 
     @Select("SELECT * FROM orders WHERE id LIKE CONCAT('%', #{input}, '%') OR member_id LIKE CONCAT('%', #{input}, '%') OR product_id LIKE CONCAT('%', #{input}, '%') OR start_date LIKE CONCAT('%', #{input}, '%') OR end_date LIKE CONCAT('%', #{input}, '%')")
     List<Order> selectOrderByInput(@Param("input") String input);
+
+    @Select("SELECT * FROM orders WHERE id = #{id}")
+    Order selectOrderById(@Param("id") Long id);
 }

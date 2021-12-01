@@ -14,10 +14,12 @@ public class AdminCheckInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        log.info("AdminCheckInterceptor");
+        String requestURI = request.getRequestURI();
+        //log.info("인증 체크 인터셉터 실행 {}", requestURI);
         HttpSession session = request.getSession();
 
         if (session == null || session.getAttribute(SessionConst.LOGIN_ADMIN) == null) {
+//            response.sendRedirect("/?redirect=" + requestURI);
             response.sendRedirect("/admin");
             return false;
         }

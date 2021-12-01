@@ -15,4 +15,5 @@ public interface OrderService {
 
     List<Order> findOrderByInput(String input);
 
+    Order findOrderById(Long id);
 }

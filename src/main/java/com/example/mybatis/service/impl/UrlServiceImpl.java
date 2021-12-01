@@ -49,8 +49,8 @@ public class UrlServiceImpl implements UrlService {
         }
     }
 
-    public Url findUrlById(Long memberId, Long id) {
-        return urlDAO.selectUrlById(memberId, id);
+    public Url findUrlById(Long id) {
+        return urlDAO.selectUrlById(id);
     }
 
     public List<Url> findUrlsByMemberIdAndPublic(String name) {

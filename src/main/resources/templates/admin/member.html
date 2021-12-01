@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html th:replace="~{admin/adminLayout :: layout(~{::title}, ~{::main}, ~{::javascript})}"
+    xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>ADMIN| MEMBER</title>
+</head>
+
+<body>
+    <!--Start URL-->
+    <main>
+        <ul class="nav nav-tabs">
+            <!--Url-->
+            <li class="nav-item" id="url-list">
+                <a href="/admin/urls" class="nav-link">URLS</a>
+            </li>
+            <!--Members-->
+            <li class="nav-item" id="member-list">
+                <a href="/admin/members" class="nav-link active">MEMBERS</a>
+            </li>
+            <!--Orders-->
+            <li class="nav-item" id="order-list">
+                <a href="/admin/orders" class="nav-link">ORDERS</a>
+            </li>
+        </ul>
+
+
+
+
+
+
+
+    </main>
+
+    <div th:fragment="javascript" th:remove="tag"></div>
+
+</body>
+
+</html>

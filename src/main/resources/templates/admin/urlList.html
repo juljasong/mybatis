@@ -3,7 +3,7 @@
     xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>ADMIN| ORDER</title>
+    <title>ADMIN| URL</title>
 </head>
 
 <body>
@@ -12,7 +12,7 @@
         <ul class="nav nav-tabs">
             <!--Url-->
             <li class="nav-item" id="url-list">
-                <a href="/admin/urls" class="nav-link">URLS</a>
+                <a href="/admin/urls" class="nav-link active">URLS</a>
             </li>
             <!--Members-->
             <li class="nav-item" id="member-list">
@@ -20,7 +20,7 @@
             </li>
             <!--Orders-->
             <li class="nav-item" id="order-list">
-                <a href="/admin/orders" class="nav-link active">ORDERS</a>
+                <a href="/admin/orders" class="nav-link">ORDERS</a>
             </li>
         </ul>
 
@@ -32,21 +32,14 @@
         <table id="result-table" class="table table-hover">
             <thead>
                 <th scope="col">#</th>
-                <th scope="col">MEMBER</th>
-                <th scope="col">PRODUCT</th>
-                <th scope="col">START</th>
-                <th scope="col">END</th>
+                <th scope="col">NAME</th>
+                <th scope="col">URL</th>
             </thead>
             <tbody>
-                <tr th:each="order : ${orders}">
-                    <th th:onclick="'location.href=\'/admin/orders/'+ @{${order.id}} + '\''" scope="orderId"
-                        th:text="${order.id}">
-                        ORDER_ID</th>
-                    <td th:text="${order.memberId}">MEMBER_ID
-                    </td>
-                    <td th:text="${order.productId}">PRODUCT_ID</td>
-                    <td th:text="${#dates.format(order.startDate, 'yyyy-MM-dd HH:mm:ss')}">START_DATE</td>
-                    <td th:text="${#dates.format(order.endDate, 'yyyy-MM-dd HH:mm:ss')}">END_DATE</td>
+                <tr th:each="url : ${urls}">
+                    <th scope="memberId" th:text="${url.memberId}">MEMBER_ID</th>
+                    <td th:onclick="|location.href='/admin/url/${url.id}'|" th:text="${url.name}">NAME</td>
+                    <td th:text="${url.url}">URL</td>
                 </tr>
             </tbody>
         </table>
@@ -54,10 +47,8 @@
         <table id="search-result-table" class="table table-hover hidden">
             <thead>
                 <th scope="col">#</th>
-                <th scope="col">MEMBER</th>
-                <th scope="col">PRODUCT</th>
-                <th scope="col">START</th>
-                <th scope="col">END</th>
+                <th scope="col">NAME</th>
+                <th scope="col">URL</th>
             </thead>
             <tbody id="search-tbody">
             </tbody>
