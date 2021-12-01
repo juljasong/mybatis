@@ -25,11 +25,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 @RequiredArgsConstructor
-public class AdminController {
-
-    private final UrlServiceImpl urlService;
-    private final MemberService memberService;
-    private final OrderServiceImpl orderService;
+public class AdminAuthController {
 
     @PostMapping("/login")
     public String adminLogin(@ModelAttribute Admin admin, HttpServletRequest request, RedirectAttributes redirectAttributes) {
@@ -54,42 +50,6 @@ public class AdminController {
             session.invalidate();
         }
         return "redirect:/admin";
-    }
-
-    @GetMapping("/urls")
-    public String getAllUrls(Model model) {
-        model.addAttribute("urls", urlService.findAllUrls());
-        return "admin/urls";
-    }
-
-    @GetMapping("/urls/{input}")
-    public ResponseEntity<List<Url>> getUrlsByInput(@PathVariable String input) {
-        List<Url> urls = urlService.findUrlsByInput(input);
-        return new ResponseEntity<>(urls, HttpStatus.OK);
-    }
-
-    @GetMapping("/members")
-    public String getAllMembers(Model model) {
-        model.addAttribute("members", memberService.findAllMembers());
-        return "admin/members";
-    }
-
-    @GetMapping("/members/{input}")
-    public ResponseEntity<List<Member>> getMembersByInput(@PathVariable String input) {
-        List<Member> members = memberService.findMembersByInput(input);
-        return new ResponseEntity<>(members, HttpStatus.OK);
-    }
-
-    @GetMapping("/orders")
-    public String getAllOrders(Model model) {
-        model.addAttribute("orders", orderService.findAllOrders());
-        return "admin/orders";
-    }
-
-    @GetMapping("/orders/{input}")
-    public ResponseEntity<List<Order>> getOrdersByInput(@PathVariable String input) {
-        List<Order> orders = orderService.findOrderByInput(input);
-        return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
     private void login(HttpServletRequest request, Admin loginAdmin) {
