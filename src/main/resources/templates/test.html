@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: layout(~{::title}, ~{::main}, ~{::javascript})}" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>TEST</title>
+</head>
+
+<body>
+<main>
+    <h1>TEST</h1>
+    <p th:text="${name}">name</p>
+    <p th:text="${age}">age</p>
+
+</main>
+
+<div th:fragment="javascript" th:remove="tag">
+</div>
+
+</body>
+
+</html>
