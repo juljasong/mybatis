@@ -14,7 +14,7 @@ public class Order {
     private String id;
     private Long productId;
     private Long memberId;
-    //private Date startDate;
-    //private Date endDate;
+    private Date startDate;
+    private Date endDate;
 
 }
